@@ -10,8 +10,8 @@ import org.cmg.resp.topology.VirtualPort;
 
 public class YellowShip extends BasicShip {
 
-	public YellowShip(String id, String mapId, VirtualPort vp, int xPos, int yPos){
-		super(id,mapId,vp,xPos,yPos);
+	public YellowShip(String id, String mapId, String harbourId, VirtualPort vp, int row, int col){
+		super(id,mapId,harbourId,vp,row,col);
 		this.size = ShipSize.SMALL;	
 
 	}
@@ -39,7 +39,9 @@ public class YellowShip extends BasicShip {
 
 	@Override
 	public void makeRequest() {
-		
+		Template queryTemp = new Template(	new ActualTemplateField)
+		if (queryp() == null)
+		put(,harbourConnection);
 	}
 
 	@Override

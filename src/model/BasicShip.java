@@ -5,35 +5,37 @@ import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.VirtualPort;
 
 public abstract class BasicShip extends Agent {
-	protected int xPos,yPos;
+	protected int row,col;
 	protected Heading heading;
 	protected String id;
 	protected VirtualPort vp;
 	protected PointToPoint mapConnection;
+	protected PointToPoint harbourConnection;
 	protected boolean idle;
 	protected ShipSize size;
 	
 	
 	
-	public BasicShip(String shipId, String mapId, VirtualPort vp, int xPos, int yPos){
+	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col){
 		super(shipId);
 		this.id = shipId;
 		this.vp = vp;
 		this.mapConnection = new PointToPoint(mapId,vp.getAddress());
-		this.xPos = xPos;	
-		this.yPos = yPos;
+		this.harbourConnection = new PointToPoint(harbourId,vp.getAddress());
+		this.row = row;	
+		this.col = col;
 	}
 	
 	public abstract void move();
 	
 	public abstract void makeRequest();
 	
-	protected int getxPos() {
-		return xPos;
+	protected int getRow() {
+		return row;
 	}
 	
-	protected int getyPos() {
-		return yPos;
+	protected int getCol() {
+		return col;
 	}
 	
 	protected boolean isIdle() {

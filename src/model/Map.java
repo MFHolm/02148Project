@@ -16,13 +16,16 @@ import org.cmg.resp.topology.VirtualPort;
 
 public class Map {
 	private Node sea;
+	private Harbour harbour;
 	private VirtualPort vp;
 	private HashMap<String,PointToPoint> shipConnections;
 	private List<Node> shipNodes;
 	
+	
 	public Map(VirtualPort vp){
 
 		this.sea = new Node("Sea",new TupleSpace());
+		this.harbour = new Harbour(vp);
 		this.shipNodes = new ArrayList<Node>();
 		this.shipConnections = new HashMap<String,PointToPoint>();
 		this.vp = vp;
@@ -41,7 +44,7 @@ public class Map {
 		newShipNode.addAgent(ship);
 		shipNodes.add(newShipNode);
 		shipConnections.put(ship.getId(), new PointToPoint(ship.getId(),vp.getAddress()));
-		sea.put(new Tuple(ship.getId(),ship.getxPos(),ship.getyPos()));
+		sea.put(new Tuple(ship.getId(),ship.getRow(),ship.getCol()));
 		newShipNode.start();
 		
 		
