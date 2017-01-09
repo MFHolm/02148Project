@@ -8,20 +8,22 @@ public class Model {
 	
 	public Model(){
 		this.map = new Map(vp);
-		
-	}
 	
-	public void update(){
-		//map.addShip(new YellowShip("wofijj", this.vp, 0,0));
 		
 	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public static VirtualPort getVp() {
+		return vp;
+	}
+
+
 	
-	public void declineRequest(String id){
-		
-	}
 	
-	public void acceptRequest(String id){
-		
-	}
+	
+
 	
 }
