@@ -44,7 +44,11 @@ public class Chapter_2_Gossip_Circle {
 		// Otherwise an agent may try to access a non-existing node, thus raising an exception
 		for(int i=0; i<N; i++){
 			node[i].start();
+			node[i].addAgent(gossiper[(i+1)%N]);
 		}		
+		
+		
+		
 
 	}
 
@@ -94,6 +98,7 @@ public class Chapter_2_Gossip_Circle {
 						System.out.println("Gossiper " + home + " forwarding \"" + gossip_message + "\" to gossiper " + next.getName());
 						// Forward the gossip
 						put(t,next);
+						
 						// Save the gossip
 						put(new Tuple("old gossip",gossip_message),Self.SELF);
 					}	
