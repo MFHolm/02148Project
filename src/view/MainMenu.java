@@ -1,37 +1,41 @@
 package view;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
-public class MainMenu extends Application  {
+import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
 
-	@Override
-    public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
- 
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
 
- Scene scene = new Scene(root, 300, 250);
 
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
- public static void main(String[] args) {
-	 System.out.println("here");
-        launch(args);
-    }
+public class MainMenu extends JFrame {
+	
+	private JPanel menuPanel;
+	private JButton play;
+
+	
+	public MainMenu() {
+		
+		initUI();
+	}
+	
+	public void initUI() {
+		menuPanel = new JPanel();
+		play = new JButton();
+		
+		play.setText("Play");
+		play.setAlignmentX(Component.CENTER_ALIGNMENT);
+		play.setActionCommand("Play");
+		
+		
+		menuPanel.add(play);
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.add(menuPanel);
+		this.setSize(400, 700);
+		this.setVisible(true);
+	}
+	
+	public JButton getPlayBtn() {
+		return play;
+	}
+
 }
