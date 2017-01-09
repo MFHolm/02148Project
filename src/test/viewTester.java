@@ -13,8 +13,9 @@ import view.GameView;
 public class viewTester {
 	public static void main(String[] args) {
 		Map map = new Map( new VirtualPort(8080));
-		map.getSea().put(new Tuple("id", ShipType.GREEN, 3,3,Heading.E));
+		map.getSea().put(new Tuple("id", ShipType.GREEN, 9,9,Heading.NE));
 		GameView gv = new GameView();
+		gv.setMap(map);
 		gv.setVisible(true);
 		gv.update();
 	}

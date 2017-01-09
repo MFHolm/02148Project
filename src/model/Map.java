@@ -113,7 +113,7 @@ public class Map {
 				shipPos.add(tuple);
 			}
 		}
-		while (t != null);
+		while (tuple != null);
 			
 		for (Tuple s : originals) {
 			sea.put(s);
