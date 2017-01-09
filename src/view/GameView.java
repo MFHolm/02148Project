@@ -4,20 +4,22 @@ package view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import model.Map;
+
 
 public class GameView extends JFrame {
 	
-	JPanel mainView;
+	GamePanel mainView;
 	private int[][] grid;
 	
 	
-	public GameView(int[][] grid) {
+	public GameView() {
 		initUI();
-		this.grid = grid;
+//		this.grid = grid;
 	}
 	
 	public void initUI() {
-		mainView = new GamePanel(grid);
+		mainView = new GamePanel();
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(mainView);
@@ -25,5 +27,11 @@ public class GameView extends JFrame {
 		this.setVisible(false);
 	
 	}
-	
+	//Repaints the main panel
+		public void update() {
+			mainView.repaint();
+		}
+		public void setMap(Map map) {
+			this.mainView.setMap(map);
+		}
 }

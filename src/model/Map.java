@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
+import org.cmg.resp.knowledge.ActualTemplateField;
 import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
@@ -20,7 +21,8 @@ public class Map {
 	private VirtualPort vp;
 	private HashMap<String,PointToPoint> shipConnections;
 	private List<Node> shipNodes;
-	
+	private int width;
+	private int heigth;
 	
 	public Map(VirtualPort vp){
 
@@ -33,7 +35,8 @@ public class Map {
 		sea.addAgent(new SeaAgent("ShipController"));
 		sea.put(new Tuple("lock"));
 		sea.start();
-		
+		this.width = 10;
+		this.heigth = 10;
 		
 	}
 	
@@ -68,18 +71,66 @@ public class Map {
 		}
 	}
 
-	public Tuple[] getShipPositions() {
-		// TODO Auto-generated method stub
-		return null;
+	//Returns all tuples in the tuple space of sea
+	public ArrayList<Tuple> getShipPositions() {
+		ArrayList<Tuple> shipPos = new ArrayList<>();
+		ArrayList<Tuple> originals = new ArrayList<>();
+		try {
+			sea.get(new Template(new ActualTemplateField("lock")));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Template t = new Template(
+				new FormalTemplateField(String.class),
+				new FormalTemplateField(ShipType.class),
+				new FormalTemplateField(Integer.class),
+				new FormalTemplateField(Integer.class),
+				new FormalTemplateField(Heading.class));
+
+		Tuple tuple;
+		do {
+			tuple = sea.getp(t);
+			if (tuple != null) {
+				originals.add(tuple);
+				Tuple other = sea.getp(new Template(
+						new ActualTemplateField(tuple.getElementAt(String.class, 0)),
+						new FormalTemplateField(ShipType.class),
+						new FormalTemplateField(Integer.class),
+						new FormalTemplateField(Integer.class),
+						new FormalTemplateField(Heading.class)));
+				//If the ship occupies two positions, update position
+				if (other != null) {
+					originals.add(other);
+					int row1 = tuple.getElementAt(int.class, 2);
+					int row2 = other.getElementAt(int.class, 2);
+					int col1 = tuple.getElementAt(int.class, 3);
+					int col2 = other.getElementAt(int.class, 3);
+					tuple = new Tuple(tuple.getElementAt(String.class, 0),
+							tuple.getElementAt(String.class, 1),
+							(row1 + row2) /2, (col1 + col2)/2,
+							tuple.getElementAt(Heading.class, 4));
+				}
+				shipPos.add(tuple);
+			}
+		}
+		while (t != null);
+			
+		for (Tuple s : originals) {
+			sea.put(s);
+		}
+		sea.put(new Tuple("lock"));
+		
+		return shipPos;
 	}
 
 	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.width;
 	}
 
 	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.heigth;
+	}
+	public Node getSea() {
+		return this.sea;
 	}
 }

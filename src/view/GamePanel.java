@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -27,20 +28,29 @@ public class GamePanel extends JPanel {
 	
 	
 	
-	public GamePanel(Map map) {
+	public GamePanel() {
 		super();
-		this.map = map;
 //		this.grid = map.getGrid();
 		this.setBackground(new Color(102,200,209));
+		try {
+			this.greenShip = ImageIO.read(getClass().getResource("/resources/greenShip.png"));
+			this.redShip = ImageIO.read(getClass().getResource("/resources/redShip.png"));
+			this.yellowShip = ImageIO.read(getClass().getResource("/resources/yellowShip.png"));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
+	public void setMap(Map map) {
+		this.map = map;
+	}
 	//Paints the background on the panel
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
-		Tuple[] ships = map.getShipPositions();
+		ArrayList<Tuple> ships = map.getShipPositions();
 		for (Tuple tuple : ships) {
 			ShipType type = tuple.getElementAt(ShipType.class, 1);
 			int row = tuple.getElementAt(Integer.class, 2);
