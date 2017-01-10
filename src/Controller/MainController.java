@@ -24,7 +24,7 @@ public class MainController {
 		//Main menu view
 		mMenu = new MainMenu();
 		//Game view
-		gView = new GameView(grid);
+		gView = new GameView();
 		
 		//Action handler for main menu
 		actMainMenu = new ActionHandlerMainMenu(this);
