@@ -6,6 +6,7 @@ import org.cmg.resp.knowledge.ActualTemplateField;
 import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
+import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
 public class YellowShip extends BasicShip {
@@ -25,7 +26,7 @@ public class YellowShip extends BasicShip {
 		}*/
 		Tuple lock;
 		try {
-			lock = get(new Template(new ActualTemplateField("lock")),mapConnection);
+			lock = get(lockTemp,mapConnection);
 			/*get(new Template(	new ActualTemplateField(id), 
 								new FormalTemplateField(Integer.class),
 								new FormalTemplateField(Integer.class)),mapConnection);*/
@@ -38,20 +39,33 @@ public class YellowShip extends BasicShip {
 	}
 
 	@Override
-	public void makeRequest() {
-		Template queryTemp = new Template(	new ActualTemplateField)
-		if (queryp() == null)
-		put(,harbourConnection);
+	public void makeRequest() {		
+		
+		if (queryp(new Template(new ActualTemplateField("reqSent"))) == null){
+			try {
+				put(new Tuple("req",id),harbourConnection);
+				put(new Tuple("reqSent"),Self.SELF);
+			} catch (InterruptedException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} 
+		
 	}
 
 	@Override
 	protected void doRun() throws Exception {
-		Template shipMsg = new Template(
-				new ActualTemplateField("requestAccept"),
-				new FormalTemplateField(Integer.class)
-				);
-		
 
+
+		makeRequest();
+		
+		while(true){
+			if(!isDocked()){
+				checkDockPermission();
+				
+			}
+		
+		}
 	}
 
 }

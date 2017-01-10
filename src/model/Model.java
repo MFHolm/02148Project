@@ -19,6 +19,14 @@ public class Model {
 	public static VirtualPort getVp() {
 		return vp;
 	}
+	
+	public void acceptRequest(String shipId, String dockId) throws IllegalArgumentException {
+		map.handleRequest(shipId,dockId);
+	}
+	
+	public void declineRequest(String id){
+		
+	}
 
 
 	

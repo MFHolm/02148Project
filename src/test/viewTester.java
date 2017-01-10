@@ -24,10 +24,15 @@ public class viewTester {
 				new FormalTemplateField(Integer.class),
 				new FormalTemplateField(Integer.class),
 				new FormalTemplateField(Heading.class));
+		
+		int s = 100;
+		map.getSea().put(new Tuple("id", ShipType.GREEN, -1,-1,Heading.E));
+		gv.update();
+		Thread.sleep(s);
+		map.getSea().get(t);
 		map.getSea().put(new Tuple("id", ShipType.GREEN, 0,0,Heading.E));
 		gv.update();
 		
-		int s = 100;
 		Thread.sleep(s);
 		map.getSea().get(t);
 		map.getSea().put(new Tuple("id", ShipType.GREEN, 0,0,Heading.E));
