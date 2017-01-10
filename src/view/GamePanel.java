@@ -108,11 +108,36 @@ public class GamePanel extends JPanel {
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 			int boatLength = this.getWidth()/map.getWidth();
 			int boatHeigth = this.getHeight()/map.getHeight();
-
+			
 			System.out.println("boat length " + boatLength + " boat heigth " + boatHeigth);
 			System.out.println("window: "+this.getWidth() + " ," + this.getHeight());
 			//g2d.drawImage(op.filter(img, null),x,y, null);
-			g2d.drawImage(op.filter(img, null), getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
+			//g2d.drawImage(op.filter(img, null), getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
+			
+			
+			int w0 = img.getWidth();
+			int h0 = img.getHeight();
+			int centerX = w0 / 2;
+			int centerY = h0 / 2;
+			if (w0 > h0) {
+				centerX = h0 / 2;
+				centerY = h0 / 2;
+			} else if (h0 > w0) {
+				centerX = w0 / 2;
+				centerY = w0 / 2;
+			}
+			AffineTransform affineTransform = new AffineTransform();
+			affineTransform.setToQuadrantRotation(1, centerX, centerY);
+			
+			AffineTransformOp opRotated = new AffineTransformOp(affineTransform,
+					AffineTransformOp.TYPE_BILINEAR);
+			
+			BufferedImage transformedImage = new BufferedImage(w0, h0,
+					img.getType());
+			
+			transformedImage = opRotated.filter(img, transformedImage);
+			g2d.drawImage(transformedImage, getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
+			
 		}
 		
 		
