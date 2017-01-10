@@ -28,10 +28,10 @@ public class GameView extends JFrame {
 	
 	}
 	//Repaints the main panel
-		public void update() {
-			mainView.repaint();
-		}
-		public void setMap(Map map) {
-			this.mainView.setMap(map);
-		}
+	public void update() {
+		mainView.repaint();
+	}
+	public void setMap(Map map) {
+		this.mainView.setMap(map);
+	}
 }

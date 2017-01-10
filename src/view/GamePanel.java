@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -43,6 +44,7 @@ public class GamePanel extends JPanel {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.setPreferredSize(new Dimension(1080,1920));
 	}
 	public void setMap(Map map) {
 		this.map = map;
@@ -52,36 +54,35 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 		ArrayList<Tuple> ships = map.getShipPositions();
 		for (Tuple tuple : ships) {
 			ShipType type = tuple.getElementAt(ShipType.class, 1);
-			int row = tuple.getElementAt(Integer.class, 2);
-			int col = tuple.getElementAt(Integer.class, 3);
+			double row = tuple.getElementAt(Double.class, 2);
+			double col = tuple.getElementAt(Double.class, 3);
 			Heading dir = tuple.getElementAt(Heading.class, 4);
 			BufferedImage img = null;
 			double theta;
 			switch (dir) {
 				case NE: 
-					theta = Math.PI/4;
+					theta = Math.toRadians(-45);
 					break;
 				case N: 
-					theta =  Math.PI/2;;
+					theta = Math.toRadians(-90);;
 					break;
 				case NW:
-					theta =  3 * Math.PI/4;
+					theta =  Math.toRadians(-135);
 					break;
 				case W:
-					theta =  Math.PI;
+					theta =  Math.toRadians(180);
 					break;
 				case SW:
-					theta =  5* Math.PI/4;
+					theta =  Math.toRadians(135);
 					break;
 				case S:
-					theta = 3* Math.PI/2;
+					theta = Math.toRadians(90);
 					break;
 				case SE:
-					theta = 7 * Math.PI /4;
+					theta = Math.toRadians(45);
 					break;
 				default: 
 					theta = 0;
@@ -105,24 +106,24 @@ public class GamePanel extends JPanel {
 			double locationY = img.getHeight() / 2;
 			AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-			double scaleX = (this.getWidth()/(double)map.getWidth())/img.getWidth();
-			double scaleY = (this.getHeight()/(double)map.getHeight())/ img.getHeight();
 			int boatLength = this.getWidth()/map.getWidth();
 			int boatHeigth = this.getHeight()/map.getHeight();
-			int x = col* boatLength;
-			int y = row* boatHeigth;
-			g2d.scale(scaleX, scaleY);
-			System.out.println("x: " + x + " y: " + y);
+
 			System.out.println("boat length " + boatLength + " boat heigth " + boatHeigth);
 			System.out.println("window: "+this.getWidth() + " ," + this.getHeight());
-			g2d.drawImage(op.filter(img, null),x,y, null);
-//	        g2d.rotate(theta, img.getWidth()/2, img.getHeight()/2);
-//	        g2d.scale(0.5, 0.5);
-//			g2d.drawImage(img, col*this.getWidth()/map.getWidth(), row*this.getHeight()/map.getHeight(), null);
+			//g2d.drawImage(op.filter(img, null),x,y, null);
+			g2d.drawImage(op.filter(img, null), getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
 		}
 		
 		
 	}
+	//Calculates the ratio between window size and grid size and multiplies it by a given number
+	private int getActualY(double k) {
+		return (int) (k * this.getHeight() / map.getHeight());
+	}
 
+	private int getActualX(double col) {
+		return (int) (col * this.getWidth() / map.getWidth());
+	}
 }
 

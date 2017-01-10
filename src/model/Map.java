@@ -98,17 +98,22 @@ public class Map {
 						new FormalTemplateField(Integer.class),
 						new FormalTemplateField(Integer.class),
 						new FormalTemplateField(Heading.class)));
+				int row1 = tuple.getElementAt(Integer.class, 2);
+				int col1 = tuple.getElementAt(Integer.class, 3);
+				String id = tuple.getElementAt(String.class, 0);
+				ShipType type = tuple.getElementAt(ShipType.class, 1);
+				Heading dir = tuple.getElementAt(Heading.class, 4);
 				//If the ship occupies two positions, update position
 				if (other != null) {
 					originals.add(other);
-					int row1 = tuple.getElementAt(int.class, 2);
-					int row2 = other.getElementAt(int.class, 2);
-					int col1 = tuple.getElementAt(int.class, 3);
-					int col2 = other.getElementAt(int.class, 3);
-					tuple = new Tuple(tuple.getElementAt(String.class, 0),
-							tuple.getElementAt(String.class, 1),
-							(row1 + row2) /2, (col1 + col2)/2,
-							tuple.getElementAt(Heading.class, 4));
+					int row2 = other.getElementAt(Integer.class, 2);
+					int col2 = other.getElementAt(Integer.class, 3);
+					tuple = new Tuple(id,type,
+							(row1 + row2) /2.0, (col1 + col2)/2.0,
+							dir);
+				}
+				else {
+					tuple = new Tuple(id, type, (double) row1, (double)col1, dir);
 				}
 				shipPos.add(tuple);
 			}
