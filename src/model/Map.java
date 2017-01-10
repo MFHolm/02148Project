@@ -35,8 +35,8 @@ public class Map {
 		sea.addAgent(new SeaAgent("ShipController"));
 		sea.put(new Tuple("lock"));
 		sea.start();
-		this.width = 10;
-		this.heigth = 10;
+		this.width = 30;
+		this.heigth = 30;
 		
 	}
 	
