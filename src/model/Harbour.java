@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
@@ -17,15 +19,16 @@ public class Harbour {
 	private Node harbour;
 	private VirtualPort vp;
 	private HashMap<String,Dock> docks;
+	private TupleSpace harbourTupleSpace;
 	
 	public Harbour(VirtualPort vp){
 		this.vp = vp;
-		harbour = new Node("harbour",new TupleSpace());
+		harbourTupleSpace = new TupleSpace();
+		harbour = new Node("harbour",harbourTupleSpace);
 		docks = new HashMap<String,Dock>();
 		harbour.addPort(vp);
 		harbour.addAgent(new HarbourAgent("HarbourAgent"));
 		harbour.start();
-		
 	}
 	
 	public Node getNode(){
@@ -53,6 +56,14 @@ public class Harbour {
 		docks.put(dockId, new Dock(row,col));
 		harbour.put(new Tuple("dockAvailable",dockId));
 		
+	}
+	public LinkedList<Tuple> getRequests() {
+		return harbourTupleSpace.getAll(new Template(
+				new FormalTemplateField(String.class),
+				new FormalTemplateField(String.class),
+				new FormalTemplateField(ShipType.class),
+				new FormalTemplateField(Integer.class),
+				new FormalTemplateField(Integer.class)));
 	}
 	
 	private class HarbourAgent extends Agent {

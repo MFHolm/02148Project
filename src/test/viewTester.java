@@ -2,6 +2,8 @@ package test;
 
 import java.awt.Graphics;
 
+import javax.swing.JFrame;
+
 import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
@@ -11,10 +13,11 @@ import model.Heading;
 import model.Map;
 import model.ShipType;
 import view.GameView;
+import view.RequestPanel;
 
 public class viewTester {
 	public static void main(String[] args) throws InterruptedException {
-		Map map = new Map( new VirtualPort(8080));
+		/*Map map = new Map( new VirtualPort(8080));
 		GameView gv = new GameView();
 		gv.setMap(map);
 		gv.setVisible(true);
@@ -144,9 +147,13 @@ public class viewTester {
 		map.getSea().put(new Tuple("id", ShipType.GREEN, 6,2,Heading.S));
 		map.getSea().put(new Tuple("id", ShipType.GREEN, 7,2,Heading.S));
 		gv.update();
-		
-		
-		
+		*/
+		JFrame frame = new JFrame();
+		frame.setVisible(true);
+		frame.setSize(250, 1000);
+		RequestPanel panel = new RequestPanel();
+		frame.add(panel);
+		panel.update();
 		
 	}
 }
