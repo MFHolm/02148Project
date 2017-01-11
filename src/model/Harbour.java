@@ -1,14 +1,10 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
-import org.cmg.resp.knowledge.ActualTemplateField;
-import org.cmg.resp.knowledge.FormalTemplateField;
-import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.knowledge.ts.TupleSpace;
 import org.cmg.resp.topology.PointToPoint;
@@ -42,8 +38,7 @@ public class Harbour {
 	 * Otherwise exception is thrown.
 	 */
 	public void assignDock(String shipId, String dockId) throws IllegalArgumentException {
-		if(harbour.queryp(new Template(	new ActualTemplateField("dockAvailable"),
-										new ActualTemplateField(dockId))) == null) { // Should check if dock is available
+		if(harbour.queryp(Templates.getDockAvailTemp(dockId)) == null) { // Should check if dock is available
 			throw new IllegalArgumentException(dockId+" occupied.");
 		} else {
 			harbour.put(new Tuple("assignDock",shipId,dockId));
@@ -58,12 +53,7 @@ public class Harbour {
 		
 	}
 	public LinkedList<Tuple> getRequests() {
-		return harbourTupleSpace.getAll(new Template(
-				new FormalTemplateField(String.class),
-				new FormalTemplateField(String.class),
-				new FormalTemplateField(ShipType.class),
-				new FormalTemplateField(Integer.class),
-				new FormalTemplateField(Integer.class)));
+		return harbourTupleSpace.getAll(Templates.getReqTemp());
 	}
 	
 	private class HarbourAgent extends Agent {
@@ -74,26 +64,25 @@ public class Harbour {
 		
 		@Override
 		protected void doRun() throws Exception {	
-				while(true){
-					//Implementing accept request by checking for assignDock in the tuple space
-					Tuple t = getp(new Template( 	new ActualTemplateField("assignDock"),
-							new FormalTemplateField(String.class),
-							new FormalTemplateField(String.class)));
-					if (t != null){				
-						String shipId = t.getElementAt(String.class, 1);
-						String dockId = t.getElementAt(String.class, 2);
-						Dock dock = docks.get(dockId);
-						
-						PointToPoint shipConnection = new PointToPoint(shipId, vp.getAddress());
-						
-						get(new Template (	new ActualTemplateField("dockAvailable"),
-								new ActualTemplateField(dockId)), Self.SELF);
-						
-						
-						put(new Tuple("assignedTo",dockId,dock.getRow(),dock.getCol()),shipConnection);
-						
-						
+			while(true){
+				//Implementing accept request by checking for assignDock in the tuple space
+				Tuple t = getp(Templates.getAssignDockTemp());
+				if (t != null){				
+					String shipId = t.getElementAt(String.class, 1);
+					String dockId = t.getElementAt(String.class, 2);
+					Dock dock = docks.get(dockId);
 					
+					PointToPoint shipConnection = new PointToPoint(shipId, vp.getAddress());
+					
+					get(Templates.getDockAvailTemp(dockId), Self.SELF);
+					
+					put(new Tuple("assignedTo",dockId,dock.getRow(),dock.getCol()),shipConnection);
+				}
+				
+				t = getp(Templates.getDeclineReqTemp());
+				if (t != null) {
+					String shipId = t.getElementAt(String.class, 1);
+					get(Templates.getReqTemp(shipId),Self.SELF);
 				}
 			}	
 		}

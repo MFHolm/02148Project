@@ -1,8 +1,8 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
@@ -11,7 +11,6 @@ import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.knowledge.ts.TupleSpace;
-import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
@@ -21,7 +20,6 @@ public class Map {
 	private VirtualPort vp;
 	private HashMap<String,Node> shipNodes;
 	private TupleSpace coordinates;
-	private Template lockTemp = new Template(new ActualTemplateField("lock"));
 	private int width;
 	private int heigth;
 	
@@ -47,8 +45,8 @@ public class Map {
 		newShipNode.addAgent(ship);
 		shipNodes.put(ship.getId(),newShipNode);
 		try {
-			Tuple lock = coordinates.get(lockTemp);
-			coordinates.put(new Tuple(ship.getId(),ship.getRow(),ship.getCol()));
+			Tuple lock = coordinates.get(Templates.getLockTemp());
+			coordinates.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
 			coordinates.put(lock);
 			
 		} catch (InterruptedException e) {
@@ -62,24 +60,11 @@ public class Map {
 	
 	public void handleRequest(String shipId, String dockId) throws IllegalArgumentException {
 		Node shipNode = shipNodes.get(shipId);
-		if(shipNode.queryp(new Template(new ActualTemplateField("reqSent")))==null){
+		if(shipNode.queryp(Templates.getReqSentTemp())==null){
 			throw new IllegalArgumentException(shipId + " hasn't sent any request");
 		} else {
 			harbour.assignDock(shipId,dockId);
 		}
-	}
- 
-	
-	public String getSeaName(){
-		return sea.getName();
-	}
-	
-	public Harbour getHarbour(){
-		return harbour;
-	}
-	
-	public Node getSeaNode(){
-		return sea;
 	}
 	
 	private class SeaAgent extends Agent {
@@ -89,15 +74,38 @@ public class Map {
 		}
 
 		@Override
-		protected void doRun() throws Exception {	
-			/*while(true){
-				for(Tuple t : coordinates.getAll(lockTemp)){
-					System.out.println(t);
-					coordinates.put(t);
+		protected void doRun() throws Exception {
+			
+			while(true){
+				
+				if(queryp(Templates.getDeclineReqTemp()) != null) { // Checks if we should decline request and remove ship
+					Tuple t = get(Templates.getDeclineReqTemp(),Self.SELF);
+					String shipId = t.getElementAt(String.class, 1);
+					declineRequest(shipId);
 				}
-			}*/
+				
+			}
 
 			
+		}
+		
+		/*
+		 * Removes ship coordinates from coordinates tuple space
+		 * and removes ship node
+		 */
+		public void declineRequest(String shipId) {
+			
+			try {
+				Tuple lock = get(Templates.getLockTemp(), Self.SELF);
+				get(Templates.getCoordTemp(shipId),Self.SELF);
+				put(lock,Self.SELF);
+				
+			} catch (InterruptedException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 
+			shipNodes.remove(shipId);
 		}
 	}
 
@@ -168,5 +176,21 @@ public class Map {
 	}
 	public Node getSea() {
 		return this.sea;
+	}
+	
+	public String getSeaName(){
+		return sea.getName();
+	}
+	
+	public Harbour getHarbour(){
+		return harbour;
+	}
+	
+	public Node getSeaNode(){
+		return sea;
+	}
+
+	public HashMap<String,Node> getShips() {
+		return shipNodes;
 	}
 }

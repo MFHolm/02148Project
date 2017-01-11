@@ -7,6 +7,7 @@ import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.topology.Self;
 
 import model.Model;
+import model.Templates;
 import model.YellowShip;
 
 public class Test {
@@ -17,18 +18,31 @@ public class Test {
 		m.getMap().addShip(ys);
 		m.getMap().getHarbour().addDock("D-1",5,5);
 		ys.makeRequest();
-		m.acceptRequest(ys.getName(), "D-1");
 		try {
 			Thread.sleep(2000);
-			Tuple t = test.get(new Template( 	new FormalTemplateField(String.class),	
-												new FormalTemplateField(Integer.class),
-												new FormalTemplateField(Integer.class)));
-			System.out.println(t.toString());
+			System.out.println("Herro");
+			Tuple t = m.getHarbour().getNode().get(Templates.getReqTemp(ys.getName()));
+			System.out.println("Whatup");
+			Tuple u = m.getMap().getSeaNode().get(Templates.getCoordTemp(ys.getName()));
+			System.out.println("Coords: "+ u + ", Request: " +t);
+			m.getHarbour().getNode().put(t);
+			m.getMap().getSeaNode().put(u);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		m.declineRequest(ys.getName());
+		
+		try {
+			Thread.sleep(2000);
+			Tuple t = m.getHarbour().getNode().getp(Templates.getReqTemp(ys.getName()));
+			Tuple u = m.getMap().getSeaNode().getp(Templates.getCoordTemp(ys.getName()));
+			System.out.println("Coords: "+ u + ", Request: " + t + ", Ships: " + m.getMap().getShips().size());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 }

@@ -1,5 +1,6 @@
 package model;
 
+import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.topology.VirtualPort;
 
 public class Model {
@@ -20,12 +21,17 @@ public class Model {
 		return vp;
 	}
 	
+	public Harbour getHarbour() {
+		return map.getHarbour();
+	}
+	
 	public void acceptRequest(String shipId, String dockId) throws IllegalArgumentException {
 		map.handleRequest(shipId,dockId);
 	}
 	
-	public void declineRequest(String id){
-		
+	public void declineRequest(String shipId){
+		map.getSea().put(new Tuple("declineReq",shipId));
+		map.getHarbour().getNode().put(new Tuple("declineReq",shipId));
 	}
 
 

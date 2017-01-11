@@ -3,15 +3,12 @@ package model;
 import java.io.IOException;
 
 import org.cmg.resp.behaviour.Agent;
-import org.cmg.resp.knowledge.ActualTemplateField;
-import org.cmg.resp.knowledge.FormalTemplateField;
-import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.VirtualPort;
 
 public abstract class BasicShip extends Agent {
-	protected int row,col;
+	protected int row,col,time;
 	protected Heading heading;
 	protected String id;
 	protected VirtualPort vp;
@@ -19,8 +16,7 @@ public abstract class BasicShip extends Agent {
 	protected PointToPoint harbourConnection;
 	protected boolean docked;
 	protected ShipSize size;
-	protected Template lockTemp = new Template(new ActualTemplateField("lock"));
-	
+	protected ShipType shipType;
 	
 	
 	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col){
@@ -39,21 +35,19 @@ public abstract class BasicShip extends Agent {
 	
 	public abstract void makeRequest();
 	
+	/*
+	 *  Returns the amount of money this ship is willing to give
+	 *  based on the amount of time it will stay
+	 */
+	protected abstract int getMoney(int time);
+	
 	protected void checkDockPermission(){
-		Template dockAssignTemp = new Template( new ActualTemplateField("assignedTo"),
-												new FormalTemplateField(String.class),
-												new FormalTemplateField(Integer.class),
-												new FormalTemplateField(Integer.class));
-		Tuple t = getp(dockAssignTemp);
+		Tuple t = getp(Templates.getDockAssignTemp());
 		if(t != null){
-			Template coordTemp = new Template( 	new ActualTemplateField(id),
-												new FormalTemplateField(Integer.class),
-												new FormalTemplateField(Integer.class));
+
 			try {
-				System.out.println("Waiting");
-				Tuple u = get(lockTemp,mapConnection);
-				System.out.println("Done");
-				get(coordTemp,mapConnection);
+				Tuple u = get(Templates.getLockTemp(),mapConnection);
+				get(Templates.getCoordTemp(id),mapConnection);
 				row = t.getElementAt(Integer.class, 2);
 				col = t.getElementAt(Integer.class, 3);
 				put(new Tuple(id,row,col),mapConnection);
@@ -86,6 +80,14 @@ public abstract class BasicShip extends Agent {
 
 	protected String getId() {
 		return id;
+	}
+
+	public Heading getHeading() {
+		return heading;
+	}
+
+	public ShipType getType() {
+		return shipType;
 	}
 
 }
