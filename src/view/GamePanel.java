@@ -133,12 +133,7 @@ public class GamePanel extends JPanel {
 			}
 			AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, centerX, centerY);
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-			int boatLength = this.getWidth()/map.getWidth();
-			int boatHeigth = this.getHeight()/map.getHeight();
-			
-			System.out.println("boat length " + boatLength + " boat heigth " + boatHeigth);
-			System.out.println("window: "+this.getWidth() + " ," + this.getHeight());
-			//g2d.drawImage(op.filter(img, null),x,y, null);
+		//g2d.drawImage(op.filter(img, null),x,y, null);
 			g2d.drawImage(op.filter(img, null), getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
 			
 			
@@ -166,6 +161,9 @@ public class GamePanel extends JPanel {
 
 	private int getActualX(double col) {
 		return (int) (col * this.getWidth() / map.getWidth());
+	}
+	public void updateTime(double time2) {
+		this.time.setText("Time: "+ time2);
 	}
 	
 }

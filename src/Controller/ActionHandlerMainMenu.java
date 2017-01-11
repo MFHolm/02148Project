@@ -27,12 +27,7 @@ public class ActionHandlerMainMenu implements ActionListener {
 			mainC.createModel();
 			mainC.mMenu.setVisible(false);
 			mainC.gView.setVisible(true);
-			try {
-				mainC.run();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			mainC.start();
 		}
 		
 	}

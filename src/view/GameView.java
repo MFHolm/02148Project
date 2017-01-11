@@ -2,20 +2,8 @@ package view;
 
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.util.LinkedList;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import org.cmg.resp.knowledge.Tuple;
 
 import model.Harbour;
 import model.Map;
@@ -24,7 +12,6 @@ import model.Map;
 public class GameView extends JFrame {
 	
 	GamePanel gamePanel;
-	private int[][] grid;
 	RequestPanel requestPanel;
 	
 	
@@ -56,8 +43,8 @@ public class GameView extends JFrame {
 	//Repaints the main panel
 	public void update() {
 		gamePanel.repaint();
-//		requestPanel.clear();
-//		requestPanel.update();
+		requestPanel.clear();
+		requestPanel.update();
 		requestPanel.repaint();
 		
 	}
@@ -67,6 +54,9 @@ public class GameView extends JFrame {
 	
 	public void setHarbour(Harbour harbour) {
 		this.requestPanel.setHabour(harbour);
+	}
+	public void updateTime(double time) {
+		this.gamePanel.updateTime(time);
 	}
 
 }
