@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import org.cmg.resp.knowledge.Tuple;
 
+import model.Harbour;
 import model.Map;
 
 
@@ -44,7 +45,7 @@ public class GameView extends JFrame {
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.add(mainView);
-		this.setSize(1300, 900);
+		this.setSize(1050, 800);
 		this.setResizable(false);
 //		this.setContentPane(content);
 		pack();
@@ -53,14 +54,19 @@ public class GameView extends JFrame {
 		
 	}
 	//Repaints the main panel
-	public void update(LinkedList<Tuple> ships) {
+	public void update() {
 		gamePanel.repaint();
 		requestPanel.clear();
-		requestPanel.update2();
+		requestPanel.update();
 		requestPanel.repaint();
 		
 	}
 	public void setMap(Map map) {
 		this.gamePanel.setMap(map);
 	}
+	
+	public void setHarbour(Harbour harbour) {
+		this.requestPanel.setHabour(harbour);
+	}
+
 }

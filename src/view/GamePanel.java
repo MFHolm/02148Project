@@ -44,7 +44,7 @@ public class GamePanel extends JPanel {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.setPreferredSize(new Dimension(900,900));
+		this.setPreferredSize(new Dimension(800,800));
 	}
 	public void setMap(Map map) {
 		this.map = map;
