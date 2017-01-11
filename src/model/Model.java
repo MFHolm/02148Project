@@ -15,9 +15,9 @@ public class Model {
 //		return map;
 //	}
 //
-//	public static VirtualPort getVp() {
-//		return vp;
-//	}
+	public static VirtualPort getVp() {
+		return vp;
+	}
 //	
 //	public Harbour getHarbour() {
 //		return map.getHarbour();
@@ -34,6 +34,14 @@ public class Model {
 	
 	public void addShip(BasicShip ship) {
 		map.addShip(ship);
+	}
+	
+	public String getSeaName() {
+		return map.getSeaName();
+	}
+	
+	public String getHarbourName() {
+		return map.getHarbour().getNode().getName();
 	}
 	
 }

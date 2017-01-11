@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.cmg.resp.knowledge.Tuple;
@@ -29,11 +30,19 @@ public class GamePanel extends JPanel {
 	private BufferedImage redShip;
 	private BufferedImage greenShip;
 	private BufferedImage yellowShip;
+	private JLabel money;
+	private JLabel time;
 	
 	
 	
 	public GamePanel() {
 		super();
+		money = new JLabel("Money:     ");
+		time = new JLabel("Time:      ");
+		
+		this.add(money);
+		this.add(time);
+		
 //		this.grid = map.getGrid();
 		try {
 			this.background = ImageIO.read(getClass().getResource("/resources/map.png"));
@@ -158,5 +167,6 @@ public class GamePanel extends JPanel {
 	private int getActualX(double col) {
 		return (int) (col * this.getWidth() / map.getWidth());
 	}
+	
 }
 
