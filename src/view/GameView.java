@@ -56,8 +56,8 @@ public class GameView extends JFrame {
 	//Repaints the main panel
 	public void update() {
 		gamePanel.repaint();
-		requestPanel.clear();
-		requestPanel.update();
+//		requestPanel.clear();
+//		requestPanel.update();
 		requestPanel.repaint();
 		
 	}

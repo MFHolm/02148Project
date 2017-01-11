@@ -36,24 +36,22 @@ public class MainController {
 	
 	public void createModel() {
 		this.model = new Model();
+		gView.setMap(model.getMap());
+		gView.setHarbour(model.getHarbour());
 	}
 	
-	public void run() {
+	public void run() throws InterruptedException {
 		Boolean test = true;
-		while(true) {
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			Thread.sleep(1000);
+			System.out.println("What1");
 			if(test) {
 				model.addShip(new YellowShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 4, 7));
 				test = false;
 			}
 
-		}
+			gView.update();
+
+		
 	}
 
 }
