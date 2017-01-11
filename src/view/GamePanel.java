@@ -35,6 +35,12 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		super();
 //		this.grid = map.getGrid();
+		try {
+			this.background = ImageIO.read(getClass().getResource("/resources/map.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		this.setBackground(new Color(102,200,209));
 		try {
 			this.greenShip = ImageIO.read(getClass().getResource("/resources/greenShip.png"));
@@ -44,7 +50,7 @@ public class GamePanel extends JPanel {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.setPreferredSize(new Dimension(1000,1000));
+		this.setPreferredSize(new Dimension(800,800));
 	}
 	public void setMap(Map map) {
 		this.map = map;
@@ -53,6 +59,7 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
         Graphics2D g2d = (Graphics2D) g;
 		ArrayList<Tuple> ships = map.getShipPositions();
 		for (Tuple tuple : ships) {

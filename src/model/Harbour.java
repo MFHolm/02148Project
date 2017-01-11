@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -53,7 +54,11 @@ public class Harbour {
 		
 	}
 	public LinkedList<Tuple> getRequests() {
-		return harbourTupleSpace.getAll(Templates.getReqTemp());
+		LinkedList<Tuple> ships = harbourTupleSpace.getAll(Templates.getReqTemp());
+		for (Tuple tuple : ships) {
+			harbourTupleSpace.put(tuple);
+		}
+		return ships;
 	}
 	
 	private class HarbourAgent extends Agent {
