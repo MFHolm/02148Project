@@ -39,15 +39,18 @@ public class YellowShip extends BasicShip {
 		}
 	}
 
+	/*
+	 * Sends request to the harbour tuple space
+	 * for permission to enter
+	 */
 	@Override
 	public void makeRequest() {		
 		
 		if (queryp(new Template(new ActualTemplateField("reqSent"))) == null){
 			try {
 				put(new Tuple("req",id,shipType,time,getMoney(time)),harbourConnection);
-				put(new Tuple("reqSent"),Self.SELF);
+				put(new Tuple("reqSent"),Self.SELF); // Sends this tuple so it knows that the request was sent
 			} catch (InterruptedException | IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} 
@@ -63,7 +66,6 @@ public class YellowShip extends BasicShip {
 		while(true){
 			if(!isDocked()){
 				checkDockPermission();
-				
 			}
 		
 		}

@@ -17,7 +17,6 @@ public class Test {
 		YellowShip ys = new YellowShip("JOI-239","sea","harbour",m.getVp(),0,0);
 		m.getMap().addShip(ys);
 		m.getMap().getHarbour().addDock("D-1",5,5);
-		ys.makeRequest();
 		try {
 			Thread.sleep(2000);
 			System.out.println("Herro");
