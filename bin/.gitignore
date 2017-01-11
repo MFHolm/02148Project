@@ -1,2 +1,10 @@
 /resources/
 /view/
+<<<<<<< HEAD
+=======
+/test/
+/model/
+/layout/
+/Controller/
+/resources/
+>>>>>>> branch 'master' of https://github.com/MFHolm/02148Project.git

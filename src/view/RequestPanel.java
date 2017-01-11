@@ -27,12 +27,15 @@ import javax.swing.SpringLayout;
 import org.cmg.resp.knowledge.Tuple;
 
 import layout.SpringUtilities;
+import model.Harbour;
 import model.ShipType;
 
 public class RequestPanel extends JPanel {
+	
+	Harbour harbour;
 
 	public RequestPanel() {
-		this.setPreferredSize(new Dimension(250,900));
+		this.setPreferredSize(new Dimension(250,800));
 		// this.add(Box.createRigidArea(new Dimension(250,0)));
 		// this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 	}
@@ -48,10 +51,15 @@ public class RequestPanel extends JPanel {
 		this.repaint();
 	}
 	
-	public void update(LinkedList<Tuple> ships) {
+	public void setHabour(Harbour harbour) {
+		this.harbour = harbour;
+	}
+	
+	public void update() {
 		final int borderWidth = 1;
 		final int rows = 26;
 		final int cols = 3;
+		LinkedList<Tuple> requests = harbour.getRequests();
 		this.setLayout(new GridLayout(rows, cols));
 		this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		for (int row = 0; row < rows; row++) {
@@ -63,8 +71,8 @@ public class RequestPanel extends JPanel {
 					  label = new JLabel("Time");
 				}else if (row == 0 && col == 2) {
 					  label = new JLabel("Money");
-				}else if (row <= ships.size()){
-					String text = ships.get(row -1).getElementAt(col+2).toString();
+				}else if (row <= requests.size()){
+					String text = requests.get(row -1).getElementAt(col+2).toString();
 					label = new JLabel(text);
 					}
 				else {
@@ -96,25 +104,6 @@ public class RequestPanel extends JPanel {
 				this.add(label);
 			}
 		}
-	}
-	public void update2() {
-		this.setLayout(new SpringLayout());
-
-		int rows = 10;
-		int cols = 3;
-		for (int r = 0; r < rows; r++) {
-		    for (int c = 0; c < cols; c++) {
-		       JLabel label = new JLabel("Cell");
-		       this.add(label);
-		    		   
-		    }
-		}
-
-		//Lay out the panel.
-		SpringUtilities.makeCompactGrid(this, //parent
-		                                rows, cols,
-		                                3, 3,  //initX, initY
-		                                10, 10); //xPad, yPad
 	}
 //	BufferedImage img = null;
 //	try {
