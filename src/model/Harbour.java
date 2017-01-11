@@ -58,12 +58,16 @@ public class Harbour {
 		
 	}
 	public LinkedList<Tuple> getRequests() {
-		return harbourTupleSpace.getAll(new Template(
+		LinkedList<Tuple> ships =  harbourTupleSpace.getAll(new Template(
 				new FormalTemplateField(String.class),
 				new FormalTemplateField(String.class),
 				new FormalTemplateField(ShipType.class),
 				new FormalTemplateField(Integer.class),
 				new FormalTemplateField(Integer.class)));
+		for (Tuple tuple : ships) {
+			harbourTupleSpace.put(tuple);
+		}
+		return ships;
 	}
 	
 	private class HarbourAgent extends Agent {

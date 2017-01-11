@@ -1,9 +1,11 @@
 package view;
 
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -13,14 +15,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.cmg.resp.knowledge.Tuple;
+
 import model.Map;
 
 
 public class GameView extends JFrame {
 	
-	GamePanel mainView;
+	GamePanel gamePanel;
 	private int[][] grid;
-	RequestPanel requestView;
+	RequestPanel requestPanel;
 	
 	
 	public GameView() {
@@ -30,35 +34,33 @@ public class GameView extends JFrame {
 	
 	public void initUI() {
 
-		mainView = new GamePanel();
-		requestView = new RequestPanel();
+		gamePanel = new GamePanel();
+		requestPanel = new RequestPanel();
 		
 
-		
-		
-		
-		Box content = new Box(BoxLayout.X_AXIS);
-
-		content.add(requestView);
-		content.add(mainView);
+		this.getContentPane().add(requestPanel, BorderLayout.LINE_START);
+		this.getContentPane().add(gamePanel, BorderLayout.LINE_END);
 		
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.add(mainView);
-		this.setSize(1250, 1000);
+		this.setSize(1300, 900);
 		this.setResizable(false);
-		this.setContentPane(content);
+//		this.setContentPane(content);
+		pack();
 		this.setVisible(false);
 	
 		
 	}
 	//Repaints the main panel
-	public void update() {
-		mainView.repaint();
-		requestView.repaint();
+	public void update(LinkedList<Tuple> ships) {
+		gamePanel.repaint();
+		requestPanel.clear();
+		requestPanel.update2();
+		requestPanel.repaint();
 		
 	}
 	public void setMap(Map map) {
-		this.mainView.setMap(map);
+		this.gamePanel.setMap(map);
 	}
 }

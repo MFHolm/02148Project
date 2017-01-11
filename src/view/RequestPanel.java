@@ -9,6 +9,8 @@ import java.awt.TextField;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -19,13 +21,18 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
+import org.cmg.resp.knowledge.Tuple;
+
+import layout.SpringUtilities;
 import model.ShipType;
 
 public class RequestPanel extends JPanel {
 
 	public RequestPanel() {
-
+		this.setPreferredSize(new Dimension(250,900));
 		// this.add(Box.createRigidArea(new Dimension(250,0)));
 		// this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 	}
@@ -35,9 +42,15 @@ public class RequestPanel extends JPanel {
 
 	}
 
-	public void update() {
+	public void clear() {
+		this.removeAll();
+		this.revalidate();
+		this.repaint();
+	}
+	
+	public void update(LinkedList<Tuple> ships) {
 		final int borderWidth = 1;
-		final int rows = 10;
+		final int rows = 26;
 		final int cols = 3;
 		this.setLayout(new GridLayout(rows, cols));
 		this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -50,21 +63,13 @@ public class RequestPanel extends JPanel {
 					  label = new JLabel("Time");
 				}else if (row == 0 && col == 2) {
 					  label = new JLabel("Money");
-				}else {
-					label = new JLabel();
-//					BufferedImage img = null;
-//					try {
-//						img = ImageIO.read(new File("/resources/yellowShip.png"));
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//					Image dimg = img.getScaledInstance(label.getWidth(), label.getHeight(),
-//							Image.SCALE_SMOOTH);
-//					ImageIcon imageIcon = new ImageIcon(dimg);
-//					label.setIcon(imageIcon);
-					ImageIcon imageIcon = new ImageIcon(new ImageIcon("/resources/yellowShip.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-					label.setIcon(imageIcon);
+				}else if (row <= ships.size()){
+					String text = ships.get(row -1).getElementAt(col+2).toString();
+					label = new JLabel(text);
 					}
+				else {
+					label = new JLabel();
+				}
 				label.setHorizontalAlignment(JLabel.CENTER);
 				if (row == 0) {
 					if (col == 0) {
@@ -86,9 +91,39 @@ public class RequestPanel extends JPanel {
 						label.setBorder(BorderFactory.createMatteBorder(0, 0, borderWidth, borderWidth, Color.BLACK));
 					}
 				}
+				label.setMinimumSize(new Dimension(this.getPreferredSize().width-1, 
+						(int)this.getPreferredSize().getHeight()));
 				this.add(label);
 			}
 		}
 	}
+	public void update2() {
+		this.setLayout(new SpringLayout());
 
+		int rows = 10;
+		int cols = 3;
+		for (int r = 0; r < rows; r++) {
+		    for (int c = 0; c < cols; c++) {
+		       JLabel label = new JLabel("Cell");
+		       this.add(label);
+		    		   
+		    }
+		}
+
+		//Lay out the panel.
+		SpringUtilities.makeCompactGrid(this, //parent
+		                                rows, cols,
+		                                3, 3,  //initX, initY
+		                                10, 10); //xPad, yPad
+	}
+//	BufferedImage img = null;
+//	try {
+//		img = ImageIO.read(new File(getClass().getResource("/resources/yellowShip.png").toURI()));
+//	} catch (IOException e) {
+//		e.printStackTrace();
+//	}
+//	Image dimg = img.getScaledInstance(10, 10,
+//			Image.SCALE_SMOOTH);
+//	ImageIcon imageIcon = new ImageIcon(dimg);
+//	label.setIcon(imageIcon);
 }

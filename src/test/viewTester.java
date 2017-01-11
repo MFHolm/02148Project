@@ -1,6 +1,8 @@
 package test;
 
 import java.awt.Graphics;
+import java.net.URISyntaxException;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
@@ -148,12 +150,30 @@ public class viewTester {
 		map.getSea().put(new Tuple("id", ShipType.GREEN, 7,2,Heading.S));
 		gv.update();
 		*/
-		JFrame frame = new JFrame();
-		frame.setVisible(true);
-		frame.setSize(250, 1000);
-		RequestPanel panel = new RequestPanel();
-		frame.add(panel);
-		panel.update();
+		
+		Map map = new Map( new VirtualPort(8080));
+		GameView gv = new GameView();
+		gv.setMap(map);
+		gv.setVisible(true);
+		
+		LinkedList<Tuple> ships = new LinkedList<>();
+		ships.add(new Tuple("req", "ship1", ShipType.GREEN, 10, 100));
+		ships.add(new Tuple("req", "ship2", ShipType.RED, 10, 200));
+		ships.add(new Tuple("req", "ship1", ShipType.GREEN, 10, 100));
+		ships.add(new Tuple("req", "ship2", ShipType.YELLOW, 2, 200));
+		ships.add(new Tuple("req", "ship1", ShipType.GREEN, 34, 100));
+		ships.add(new Tuple("req", "ship2", ShipType.RED, 10, 222));
+		ships.add(new Tuple("req", "ship1", ShipType.GREEN, 10, 100));
+		ships.add(new Tuple("req", "ship2", ShipType.YELLOW, 10, 200));
+		
+//		Thread.sleep(500);
+		gv.update(ships);
+//		Thread.sleep(5000);
+//		ships = new LinkedList<>();
+//		ships.add(new Tuple("req", "ship1", ShipType.GREEN, 10, 100));
+//		ships.add(new Tuple("req", "ship2", ShipType.RED, 10, 200));
+//		ships.add(new Tuple("req", "ship1", ShipType.GREEN, 10, 100));
+//		gv.update(ships);
 		
 	}
 }
