@@ -20,6 +20,9 @@ import view.RequestPanel;
 
 public class viewTester {
 	public static void main(String[] args) throws InterruptedException {
+		
+		
+		/*
 		Map map = new Map( new VirtualPort(8080));
 		GameView gv = new GameView();
 		gv.setMap(map);
@@ -32,7 +35,7 @@ public class viewTester {
 				new FormalTemplateField(Integer.class),
 				new FormalTemplateField(Heading.class));
 		
-		int s = 100;
+		int s = 500;
 		map.getSea().put(new Tuple("id", ShipType.GREEN, -1,-1,Heading.E));
 		gv.update();
 		Thread.sleep(s);
@@ -152,7 +155,7 @@ public class viewTester {
 
 		map.getSea().put(new Tuple("id3", ShipType.GREEN, 13,22,Heading.E));
 		map.getSea().put(new Tuple("id3", ShipType.GREEN, 13,21,Heading.E));
-		gv.update();
+		gv.update();*/
 		
 		
 //		Map map = new Map( new VirtualPort(8080));

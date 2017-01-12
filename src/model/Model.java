@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.topology.VirtualPort;
 
@@ -9,8 +11,6 @@ public class Model {
 	
 	public Model(){
 		this.map = new Map(vp);
-	
-		
 	}
 
 	public Map getMap() {
@@ -33,7 +33,25 @@ public class Model {
 		map.getSea().put(new Tuple("declineReq",shipId));
 		map.getHarbour().getNode().put(new Tuple("declineReq",shipId));
 	}
-
-
+	
+	public void addShip(BasicShip ship) {
+		map.addShip(ship);
+	}
+	
+	public void viewUpdated() {
+		map.getMonitor().updateView();
+	}
+	
+	public ArrayList<Tuple> getShipPositions() {
+		return map.getShipPositions();
+	}
+	
+	public String getSeaName() {
+		return map.getSeaName();
+	}
+	
+	public String getHarbourName() {
+		return map.getHarbour().getNode().getName();
+	}
 	
 }
