@@ -3,7 +3,9 @@ package Controller;
 
 import javax.swing.Timer;
 
+import model.GreenShip;
 import model.Model;
+import model.RedShip;
 import model.YellowShip;
 import view.GameView;
 import view.MainMenu;
@@ -17,6 +19,8 @@ public class MainController {
 	Model model;
 	Timer timer;
 	double time;
+	final int mapHeigth = 25;
+	final int mapWidth = 25;
 	
 	
 	public MainController() {
@@ -33,7 +37,7 @@ public class MainController {
 		//Main menu view
 		mMenu = new MainMenu();
 		//Game view
-		gView = new GameView();
+		gView = new GameView(mapHeigth, mapWidth);
 		
 		//Action handler for main menu
 		actMainMenu = new ActionHandlerMainMenu(this);
@@ -45,9 +49,7 @@ public class MainController {
 		this.timer.start();
 	}
 	public void createModel() {
-		this.model = new Model();
-		gView.setMap(model.getMap());
-		gView.setHarbour(model.getHarbour());
+		this.model = new Model(mapHeigth, mapWidth);
 	}
 	
 	Boolean test = true;
@@ -58,10 +60,14 @@ public class MainController {
 			
 		}
 		if (time <= 10 && time >= 9.9)  {
-			model.addShip(new YellowShip("id2", model.getSeaName(), model.getHarbourName(), Model.getVp(), 2, 3));
+			model.addShip(new RedShip("id2", model.getSeaName(), model.getHarbourName(), Model.getVp(), 2, 3));
 			
 		}
-		gView.update();
+		if (time <= 13 && time >= 12.9)  {
+			model.addShip(new GreenShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 7, 9));
+			
+		}
+		gView.update(this.model.getShipPositions(), this.model.getRequests());
 		gView.updateTime(this.time);
 		
 	}

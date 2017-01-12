@@ -36,6 +36,7 @@ public class RequestPanel extends JPanel {
 	ImageIcon yellowShip;
 	ImageIcon redShip;
 	ImageIcon greenShip;
+	LinkedList<Tuple> requests;
 
 	public RequestPanel() {
 		this.setPreferredSize(new Dimension(250,800));
@@ -61,6 +62,7 @@ public class RequestPanel extends JPanel {
 		}
 		// this.add(Box.createRigidArea(new Dimension(250,0)));
 		// this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		this.requests = new LinkedList<Tuple>();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -74,15 +76,14 @@ public class RequestPanel extends JPanel {
 		this.repaint();
 	}
 	
-	public void setHabour(Harbour harbour) {
-		this.harbour = harbour;
+	public void setRequests(LinkedList<Tuple> requests) {
+		this.requests = requests;
 	}
 	
 	public void update() {
 		final int borderWidth = 1;
 		final int rows = 26;
 		final int cols = 3;
-		LinkedList<Tuple> requests = harbour.getRequests();
 		this.setLayout(new GridLayout(rows, cols));
 		this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		for (int row = 0; row < rows; row++) {

@@ -23,7 +23,7 @@ public class Map {
 	private int width;
 	private int heigth;
 	
-	public Map(VirtualPort vp) {
+	public Map(VirtualPort vp, int mapHeigth, int mapWidth) {
 		coordinates = new TupleSpace();
 		this.sea = new Node("Sea",coordinates);
 		this.harbour = new Harbour(vp);
@@ -32,8 +32,8 @@ public class Map {
 		sea.addPort(vp);
 		sea.addAgent(new SeaAgent("ShipController"));
 		sea.put(new Tuple("lock"));
-		this.width = 25;
-		this.heigth = 25;
+		this.width = mapWidth;
+		this.heigth = mapHeigth;
 		
 		sea.start();
 	}
@@ -118,24 +118,13 @@ public class Map {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		Template t = new Template(
-				new FormalTemplateField(String.class),
-				new FormalTemplateField(ShipType.class),
-				new FormalTemplateField(Integer.class),
-				new FormalTemplateField(Integer.class),
-				new FormalTemplateField(Heading.class));
-
+		Template t = Templates.getCoordTemp();
 		Tuple tuple;
 		do {
 			tuple = sea.getp(t);
 			if (tuple != null) {
 				originals.add(tuple);
-				Tuple other = sea.getp(new Template(
-						new ActualTemplateField(tuple.getElementAt(String.class, 0)),
-						new FormalTemplateField(ShipType.class),
-						new FormalTemplateField(Integer.class),
-						new FormalTemplateField(Integer.class),
-						new FormalTemplateField(Heading.class)));
+				Tuple other = sea.getp(Templates.getCoordTemp(tuple.getElementAt(String.class, 0)));
 				int row1 = tuple.getElementAt(Integer.class, 2);
 				int col1 = tuple.getElementAt(Integer.class, 3);
 				String id = tuple.getElementAt(String.class, 0);

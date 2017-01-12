@@ -2,8 +2,12 @@ package view;
 
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
+
+import org.cmg.resp.knowledge.Tuple;
 
 import model.Harbour;
 import model.Map;
@@ -15,14 +19,14 @@ public class GameView extends JFrame {
 	RequestPanel requestPanel;
 	
 	
-	public GameView() {
-		initUI();
+	public GameView(int mapHeigth, int mapWidth) {
+		initUI(mapHeigth, mapWidth);
 //		this.grid = grid;
 	}
 	
-	public void initUI() {
+	public void initUI(int mapHeigth, int mapWidth) {
 
-		gamePanel = new GamePanel();
+		gamePanel = new GamePanel(mapHeigth, mapWidth);
 		requestPanel = new RequestPanel();
 		
 
@@ -41,20 +45,16 @@ public class GameView extends JFrame {
 		
 	}
 	//Repaints the main panel
-	public void update() {
+	public void update(ArrayList<Tuple> ships, LinkedList<Tuple> requests) {
+		gamePanel.setShipPositions(ships);
 		gamePanel.repaint();
+		requestPanel.setRequests(requests);
 		requestPanel.clear();
 		requestPanel.update();
 		requestPanel.repaint();
 		
 	}
-	public void setMap(Map map) {
-		this.gamePanel.setMap(map);
-	}
 	
-	public void setHarbour(Harbour harbour) {
-		this.requestPanel.setHabour(harbour);
-	}
 	public void updateTime(double time) {
 		this.gamePanel.updateTime(time);
 	}
