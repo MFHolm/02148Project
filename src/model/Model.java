@@ -36,6 +36,7 @@ public class Model {
 		map.addShip(ship);
 	}
 	
+	
 	public String getSeaName() {
 		return map.getSeaName();
 	}

@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.topology.PointToPoint;
+import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
 public abstract class BasicShip extends Agent {
@@ -28,18 +29,31 @@ public abstract class BasicShip extends Agent {
 		this.row = row;	
 		this.col = col;
 		setDocked(false);
-		
 	}
 	
 	public abstract void move();
-	
-	public abstract void makeRequest();
 	
 	/*
 	 *  Returns the amount of money this ship is willing to give
 	 *  based on the amount of time it will stay
 	 */
 	protected abstract int getMoney(int time);
+	
+	/*
+	 * Sends request to the harbour tuple space
+	 * for permission to enter
+	 */
+	public void makeRequest() {		
+		
+		if (queryp(Templates.getReqSentTemp()) == null){
+			try {
+				put(new Tuple("req",id,shipType,time,getMoney(time)),harbourConnection);
+				put(new Tuple("reqSent"),Self.SELF); // Sends this tuple so it knows that the request was sent
+			} catch (InterruptedException | IOException e) {
+				e.printStackTrace();
+			}
+		} 
+	}
 	
 	protected void checkDockPermission(){
 		Tuple t = getp(Templates.getDockAssignTemp());
@@ -60,6 +74,22 @@ public abstract class BasicShip extends Agent {
 		
 		}
 		
+	}
+	
+	@Override
+	protected void doRun() throws Exception {
+
+
+		makeRequest();
+		
+		while(true){
+			if(!isDocked()){
+				checkDockPermission();
+				move();
+
+			}
+			
+		}
 	}
 	
 	protected int getRow() {

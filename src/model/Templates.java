@@ -66,5 +66,17 @@ public class Templates {
 		return new Template(new ActualTemplateField("reqSent"));
 	}
 	
-
+	public static Template getAtBarrierTemp(int numShips) {
+		return new Template(new ActualTemplateField("barrier"),
+							new ActualTemplateField(numShips));
+	}
+	
+	public static Template getBarrierTemp() {
+		return new Template(new ActualTemplateField("barrier"),
+							new FormalTemplateField(Integer.class));
+	}
+	
+	public static Template getViewUpdatedTemp() {
+		return new Template(new ActualTemplateField("viewUpdated"));
+	}
 }

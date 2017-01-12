@@ -23,38 +23,37 @@ public class Map {
 	private int width;
 	private int heigth;
 	
-	public Map(VirtualPort vp){
+	public Map(VirtualPort vp) {
 		coordinates = new TupleSpace();
 		this.sea = new Node("Sea",coordinates);
 		this.harbour = new Harbour(vp);
 		this.shipNodes = new HashMap<String,Node>();
 		this.vp = vp;
-		sea.addPort(this.vp);
+		sea.addPort(vp);
 		sea.addAgent(new SeaAgent("ShipController"));
 		sea.put(new Tuple("lock"));
-		sea.start();
 		this.width = 25;
 		this.heigth = 25;
 		
-	
+		sea.start();
 	}
 	
 	public void addShip(BasicShip ship){
+		
 		Node newShipNode = new Node(ship.getId(), new TupleSpace());
 		newShipNode.addPort(vp);
 		newShipNode.addAgent(ship);
 		shipNodes.put(ship.getId(),newShipNode);
 		try {
-			Tuple lock = coordinates.get(Templates.getLockTemp());
+			Tuple coordLock = coordinates.get(Templates.getLockTemp());
 			coordinates.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
-			coordinates.put(lock);
+			coordinates.put(coordLock);
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		newShipNode.start();
-		
 		
 	}
 	
@@ -115,7 +114,7 @@ public class Map {
 		ArrayList<Tuple> shipPos = new ArrayList<>();
 		ArrayList<Tuple> originals = new ArrayList<>();
 		try {
-			sea.get(new Template(new ActualTemplateField("lock")));
+			sea.get(Templates.getLockTemp());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
