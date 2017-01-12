@@ -45,8 +45,8 @@ public class Model {
 		map.getMonitor().updateView();
 	}
 	
-	public void addShip(BasicShip ship, LinkedList<Coordinate> path) {
-		map.addShip(ship,path);
+	public void addShip(BasicShip ship) {
+		map.addShip(ship);
 	}
 	
 	

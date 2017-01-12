@@ -3,7 +3,6 @@ package model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
@@ -39,9 +38,9 @@ public class Map {
 		sea.start();
 	}
 	
-	public void addShip(BasicShip ship, LinkedList<Coordinate> path){
+	public void addShip(BasicShip ship){
 		ship.setMonitor(monitor);
-		ship.setPath(path);
+		//ship.setPath(path);
 		Node newShipNode = new Node(ship.getId(), new TupleSpace());
 		newShipNode.addPort(vp);
 		newShipNode.addAgent(ship);
@@ -56,6 +55,13 @@ public class Map {
 			e.printStackTrace();
 		}	
 		newShipNode.start();
+		try {
+			Tuple t = newShipNode.get(Templates.getReqSentTemp());
+			newShipNode.put(t);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

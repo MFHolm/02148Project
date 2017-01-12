@@ -3,6 +3,7 @@ package Controller;
 
 import javax.swing.Timer;
 
+import model.BasicShip;
 import model.GreenShip;
 import model.Model;
 import model.RedShip;
@@ -16,6 +17,8 @@ public class MainController {
 	MainMenu mMenu;
 	GameView gView;
 	ActionHandlerMainMenu actMainMenu;
+	RequestListener requestListener;
+	DockListener dockListener;
 	Model model;
 	Timer timer;
 	double time;
@@ -41,6 +44,9 @@ public class MainController {
 		
 		//Action handler for main menu
 		actMainMenu = new ActionHandlerMainMenu(this);
+		requestListener = new RequestListener(this);
+		dockListener = new DockListener(this);
+		dockListener.init();
 		
 		this.timer = new Timer(100, new TimerListener(this));
 		
@@ -51,20 +57,28 @@ public class MainController {
 	public void createModel() {
 		this.model = new Model(mapHeigth, mapWidth);
 	}
+	private void addShip(BasicShip ship){
+		model.addShip(ship);
+		gView.getRequestPanel().setRequests(this.model.getRequests());
+		gView.getRequestPanel().clear();
+		gView.getRequestPanel().update();
+		gView.getRequestPanel().repaint();
+		requestListener.init();
+	}
 	
 	Boolean test = true;
 	public void run() throws InterruptedException {
 //		System.out.println("time: "+ time);
-		if (time <= 5 && time >= 4.9) {
-			//model.addShip(new YellowShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 4, 7));
-			
-		}
-		if (time <= 10 && time >= 9.9)  {
-			//model.addShip(new RedShip("id2", model.getSeaName(), model.getHarbourName(), Model.getVp(), 2, 3));
-			
-		}
-		if (time <= 13 && time >= 12.9)  {
-			//model.addShip(new GreenShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 7, 9));
+
+		if (time <= 1 && time >= 0.9) {
+			addShip(new YellowShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 4, 7));
+
+			addShip(new RedShip("id2", model.getSeaName(), model.getHarbourName(), Model.getVp(), 2, 3));
+
+			addShip(new GreenShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 7, 9));
+
+		} else if (time <= 3 && time >= 2.9) {
+			addShip(new GreenShip("id4", model.getSeaName(), model.getHarbourName(), Model.getVp(), 16, 9));
 			
 		}
 		gView.update(this.model.getShipPositions(), this.model.getRequests());

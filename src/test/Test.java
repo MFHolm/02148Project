@@ -20,7 +20,7 @@ public class Test {
 			path.add(new Coordinate(7,8));
 			path.add(new Coordinate(8,8));
 			
-			m.addShip(yellowSubmarine,path);
+			m.addShip(yellowSubmarine);
 			
 			for(int i = 0; i < path.size()+10; i++){
 				Thread.sleep(2000);
