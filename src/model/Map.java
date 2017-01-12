@@ -36,6 +36,7 @@ public class Map {
 		this.width = 25;
 		this.heigth = 25;
 		
+		
 	
 	}
 	
