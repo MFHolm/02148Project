@@ -33,9 +33,32 @@ import model.ShipType;
 public class RequestPanel extends JPanel {
 	
 	Harbour harbour;
+	ImageIcon yellowShip;
+	ImageIcon redShip;
+	ImageIcon greenShip;
 
 	public RequestPanel() {
 		this.setPreferredSize(new Dimension(250,800));
+		BufferedImage img;
+		try {
+			img = ImageIO.read(new File(getClass().getResource("/resources/yellowShip.png").toURI()));
+			Image dimg = img.getScaledInstance(70, 40,
+					Image.SCALE_SMOOTH);
+			yellowShip = new ImageIcon(dimg);
+			
+			img = ImageIO.read(new File(getClass().getResource("/resources/greenShip.png").toURI()));
+			dimg = img.getScaledInstance(70, 40,
+					Image.SCALE_SMOOTH);
+			greenShip = new ImageIcon(dimg);
+			
+			img = ImageIO.read(new File(getClass().getResource("/resources/redShip.png").toURI()));
+			dimg = img.getScaledInstance(70, 40,
+					Image.SCALE_SMOOTH);
+			redShip = new ImageIcon(dimg);
+		} catch (IOException | URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// this.add(Box.createRigidArea(new Dimension(250,0)));
 		// this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 	}
@@ -64,55 +87,47 @@ public class RequestPanel extends JPanel {
 		this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
-				final JLabel label;
+				final JButton label;
 				if (row == 0 && col == 0) {
-					  label = new JLabel("Type");
+					  label = new JButton("Type");
 				}else if (row == 0 && col == 1) {
-					  label = new JLabel("Time");
+					  label = new JButton("Time");
 				}else if (row == 0 && col == 2) {
-					  label = new JLabel("Money");
+					  label = new JButton("$");
 				}else if (row <= requests.size()){
-					String text = requests.get(row -1).getElementAt(col+2).toString();
-					label = new JLabel(text);
+					if (col == 0) {
+						switch ((ShipType) requests.get(row -1).getElementAt(col+2)) {
+						case YELLOW: 
+							label = new JButton(yellowShip);
+							break;
+						case RED: 
+							label = new JButton(redShip);
+							break;
+						case GREEN: 
+							label = new JButton(greenShip);
+							break;
+						default:
+							label = new JButton(greenShip);
+							System.out.println("Ship type not found in request panel");
+							break;
+						}
 					}
+					else {
+					String text = requests.get(row -1).getElementAt(col+2).toString();
+					label = new JButton(text);
+					}
+				}
 				else {
-					label = new JLabel();
+					label = new JButton();
 				}
 				label.setHorizontalAlignment(JLabel.CENTER);
-				if (row == 0) {
-					if (col == 0) {
-						// Top left corner, draw all sides
-						label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					} else {
-						// Top edge, draw all sides except left edge
-						label.setBorder(
-								BorderFactory.createMatteBorder(borderWidth, 0, borderWidth, borderWidth, Color.BLACK));
-					}
-				} else {
-					if (col == 0) {
-						// Left-hand edge, draw all sides except top
-						label.setBorder(
-								BorderFactory.createMatteBorder(0, borderWidth, borderWidth, borderWidth, Color.BLACK));
-					} else {
-						// Neither top edge nor left edge, skip both top and
-						// left lines
-						label.setBorder(BorderFactory.createMatteBorder(0, 0, borderWidth, borderWidth, Color.BLACK));
-					}
-				}
+				
 				label.setMinimumSize(new Dimension(this.getPreferredSize().width-1, 
 						(int)this.getPreferredSize().getHeight()));
+				label.setBorderPainted( false );
 				this.add(label);
 			}
 		}
 	}
-//	BufferedImage img = null;
-//	try {
-//		img = ImageIO.read(new File(getClass().getResource("/resources/yellowShip.png").toURI()));
-//	} catch (IOException e) {
-//		e.printStackTrace();
-//	}
-//	Image dimg = img.getScaledInstance(10, 10,
-//			Image.SCALE_SMOOTH);
-//	ImageIcon imageIcon = new ImageIcon(dimg);
-//	label.setIcon(imageIcon);
+
 }

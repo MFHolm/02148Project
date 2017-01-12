@@ -118,8 +118,6 @@ public class GamePanel extends JPanel {
 					break;
 			}
 			double rotationRequired = theta;
-			double locationX = img.getWidth() / 2;
-			double locationY = img.getHeight() / 2;
 			int w0 = img.getWidth();
 			int h0 = img.getHeight();
 			int centerX = w0 / 2;
@@ -162,8 +160,21 @@ public class GamePanel extends JPanel {
 	private int getActualX(double col) {
 		return (int) (col * this.getWidth() / map.getWidth());
 	}
-	public void updateTime(double time2) {
-		this.time.setText("Time: "+ time2);
+	public void updateTime(double time) {
+		time = Math.round(time * 100)/100;
+		int min = (int) (time / 60);
+		int sec = (int) (time % 60);
+		String remaining;
+		if (sec == 0) {
+			remaining = (5-min)+ ":00";
+		}
+		else if (sec > 50) {
+			remaining = (4-min)+ ":0" + (60-sec);
+		}
+		else {
+			remaining = (4-min)+ ":" + (60-sec);
+		}
+		this.time.setText("Time: " + remaining);
 	}
 	
 }
