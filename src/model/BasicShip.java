@@ -18,8 +18,9 @@ public abstract class BasicShip extends Agent {
 	protected boolean docked;
 	protected ShipSize size;
 	protected ShipType shipType;
+	protected MoveMonitor monitor;
 	
-	
+
 	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col){
 		super(shipId);
 		this.id = shipId;
@@ -86,10 +87,18 @@ public abstract class BasicShip extends Agent {
 			if(!isDocked()){
 				checkDockPermission();
 				move();
-
+				monitor.moved();
 			}
 			
 		}
+	}
+	
+	public MoveMonitor getMonitor() {
+		return monitor;
+	}
+
+	public void setMonitor(MoveMonitor monitor) {
+		this.monitor = monitor;
 	}
 	
 	protected int getRow() {
@@ -119,5 +128,4 @@ public abstract class BasicShip extends Agent {
 	public ShipType getType() {
 		return shipType;
 	}
-
 }

@@ -17,8 +17,7 @@ public class Model {
 	public Map getMap() {
 		return map;
 	}
-
-	public ArrayList<Tuple> getShipPositions() {
+public ArrayList<Tuple> getShipPositions() {
 		return this.map.getShipPositions();
 	}
 	
