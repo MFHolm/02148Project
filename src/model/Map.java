@@ -56,6 +56,13 @@ public class Map {
 			e.printStackTrace();
 		}	
 		newShipNode.start();
+		try {
+			Tuple t = newShipNode.get(Templates.getReqSentTemp());
+			newShipNode.put(t);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

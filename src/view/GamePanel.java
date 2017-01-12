@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.cmg.resp.knowledge.Tuple;
@@ -55,16 +56,42 @@ public class GamePanel extends JPanel {
 	private JLabel time;
 	private int mapHeigth;
 	private int mapWidth;
+	private String circleId;
+	
+	private JButton dock1;
+	private JButton dock2;
+	private JButton dock3;
+	
 	public GamePanel(int mapHeigth, int mapWidth) {
 		super();
+		this.setLayout(null);
 		this.mapHeigth = mapHeigth;
 		this.mapWidth = mapWidth;
 		this.ships = new ArrayList<Tuple>();
 		money = new JLabel("Money:     ");
 		time = new JLabel("Time:      ");
-
+		circleId = "";
+		
 		this.add(money);
 		this.add(time);
+		
+		this.dock1 = new JButton();
+		this.add(dock1);
+		dock1.setBounds((int)21.5*32, 15*32-4, 70, 42);
+		dock1.setBorderPainted(false);
+		dock1.setActionCommand("dock1");
+		
+		this.dock2 = new JButton();
+		this.add(dock2);
+		dock2.setBounds((int)21.5*32, 13*32-4, 70, 42);
+		dock2.setBorderPainted(false);
+		dock2.setActionCommand("dock2");
+		
+		this.dock3 = new JButton();
+		this.add(dock3);
+		dock3.setBounds((int)21.5*32, 11*32-4, 70, 42);
+		dock3.setBorderPainted(false);
+		dock3.setActionCommand("dock3");
 
 		// this.grid = map.getGrid();
 		try {
@@ -258,7 +285,9 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(img, getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
 			
 		}
-
+		if (!circleId.equals("")) {
+			drawCircle(g);
+		}
 	}
 
 	// Calculates the ratio between window size and grid size and multiplies it
@@ -301,6 +330,30 @@ public class GamePanel extends JPanel {
 		AffineTransform tx = AffineTransform.getRotateInstance(rotation, centerX, centerY);
 		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 		return op.filter(img, null);
+	}
+	public void drawCircle( Graphics g) {
+		for (Tuple t : ships) {
+			if (t.getElementAt(String.class, 0).equals(circleId)) {
+				double x =  t.getElementAt(Double.class, 3);
+				double y =  t.getElementAt(Double.class, 2);
+				g.setColor(Color.RED);
+				g.drawOval(getActualX(x)-5, getActualY(y)-3, 42, 42);
+			}
+		}
+	}
+	public void setCircleId(String id) {
+		if (this.circleId.equals(id)) {
+			this.circleId = "";
+		}else {
+		this.circleId = id;
+		}
+	}
+	public ArrayList<JButton> getDockButtons() {
+		ArrayList<JButton> d = new ArrayList<>();
+		d.add(dock1);
+		d.add(dock2);
+		d.add(dock3);
+		return d;
 	}
 
 }

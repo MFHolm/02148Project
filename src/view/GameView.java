@@ -48,15 +48,18 @@ public class GameView extends JFrame {
 	public void update(ArrayList<Tuple> ships, LinkedList<Tuple> requests) {
 		gamePanel.setShipPositions(ships);
 		gamePanel.repaint();
-		requestPanel.setRequests(requests);
-		requestPanel.clear();
-		requestPanel.update();
-		requestPanel.repaint();
+
 		
 	}
 	
 	public void updateTime(double time) {
 		this.gamePanel.updateTime(time);
+	}
+	public RequestPanel getRequestPanel() {
+		return requestPanel;
+	}
+	public GamePanel getGamePanel() {
+		return gamePanel;
 	}
 
 }
