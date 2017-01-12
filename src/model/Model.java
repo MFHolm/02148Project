@@ -41,6 +41,10 @@ public class Model {
 		map.getHarbour().getNode().put(new Tuple("declineReq",shipId));
 	}
 	
+	public void viewUpdated(){
+		map.getMonitor().updateView();
+	}
+	
 	public void addShip(BasicShip ship, LinkedList<Coordinate> path) {
 		map.addShip(ship,path);
 	}

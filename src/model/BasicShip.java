@@ -44,6 +44,7 @@ public abstract class BasicShip extends Agent {
 	}
 	
 	public boolean move(Coordinate nextCoord){
+		Heading curHeading = heading;
 		if(heading == headingNewCoord(nextCoord)){
 			return moveForward(nextCoord);
 		} 
@@ -87,18 +88,33 @@ public abstract class BasicShip extends Agent {
 		} else if(heading == Heading.W && headingNewCoord(nextCoord) == Heading.S){
 			turnLeft();
 		}
+		if(curHeading != heading){
+			try {
+				Tuple lock = get(Templates.getLockTemp(),mapConnection);
+				get(Templates.getCoordTemp(id),mapConnection);
+				put(new Tuple(id,shipType,coord.row,coord.col,heading),mapConnection);
+				put(lock,mapConnection);
+			} catch (InterruptedException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		return false;
 	}
 	
 	public Heading headingNewCoord(Coordinate nextCoord){
-		if(coord.row == nextCoord.row-1 && coord.col == nextCoord.col){
+		if(coord.row == nextCoord.row+1 && coord.col == nextCoord.col){
+			System.out.println("n");
 			return Heading.N;
-		} else if (coord.row == nextCoord.row+1 && coord.col == nextCoord.col){
+		} else if (coord.row == nextCoord.row-1 && coord.col == nextCoord.col){
+			System.out.println("s");
 			return Heading.S;
 		} else if (coord.row == nextCoord.row && coord.col == nextCoord.col-1){
+			System.out.println("e");
 			return Heading.E;
 		} else {
+			System.out.println("w");
 			return Heading.W;
 		}
 	}
@@ -134,7 +150,7 @@ public abstract class BasicShip extends Agent {
 				get(Templates.getCoordTemp(id),mapConnection);
 				coord.row = t.getElementAt(Integer.class, 2);
 				coord.col = t.getElementAt(Integer.class, 3);
-				put(new Tuple(id,coord.row,coord.col),mapConnection);
+				put(new Tuple(id,shipType,coord.row,coord.col,heading),mapConnection);
 				put(u,mapConnection);
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
@@ -244,11 +260,12 @@ public abstract class BasicShip extends Agent {
 			if(!isDocked()){
 				checkDockPermission();
 				if(move(nextCoord)){
-					pathIndex++;
+					pathIndex = (pathIndex+1) % path.size();
 					nextCoord = path.get(pathIndex);
 				}
-				
+				System.out.println("Heading: " + heading + " " + coord);
 				monitor.moved();
+				
 			}
 			
 		}

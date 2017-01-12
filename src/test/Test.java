@@ -22,8 +22,9 @@ public class Test {
 			
 			m.addShip(yellowSubmarine,path);
 			
-			for(int i = 0; i < path.size(); i++){
-				m.
+			for(int i = 0; i < path.size()+10; i++){
+				Thread.sleep(2000);
+				m.viewUpdated();
 			}
 			
 		
