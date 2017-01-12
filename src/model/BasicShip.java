@@ -20,7 +20,7 @@ public abstract class BasicShip extends Agent {
 	protected ShipType shipType;
 	
 	
-	public BasicShip(String shipId, String mapId, String harbourId, String barrierId, VirtualPort vp, int row, int col){
+	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col){
 		super(shipId);
 		this.id = shipId;
 		this.vp = vp;

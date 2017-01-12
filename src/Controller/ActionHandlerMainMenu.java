@@ -24,8 +24,10 @@ public class ActionHandlerMainMenu implements ActionListener {
 		
 		switch(actionCommand) {
 		case "Play":
+			mainC.createModel();
 			mainC.mMenu.setVisible(false);
 			mainC.gView.setVisible(true);
+			mainC.start();
 		}
 		
 	}

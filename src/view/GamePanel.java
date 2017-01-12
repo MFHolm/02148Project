@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.cmg.resp.knowledge.Tuple;
@@ -29,11 +30,19 @@ public class GamePanel extends JPanel {
 	private BufferedImage redShip;
 	private BufferedImage greenShip;
 	private BufferedImage yellowShip;
+	private JLabel money;
+	private JLabel time;
 	
 	
 	
 	public GamePanel() {
 		super();
+		money = new JLabel("Money:     ");
+		time = new JLabel("Time:      ");
+		
+		this.add(money);
+		this.add(time);
+		
 //		this.grid = map.getGrid();
 		try {
 			this.background = ImageIO.read(getClass().getResource("/resources/map.png"));
@@ -124,12 +133,7 @@ public class GamePanel extends JPanel {
 			}
 			AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, centerX, centerY);
 			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-			int boatLength = this.getWidth()/map.getWidth();
-			int boatHeigth = this.getHeight()/map.getHeight();
-			
-			System.out.println("boat length " + boatLength + " boat heigth " + boatHeigth);
-			System.out.println("window: "+this.getWidth() + " ," + this.getHeight());
-			//g2d.drawImage(op.filter(img, null),x,y, null);
+		//g2d.drawImage(op.filter(img, null),x,y, null);
 			g2d.drawImage(op.filter(img, null), getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
 			
 			
@@ -158,5 +162,9 @@ public class GamePanel extends JPanel {
 	private int getActualX(double col) {
 		return (int) (col * this.getWidth() / map.getWidth());
 	}
+	public void updateTime(double time2) {
+		this.time.setText("Time: "+ time2);
+	}
+	
 }
 

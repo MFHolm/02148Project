@@ -36,8 +36,13 @@ public class Model {
 		map.addShip(ship);
 	}
 	
-	public void update() {
-		
+	
+	public String getSeaName() {
+		return map.getSeaName();
+	}
+	
+	public String getHarbourName() {
+		return map.getHarbour().getNode().getName();
 	}
 	
 }
