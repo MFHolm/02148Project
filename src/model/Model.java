@@ -11,17 +11,17 @@ public class Model {
 		this.map = new Map(vp);
 	}
 
-//	public Map getMap() {
-//		return map;
-//	}
-//
-//	public static VirtualPort getVp() {
-//		return vp;
-//	}
-//	
-//	public Harbour getHarbour() {
-//		return map.getHarbour();
-//	}
+	public Map getMap() {
+		return map;
+	}
+
+	public static VirtualPort getVp() {
+		return vp;
+	}
+	
+	public Harbour getHarbour() {
+		return map.getHarbour();
+	}
 	
 	public void acceptRequest(String shipId, String dockId) throws IllegalArgumentException {
 		map.handleRequest(shipId,dockId);
@@ -34,6 +34,10 @@ public class Model {
 	
 	public void addShip(BasicShip ship) {
 		map.addShip(ship);
+	}
+	
+	public void update() {
+		
 	}
 	
 }

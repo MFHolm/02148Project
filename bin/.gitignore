@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-/model/
-=======
-/resources/
-/view/
-<<<<<<< HEAD
-=======
->>>>>>> branch 'master' of https://github.com/MFHolm/02148Project
-/test/
-/model/
 /layout/
-/Controller/
-/resources/
->>>>>>> branch 'master' of https://github.com/MFHolm/02148Project.git
+/model/
+/test/
