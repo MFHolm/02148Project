@@ -23,6 +23,14 @@ public class Templates {
 							new FormalTemplateField(Heading.class));
 	}
 	
+	public static Template getCoordTemp() {
+		return new Template(new FormalTemplateField(String.class),
+							new FormalTemplateField(ShipType.class),
+							new FormalTemplateField(Integer.class),
+							new FormalTemplateField(Integer.class),
+							new FormalTemplateField(Heading.class));
+	}
+	
 	public static Template getReqTemp(String shipId) {
 		return new Template(new ActualTemplateField("req"),
 							new ActualTemplateField(shipId),

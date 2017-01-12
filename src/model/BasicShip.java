@@ -27,6 +27,8 @@ public abstract class BasicShip extends Agent {
 	protected ShipType shipType;
 	protected MoveMonitor monitor;
 	protected List<Coordinate> path;
+
+
 	protected int pathIndex = 0;
 	
 
@@ -41,10 +43,64 @@ public abstract class BasicShip extends Agent {
 		setDocked(false);
 	}
 	
-	public boolean move(Coordinate nextCord){
-		//if(heading = Heading.N)
+	public boolean move(Coordinate nextCoord){
+		if(heading == headingNewCoord(nextCoord)){
+			return moveForward(nextCoord);
+		} 
+		
+		else if(heading == Heading.N && headingNewCoord(nextCoord) == Heading.E){
+			turnRight();
+		} else if(heading == Heading.NE && headingNewCoord(nextCoord) == Heading.E){
+			turnRight();
+		} else if(heading == Heading.NE && headingNewCoord(nextCoord) == Heading.N){
+			turnLeft();
+		} else if(heading == Heading.N && headingNewCoord(nextCoord) == Heading.W){
+			turnLeft();
+		} else if(heading == Heading.NW && headingNewCoord(nextCoord) == Heading.W){
+			turnLeft();
+		} else if(heading == Heading.NW && headingNewCoord(nextCoord) == Heading.N){
+			turnRight();
+		}
+		
+		else if(heading == Heading.E && headingNewCoord(nextCoord) == Heading.S){
+			turnRight();
+		} else if(heading == Heading.E && headingNewCoord(nextCoord) == Heading.N){
+			turnLeft();
+		} 
+		
+		else if(heading == Heading.S && headingNewCoord(nextCoord) == Heading.W){
+			turnRight();
+		} else if(heading == Heading.SE && headingNewCoord(nextCoord) == Heading.E){
+			turnLeft();
+		} else if(heading == Heading.SE && headingNewCoord(nextCoord) == Heading.S){
+			turnRight();
+		} else if(heading == Heading.S && headingNewCoord(nextCoord) == Heading.E){
+			turnLeft();
+		} else if(heading == Heading.SW && headingNewCoord(nextCoord) == Heading.W){
+			turnRight();
+		} else if(heading == Heading.SW && headingNewCoord(nextCoord) == Heading.S){
+			turnLeft();
+		}
+		
+		else if(heading == Heading.W && headingNewCoord(nextCoord) == Heading.N){
+			turnRight();
+		} else if(heading == Heading.W && headingNewCoord(nextCoord) == Heading.S){
+			turnLeft();
+		}
 		
 		return false;
+	}
+	
+	public Heading headingNewCoord(Coordinate nextCoord){
+		if(coord.row == nextCoord.row-1 && coord.col == nextCoord.col){
+			return Heading.N;
+		} else if (coord.row == nextCoord.row+1 && coord.col == nextCoord.col){
+			return Heading.S;
+		} else if (coord.row == nextCoord.row && coord.col == nextCoord.col-1){
+			return Heading.E;
+		} else {
+			return Heading.W;
+		}
 	}
 	
 	/*
@@ -152,8 +208,9 @@ public abstract class BasicShip extends Agent {
 		}
 	}
 	
-	protected void moveForward(Coordinate nextCoord){
+	protected boolean moveForward(Coordinate nextCoord){
 		Tuple lock;
+		boolean retValue = false;
 		try {
 			lock = get(Templates.getLockTemp(),mapConnection);
 			if(inTransition){
@@ -162,16 +219,18 @@ public abstract class BasicShip extends Agent {
 				get(Templates.getCoordTemp(id),mapConnection);
 				put(new Tuple(id,shipType,nextCoord.row,nextCoord.col,heading),mapConnection);
 				coord = nextCoord;
+				retValue = true;
 			} else {
 				inTransition = !inTransition;
 				put(new Tuple(id,shipType,nextCoord.row,nextCoord.col,heading),mapConnection);
-				
+				retValue = false;
 			}
 			put(lock,mapConnection);
 		} catch (InterruptedException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return retValue;
 	}
 	
 
@@ -188,6 +247,7 @@ public abstract class BasicShip extends Agent {
 					pathIndex++;
 					nextCoord = path.get(pathIndex);
 				}
+				
 				monitor.moved();
 			}
 			
@@ -228,5 +288,13 @@ public abstract class BasicShip extends Agent {
 
 	public ShipType getType() {
 		return shipType;
+	}
+	
+	public List<Coordinate> getPath() {
+		return path;
+	}
+
+	public void setPath(List<Coordinate> path) {
+		this.path = path;
 	}
 }

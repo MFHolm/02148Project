@@ -15,7 +15,6 @@ public class YellowShip extends BasicShip {
 		this.heading = Heading.E;
 	}
 
-
 	@Override
 	protected int getMoney(int time) {
 		return 100;

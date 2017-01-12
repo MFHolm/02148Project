@@ -53,7 +53,16 @@ public class Harbour {
 		
 	}
 	public LinkedList<Tuple> getRequests() {
-		LinkedList<Tuple> ships = harbourTupleSpace.getAll(Templates.getReqTemp());
+		LinkedList<Tuple> ships = new LinkedList<>();
+		Tuple t = null;
+		do {
+			t = harbourTupleSpace.getp(Templates.getReqTemp());
+			if (t != null) {
+				ships.add(t);
+			}
+		}while (t != null);
+		
+//		LinkedList<Tuple> ships = harbourTupleSpace.getAll(Templates.getReqTemp());
 		for (Tuple tuple : ships) {
 			harbourTupleSpace.put(tuple);
 		}
