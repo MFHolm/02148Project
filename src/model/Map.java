@@ -22,10 +22,11 @@ public class Map {
 	private TupleSpace coordinates;
 	private int width;
 	private int heigth;
+	private MoveMonitor monitor;
 	
 	public Map(VirtualPort vp) {
 		coordinates = new TupleSpace();
-		this.sea = new Node("Sea",coordinates);
+		this.sea = new Node("sea",coordinates);
 		this.harbour = new Harbour(vp);
 		this.shipNodes = new HashMap<String,Node>();
 		this.vp = vp;
@@ -34,12 +35,13 @@ public class Map {
 		sea.put(new Tuple("lock"));
 		this.width = 25;
 		this.heigth = 25;
+		this.monitor = new MoveMonitor();
 		
 		sea.start();
 	}
 	
 	public void addShip(BasicShip ship){
-		
+		ship.setMonitor(monitor);
 		Node newShipNode = new Node(ship.getId(), new TupleSpace());
 		newShipNode.addPort(vp);
 		newShipNode.addAgent(ship);
@@ -191,5 +193,9 @@ public class Map {
 
 	public HashMap<String,Node> getShips() {
 		return shipNodes;
+	}
+
+	public MoveMonitor getMonitor() {
+		return monitor;
 	}
 }
