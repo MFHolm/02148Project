@@ -2,6 +2,7 @@ package model;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 import org.cmg.resp.behaviour.Action.Query;
 import org.cmg.resp.behaviour.Agent;
@@ -26,13 +27,16 @@ public class Harbour {
 		harbour.addPort(vp);
 		harbour.addAgent(new HarbourAgent("HarbourAgent"));
 		harbour.start();
-		this.addDock("dock1", 15, 22);
-		this.addDock("dock2", 13, 22);
-		this.addDock("dock3", 11, 22);
+		this.addDock("dock1", 15, 21);
+		this.addDock("dock2", 13, 21);
+		this.addDock("dock3", 11, 21);
 	}
 	
 	public Node getNode(){
 		return harbour;
+	}
+	public HashMap<String,Dock> getDockHashMap() {
+		return docks;
 	}
 	
 	/* assignDock:
@@ -66,7 +70,6 @@ public class Harbour {
 			}
 		}while (t != null);
 		
-//		LinkedList<Tuple> ships = harbourTupleSpace.getAll(Templates.getReqTemp());
 		for (Tuple tuple : ships) {
 			harbourTupleSpace.put(tuple);
 		}
@@ -93,7 +96,8 @@ public class Harbour {
 					
 					get(Templates.getDockAvailTemp(dockId), Self.SELF);
 					
-					get(Templates.getReqTemp(shipId), Self.SELF);
+					Tuple req = get(Templates.getReqTemp(shipId), Self.SELF);
+					dock.shipArrives(shipId, req.getElementAt(Integer.class, 3), req.getElementAt(Integer.class, 4));
 					put(new Tuple("assignedTo",dockId,dock.getRow(),dock.getCol()),shipConnection);
 				}
 				
@@ -104,5 +108,9 @@ public class Harbour {
 				}
 			}	
 		}
+	}
+
+	public void releaseDock(String dock) {
+		harbour.put(new Tuple("dockAvailable",dock));
 	}
 }

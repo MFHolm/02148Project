@@ -64,6 +64,12 @@ public class Templates {
 							new FormalTemplateField(Integer.class),
 							new FormalTemplateField(Integer.class));
 	}
+	public static Template getLeaveDockTemp() {
+		return new Template(new ActualTemplateField("leaveDock"),
+							new FormalTemplateField(String.class),
+							new FormalTemplateField(Integer.class),
+							new FormalTemplateField(Integer.class));
+	}
 	
 	public static Template getDeclineReqTemp() {
 		return new Template(new ActualTemplateField("declineReq"),

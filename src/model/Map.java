@@ -116,13 +116,14 @@ public class Map {
 			try {
 				Tuple lock = get(Templates.getLockTemp(), Self.SELF);
 				get(Templates.getCoordTemp(shipId),Self.SELF);
+				//Two calls to get because ship has two positions in dock
+				get(Templates.getCoordTemp(shipId),Self.SELF);
 				put(lock,Self.SELF);
 				
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			 
 			shipNodes.remove(shipId);
 		}
 	}

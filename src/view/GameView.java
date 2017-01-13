@@ -55,6 +55,9 @@ public class GameView extends JFrame {
 	public void updateTime(double time) {
 		this.gamePanel.updateTime(time);
 	}
+	public void updateMoney(int m) {
+		this.gamePanel.updateMoney(m);
+	}
 	public RequestPanel getRequestPanel() {
 		return requestPanel;
 	}

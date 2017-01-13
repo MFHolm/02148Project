@@ -25,16 +25,16 @@ public class MainController {
 	DockListener dockListener;
 	Model model;
 	Timer timer;
-	double time;
 	final int mapHeigth = 25;
 	final int mapWidth = 25;
+	int delay = 500;
 	
 	
 	public MainController() {
 		init();
 	}
 	public void incrementTimer() {
-		this.time += 0.1;
+		this.model.incrementTime(0.5);
 	}
 	
 	public void init() {
@@ -52,7 +52,7 @@ public class MainController {
 		dockListener = new DockListener(this);
 		dockListener.init();
 		
-		this.timer = new Timer(500, new TimerListener(this));
+		this.timer = new Timer(delay, new TimerListener(this));
 		
 		}
 	public void start() {
@@ -78,7 +78,7 @@ public class MainController {
 	public void run() throws InterruptedException {
 //		System.out.println("time: "+ time);
 
-		if (time <= 0.1 && time >= 0) {
+		if (model.getTime() <= 0.5 && model.getTime() >= 0) {
 			RedShip s = new RedShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 5, 5);
 			
 			
@@ -103,12 +103,13 @@ public class MainController {
 
 			addShip(new GreenShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 6, 8));
 
-		} else if (time <= 3 && time >= 2.9) {
+		} else if (model.getTime() <= 3 && model.getTime() >= 2.9) {
 			addShip(new GreenShip("id4", model.getSeaName(), model.getHarbourName(), Model.getVp(), 16, 9));
 			
 		}
 		gView.update(this.model.getShipPositions(), this.model.getRequests());
-		gView.updateTime(this.time);
+		gView.updateTime(model.getTime());
+		gView.updateMoney(model.getMoney());
 		model.viewUpdated();
 		
 	}
@@ -118,6 +119,8 @@ public class MainController {
 			try {
 				model.acceptRequest(ship, dock);
 				
+				this.gView.getGamePanel().setCircleId(ship);
+				this.gView.getRequestPanel().setMarkedID(ship);
 				updateRequests();
 				System.out.println(dock + " has been assigned to " + ship);
 			}

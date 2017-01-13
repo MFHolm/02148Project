@@ -149,9 +149,8 @@ public class GamePanel extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 		Graphics2D g2d = (Graphics2D) g;
+		int extra = 0;
 		int n = 10;
-		int width = getActualX(1) + 10;
-		int heigth = getActualY(1) + 10;
 		for (Tuple tuple : this.ships) {
 			ShipType type = tuple.getElementAt(ShipType.class, 1);
 			double row = tuple.getElementAt(Double.class, 2);
@@ -174,8 +173,7 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
-				width = getActualX(1) + n;
-				heigth = getActualY(1) + n;
+				extra = n;
 				break;
 			case N:
 				switch (type) {
@@ -208,8 +206,7 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
-				width = getActualX(1) + n;
-				heigth = getActualY(1) + n;
+				extra = n;
 				break;
 			case W:
 				switch (type) {
@@ -242,8 +239,7 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
-				width = getActualX(1) + n;
-				heigth = getActualY(1) + n;
+				extra = n;
 				break;
 			case S:
 				switch (type) {
@@ -276,8 +272,7 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
-				width = getActualX(1) + n;
-				heigth = getActualY(1) + n;
+				extra = n;
 				break;
 			default:
 				switch (type) {
@@ -295,7 +290,7 @@ public class GamePanel extends JPanel {
 					break;
 				}
 			}
-			g2d.drawImage(img, getActualX(col), getActualY(row), width, heigth, null);
+			g2d.drawImage(img, getActualX(col)-extra, getActualY(row)-extra, getActualX(1)+extra+10, getActualY(1)+extra+10, null);
 			
 		}
 		if (!circleId.equals("")) {
@@ -306,11 +301,11 @@ public class GamePanel extends JPanel {
 	// Calculates the ratio between window size and grid size and multiplies it
 	// by a given number
 	private int getActualY(double k) {
-		return (int) (k * this.getHeight() / this.mapHeigth);
+		return (int) (k * this.getHeight() / this.mapHeigth)-4;
 	}
 
 	private int getActualX(double col) {
-		return (int) (col * this.getWidth() / this.mapWidth);
+		return (int) (col * this.getWidth() / this.mapWidth)-4;
 	}
 
 	public void updateTime(double time) {
@@ -327,23 +322,27 @@ public class GamePanel extends JPanel {
 		}
 		this.time.setText("Time: " + remaining);
 	}
-
-	private BufferedImage getRotatedInstance(BufferedImage img, double rotation) {
-		int w0 = img.getWidth();
-		int h0 = img.getHeight();
-		int centerX = w0 / 2;
-		int centerY = h0 / 2;
-		if (w0 > h0) {
-			centerX = h0 / 2;
-			centerY = h0 / 2;
-		} else if (h0 > w0) {
-			centerX = w0 / 2;
-			centerY = w0 / 2;
-		}
-		AffineTransform tx = AffineTransform.getRotateInstance(rotation, centerX, centerY);
-		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-		return op.filter(img, null);
+	
+	public void updateMoney(int money) {
+		this.money.setText("Money: " + money);
 	}
+
+//	private BufferedImage getRotatedInstance(BufferedImage img, double rotation) {
+//		int w0 = img.getWidth();
+//		int h0 = img.getHeight();
+//		int centerX = w0 / 2;
+//		int centerY = h0 / 2;
+//		if (w0 > h0) {
+//			centerX = h0 / 2;
+//			centerY = h0 / 2;
+//		} else if (h0 > w0) {
+//			centerX = w0 / 2;
+//			centerY = w0 / 2;
+//		}
+//		AffineTransform tx = AffineTransform.getRotateInstance(rotation, centerX, centerY);
+//		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+//		return op.filter(img, null);
+//	}
 	public void drawCircle( Graphics g) {
 		for (Tuple t : ships) {
 			if (t.getElementAt(String.class, 0).equals(circleId)) {

@@ -147,10 +147,15 @@ public abstract class BasicShip extends Agent {
 			try {
 				Tuple u = get(Templates.getLockTemp(), mapConnection);
 				get(Templates.getCoordTemp(id), mapConnection);
+				if (inTransition) {
+					get(Templates.getCoordTemp(id), mapConnection);
+				}
 				coord.row = t.getElementAt(Integer.class, 2);
 				coord.col = t.getElementAt(Integer.class, 3);
 				put(new Tuple(id, shipType, coord.row, coord.col, Heading.E), mapConnection);
+				put(new Tuple(id, shipType, coord.row, coord.col+1, Heading.E), mapConnection);
 				put(u, mapConnection);
+				emptyPath();
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
@@ -159,6 +164,12 @@ public abstract class BasicShip extends Agent {
 
 		}
 
+	}
+	protected void leaveDock() {
+		
+	}
+	private void emptyPath() {
+		this.path = new LinkedList<>();
 	}
 
 	protected void turnRight() {
@@ -260,6 +271,8 @@ public abstract class BasicShip extends Agent {
 		while (true) {
 			if (!isDocked()) {
 				checkDockPermission();
+			}
+			if (!isDocked()) {
 				if (nextCoord != null) {
 					if (move(nextCoord)) {
 						pathIndex = (pathIndex + 1) % path.size();
@@ -269,7 +282,6 @@ public abstract class BasicShip extends Agent {
 				}
 				monitor.moved();
 			}
-
 		}
 	}
 
