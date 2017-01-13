@@ -19,11 +19,17 @@ public class Test {
 			path.add(new Coordinate(6,8));
 			path.add(new Coordinate(7,8));
 			path.add(new Coordinate(8,8));
-			
+			path.add(new Coordinate(8,7));
+			path.add(new Coordinate(8,6));
+			path.add(new Coordinate(8,5));
+			path.add(new Coordinate(7,5));
+			path.add(new Coordinate(6,5));
+			path.add(new Coordinate(5,5));
+			yellowSubmarine.setPath(path);
 			m.addShip(yellowSubmarine);
 			
-			for(int i = 0; i < path.size()+10; i++){
-				Thread.sleep(2000);
+			while(true){
+				Thread.sleep(1000);
 				m.viewUpdated();
 			}
 			
