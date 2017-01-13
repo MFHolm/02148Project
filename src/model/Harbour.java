@@ -3,6 +3,7 @@ package model;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.cmg.resp.behaviour.Action.Query;
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
 import org.cmg.resp.knowledge.Tuple;
@@ -25,6 +26,9 @@ public class Harbour {
 		harbour.addPort(vp);
 		harbour.addAgent(new HarbourAgent("HarbourAgent"));
 		harbour.start();
+		this.addDock("dock1", 15, 22);
+		this.addDock("dock2", 13, 22);
+		this.addDock("dock3", 11, 22);
 	}
 	
 	public Node getNode(){
@@ -89,6 +93,7 @@ public class Harbour {
 					
 					get(Templates.getDockAvailTemp(dockId), Self.SELF);
 					
+					get(Templates.getReqTemp(shipId), Self.SELF);
 					put(new Tuple("assignedTo",dockId,dock.getRow(),dock.getCol()),shipConnection);
 				}
 				
