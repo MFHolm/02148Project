@@ -227,7 +227,7 @@ public abstract class BasicShip extends Agent {
 
 	protected boolean moveForward(Coordinate nextCoord) {
 		Tuple lock;
-
+		
 		boolean retValue = false;
 		try {
 			lock = get(Templates.getLockTemp(), mapConnection);
@@ -241,7 +241,7 @@ public abstract class BasicShip extends Agent {
 				retValue = true;
 			} else {
 				inTransition = !inTransition;
-				get(Templates.getFreeCoordTemp(nextCoord.row, nextCoord.row),mapConnection);
+				get(Templates.getFreeCoordTemp(nextCoord.row, nextCoord.col),mapConnection);
 				put(new Tuple(id, shipType, nextCoord.row, nextCoord.col, heading), mapConnection);
 				retValue = false;
 			}
@@ -272,7 +272,9 @@ public abstract class BasicShip extends Agent {
 					}
 					System.out.println("Heading: " + heading + " " + coord);
 				}
+				System.out.println("Moved");
 				monitor.moved();
+				System.out.println("Moved2");
 			}
 
 		}

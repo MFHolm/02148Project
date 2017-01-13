@@ -3,9 +3,12 @@ package model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
+import org.cmg.resp.knowledge.ActualTemplateField;
+import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.knowledge.ts.TupleSpace;
@@ -40,14 +43,23 @@ public class Map {
 	}
 	
 	private void initCoordinates() {
-		for(int i = 0; i < getHeight(); i++){
-			for(int j = 0; j < getWidth(); j++){
-				coordinates.put(new Tuple("free",i,j));
+		try {
+			Tuple lock = sea.get(Templates.getLockTemp());
+			
+			for(int i = 0; i < getHeight(); i++){
+				for(int j = 0; j < getWidth(); j++){
+					sea.put(new Tuple("free",i,j));
+				}
 			}
+			
+			sea.put(lock);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
+		
 	}
-
 
 	public void addShip(BasicShip ship){
 		ship.setMonitor(monitor);
@@ -57,9 +69,7 @@ public class Map {
 		newShipNode.addAgent(ship);
 		shipNodes.put(ship.getId(),newShipNode);
 		try {
-			System.out.println("what");
 			Tuple coordLock = sea.get(Templates.getLockTemp());
-			System.out.println("the fuck");
 			sea.get(Templates.getFreeCoordTemp(ship.getRow(), ship.getCol()));
 			sea.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
 			sea.put(coordLock);
@@ -131,6 +141,21 @@ public class Map {
 		}
 	}
 
+	public ArrayList<Tuple> getFreePositions(){
+		Template freeTemp = new Template( 	new ActualTemplateField("free"),
+											new FormalTemplateField(Integer.class),
+											new FormalTemplateField(Integer.class));
+		
+		ArrayList<Tuple> tupleList = new ArrayList<Tuple>();
+		Tuple t;
+		do{	
+			t= sea.getp(freeTemp);
+			if(t != null)
+				tupleList.add(t);
+		} while(t != null);
+		
+		return tupleList;
+	}
 
 	//Returns all tuples in the tuple space of sea
 	public ArrayList<Tuple> getShipPositions() {

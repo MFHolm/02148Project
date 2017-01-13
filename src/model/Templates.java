@@ -12,7 +12,6 @@ public class Templates {
 	
 	
 	public static Template getLockTemp() {
-		System.out.println("getting lock");
 		return new Template(new ActualTemplateField("lock"));
 	}
 	
