@@ -1,6 +1,7 @@
 package Controller;
 
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 import javax.swing.Timer;
@@ -51,7 +52,7 @@ public class MainController {
 		dockListener = new DockListener(this);
 		dockListener.init();
 		
-		this.timer = new Timer(700, new TimerListener(this));
+		this.timer = new Timer(500, new TimerListener(this));
 		
 		}
 	public void start() {
@@ -62,7 +63,11 @@ public class MainController {
 	}
 	private void addShip(BasicShip ship){
 		model.addShip(ship);
+		updateRequests();
+	}
+	private void updateRequests() {
 		gView.getRequestPanel().setRequests(this.model.getRequests());
+		System.out.println(this.model.getRequests());
 		gView.getRequestPanel().clear();
 		gView.getRequestPanel().update();
 		gView.getRequestPanel().repaint();
@@ -74,7 +79,7 @@ public class MainController {
 //		System.out.println("time: "+ time);
 
 		if (time <= 0.1 && time >= 0) {
-			YellowShip s = new YellowShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 5, 5);
+			RedShip s = new RedShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 5, 5);
 			
 			
 			LinkedList<Coordinate> path = new LinkedList<Coordinate>();
@@ -106,6 +111,20 @@ public class MainController {
 		gView.updateTime(this.time);
 		model.viewUpdated();
 		
+	}
+	public void dockClicked(String dock) {
+		String ship = this.gView.getRequestPanel().getMarkedShip();
+		if (!ship.equals("")){
+			try {
+				model.acceptRequest(ship, dock);
+				
+				updateRequests();
+				System.out.println(dock + " has been assigned to " + ship);
+			}
+			catch (IllegalArgumentException e) {
+			System.out.println(e);
+			}
+		}
 	}
 
 }

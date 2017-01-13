@@ -149,7 +149,7 @@ public abstract class BasicShip extends Agent {
 				get(Templates.getCoordTemp(id), mapConnection);
 				coord.row = t.getElementAt(Integer.class, 2);
 				coord.col = t.getElementAt(Integer.class, 3);
-				put(new Tuple(id, shipType, coord.row, coord.col, heading), mapConnection);
+				put(new Tuple(id, shipType, coord.row, coord.col, Heading.E), mapConnection);
 				put(u, mapConnection);
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
@@ -265,7 +265,7 @@ public abstract class BasicShip extends Agent {
 						pathIndex = (pathIndex + 1) % path.size();
 						nextCoord = path.get(pathIndex);
 					}
-					System.out.println("Heading: " + heading + " " + coord);
+//					System.out.println("Heading: " + heading + " " + coord);
 				}
 				monitor.moved();
 			}

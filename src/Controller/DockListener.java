@@ -21,7 +21,7 @@ public class DockListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String dock = e.getActionCommand();
-		System.out.println("dock " + dock);
+		this.mainC.dockClicked(dock);
 		
 	}
 
