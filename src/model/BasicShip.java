@@ -267,9 +267,7 @@ public abstract class BasicShip extends Agent {
 					}
 					System.out.println("Heading: " + heading + " " + coord);
 				}
-				System.out.println("Moved");
-				monitor.moved();
-				System.out.println("Moved2");
+				monitor.moved();;
 			}
 
 		}
