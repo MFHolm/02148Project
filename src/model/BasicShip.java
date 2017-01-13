@@ -265,7 +265,7 @@ public abstract class BasicShip extends Agent {
 						pathIndex = (pathIndex + 1) % path.size();
 						nextCoord = path.get(pathIndex);
 					}
-//					System.out.println("Heading: " + heading + " " + coord);
+					System.out.println("Heading: " + heading + " " + coord);
 				}
 				monitor.moved();
 			}
