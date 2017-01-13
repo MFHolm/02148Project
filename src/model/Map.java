@@ -3,9 +3,12 @@ package model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
+import org.cmg.resp.knowledge.ActualTemplateField;
+import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.knowledge.ts.TupleSpace;
@@ -23,7 +26,7 @@ public class Map {
 	private int heigth;
 	private MoveMonitor monitor;
 	
-	public Map(VirtualPort vp, int mapHeigth, int mapWidth) {
+	public Map(VirtualPort vp, int mapHeight, int mapWidth) {
 		coordinates = new TupleSpace();
 		this.sea = new Node("sea",coordinates);
 		this.harbour = new Harbour(vp);
@@ -31,14 +34,22 @@ public class Map {
 		this.vp = vp;
 		sea.addPort(vp);
 		sea.addAgent(new SeaAgent("ShipController"));
-		sea.put(new Tuple("lock"));
 		this.width = mapWidth;
-		this.heigth = mapHeigth;
+		this.heigth = mapHeight;
 		this.monitor = new MoveMonitor();
 		
+		initCoordinates();
 		sea.start();
 	}
 	
+	private void initCoordinates() {
+		for(int i = 0; i < getHeight(); i++){
+			for(int j = 0; j < getWidth(); j++){
+				sea.put(new Tuple("free",i,j));
+			}
+		}
+	}
+
 	public void addShip(BasicShip ship){
 		ship.setMonitor(monitor);
 		//ship.setPath(path);
@@ -47,9 +58,8 @@ public class Map {
 		newShipNode.addAgent(ship);
 		shipNodes.put(ship.getId(),newShipNode);
 		try {
-			Tuple coordLock = coordinates.get(Templates.getLockTemp());
-			coordinates.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
-			coordinates.put(coordLock);
+			sea.get(Templates.getFreeCoordTemp(ship.getRow(), ship.getCol()));
+			sea.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -114,9 +124,8 @@ public class Map {
 		public void declineRequest(String shipId) {
 			
 			try {
-				Tuple lock = get(Templates.getLockTemp(), Self.SELF);
-				get(Templates.getCoordTemp(shipId),Self.SELF);
-				put(lock,Self.SELF);
+				Tuple t = get(Templates.getCoordTemp(shipId),Self.SELF);
+				put(new Tuple("free",t.getElementAt(Integer.class, 2),t.getElementAt(Integer.class, 3)),Self.SELF);
 				
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
@@ -127,16 +136,27 @@ public class Map {
 		}
 	}
 
+	public ArrayList<Tuple> getFreePositions(){
+		Template freeTemp = new Template( 	new ActualTemplateField("free"),
+											new FormalTemplateField(Integer.class),
+											new FormalTemplateField(Integer.class));
+		
+		ArrayList<Tuple> tupleList = new ArrayList<Tuple>();
+		Tuple t;
+		do{	
+			t= sea.getp(freeTemp);
+			if(t != null)
+				tupleList.add(t);
+		} while(t != null);
+		
+		return tupleList;
+	}
 
 	//Returns all tuples in the tuple space of sea
 	public ArrayList<Tuple> getShipPositions() {
 		ArrayList<Tuple> shipPos = new ArrayList<>();
 		ArrayList<Tuple> originals = new ArrayList<>();
-		try {
-			sea.get(Templates.getLockTemp());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		
 		Template t = Templates.getCoordTemp();
 		Tuple tuple;
 		do {
@@ -169,7 +189,6 @@ public class Map {
 		for (Tuple s : originals) {
 			sea.put(s);
 		}
-		sea.put(new Tuple("lock"));
 		
 		return shipPos;
 	}
