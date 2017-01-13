@@ -1,9 +1,12 @@
 package Controller;
 
 
+import java.util.LinkedList;
+
 import javax.swing.Timer;
 
 import model.BasicShip;
+import model.Coordinate;
 import model.GreenShip;
 import model.Model;
 import model.RedShip;
@@ -48,7 +51,7 @@ public class MainController {
 		dockListener = new DockListener(this);
 		dockListener.init();
 		
-		this.timer = new Timer(100, new TimerListener(this));
+		this.timer = new Timer(700, new TimerListener(this));
 		
 		}
 	public void start() {
@@ -70,12 +73,30 @@ public class MainController {
 	public void run() throws InterruptedException {
 //		System.out.println("time: "+ time);
 
-		if (time <= 1 && time >= 0.9) {
-			addShip(new YellowShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 4, 7));
-
+		if (time <= 0.1 && time >= 0) {
+			YellowShip s = new YellowShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 5, 5);
+			
+			
+			LinkedList<Coordinate> path = new LinkedList<Coordinate>();
+			path.add(new Coordinate(5,6));
+			path.add(new Coordinate(5,7));
+			path.add(new Coordinate(5,8));
+			path.add(new Coordinate(6,8));
+			path.add(new Coordinate(7,8));
+			path.add(new Coordinate(8,8));
+			path.add(new Coordinate(8,7));
+			path.add(new Coordinate(8,6));
+			path.add(new Coordinate(8,5));
+			path.add(new Coordinate(7,5));
+			path.add(new Coordinate(6,5));
+			path.add(new Coordinate(5,5));
+			s.setPath(path);
+			
+			addShip(s);
+			
 			addShip(new RedShip("id2", model.getSeaName(), model.getHarbourName(), Model.getVp(), 2, 3));
 
-			addShip(new GreenShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 7, 9));
+			addShip(new GreenShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 6, 8));
 
 		} else if (time <= 3 && time >= 2.9) {
 			addShip(new GreenShip("id4", model.getSeaName(), model.getHarbourName(), Model.getVp(), 16, 9));
@@ -83,6 +104,7 @@ public class MainController {
 		}
 		gView.update(this.model.getShipPositions(), this.model.getRequests());
 		gView.updateTime(this.time);
+		model.viewUpdated();
 		
 	}
 
