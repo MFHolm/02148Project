@@ -20,7 +20,6 @@ public class Templates {
 	}
 	
 	public static Template getFreeCoordTemp(int row, int col) {
-		System.out.println("Getting freedom at: " + row + " " + col);
 		return new Template(new ActualTemplateField("free"),
 							new ActualTemplateField(row),
 							new ActualTemplateField(col));

@@ -101,16 +101,16 @@ public abstract class BasicShip extends Agent {
 
 	public Heading headingNewCoord(Coordinate nextCoord) {
 		if (coord.row == nextCoord.row + 1 && coord.col == nextCoord.col) {
-			System.out.println("n");
+			//System.out.println("n");
 			return Heading.N;
 		} else if (coord.row == nextCoord.row - 1 && coord.col == nextCoord.col) {
-			System.out.println("s");
+			//System.out.println("s");
 			return Heading.S;
 		} else if (coord.row == nextCoord.row && coord.col == nextCoord.col - 1) {
-			System.out.println("e");
+			//System.out.println("e");
 			return Heading.E;
 		} else {
-			System.out.println("w");
+			//System.out.println("w");
 			return Heading.W;
 		}
 	}
@@ -265,8 +265,9 @@ public abstract class BasicShip extends Agent {
 						pathIndex = (pathIndex + 1) % path.size();
 						nextCoord = path.get(pathIndex);
 					}
-					System.out.println("Heading: " + heading + " " + coord);
+					//System.out.println("Heading: " + heading + " " + coord);
 				}
+				System.out.println(id);
 				monitor.moved();;
 			}
 
