@@ -69,7 +69,9 @@ public class GamePanel extends JPanel {
 		this.mapWidth = mapWidth;
 		this.ships = new ArrayList<Tuple>();
 		money = new JLabel("Money:     ");
+		money.setBounds(250, 0, 70,40);
 		time = new JLabel("Time:      ");
+		time.setBounds(350, 0, 70,40);
 		circleId = "";
 		
 		this.add(money);
@@ -104,33 +106,33 @@ public class GamePanel extends JPanel {
 		try {
 			BufferedImage redShip = ImageIO.read(getClass().getResource("/resources/redShip.png"));
 			this.redShipE = redShip;
-			this.redShipNE = this.getRotatedInstance(redShip, Math.toRadians(-45));
-			this.redShipN = this.getRotatedInstance(redShip, Math.toRadians(-90));
-			this.redShipNW = this.getRotatedInstance(redShip, Math.toRadians(-135));
-			this.redShipW = this.getRotatedInstance(redShip, Math.toRadians(180));
-			this.redShipSW = this.getRotatedInstance(redShip, Math.toRadians(135));
-			this.redShipS = this.getRotatedInstance(redShip, Math.toRadians(90));
-			this.redShipSE = this.getRotatedInstance(redShip, Math.toRadians(45));
+			this.redShipNE = ImageIO.read(getClass().getResource("/resources/redShipNE.png"));
+			this.redShipN = ImageIO.read(getClass().getResource("/resources/redShipN.png"));
+			this.redShipNW = ImageIO.read(getClass().getResource("/resources/redShipNW.png"));
+			this.redShipW = ImageIO.read(getClass().getResource("/resources/redShipW.png"));
+			this.redShipSW = ImageIO.read(getClass().getResource("/resources/redShipSW.png"));
+			this.redShipS = ImageIO.read(getClass().getResource("/resources/redShipS.png"));
+			this.redShipSE = ImageIO.read(getClass().getResource("/resources/redShipSE.png"));
 
 			BufferedImage greenShip = ImageIO.read(getClass().getResource("/resources/greenShip.png"));
 			this.greenShipE = greenShip;
-			this.greenShipNE = this.getRotatedInstance(greenShip, Math.toRadians(-45));
-			this.greenShipN = this.getRotatedInstance(greenShip, Math.toRadians(-90));
-			this.greenShipNW = this.getRotatedInstance(greenShip, Math.toRadians(-135));
-			this.greenShipW = this.getRotatedInstance(greenShip, Math.toRadians(180));
-			this.greenShipSW = this.getRotatedInstance(greenShip, Math.toRadians(135));
-			this.greenShipS = this.getRotatedInstance(greenShip, Math.toRadians(90));
-			this.greenShipSE = this.getRotatedInstance(greenShip, Math.toRadians(45));
+			this.greenShipNE = ImageIO.read(getClass().getResource("/resources/greenShipNE.png"));
+			this.greenShipN = ImageIO.read(getClass().getResource("/resources/greenShipN.png"));
+			this.greenShipNW = ImageIO.read(getClass().getResource("/resources/greenShipNW.png"));
+			this.greenShipW = ImageIO.read(getClass().getResource("/resources/greenShipW.png"));
+			this.greenShipSW = ImageIO.read(getClass().getResource("/resources/greenShipSW.png"));
+			this.greenShipS = ImageIO.read(getClass().getResource("/resources/greenShipS.png"));
+			this.greenShipSE = ImageIO.read(getClass().getResource("/resources/greenShipSE.png"));
 
 			BufferedImage yellowShip = ImageIO.read(getClass().getResource("/resources/yellowShip.png"));
 			this.yellowShipE = yellowShip;
-			this.yellowShipNE = this.getRotatedInstance(yellowShip, Math.toRadians(-45));
-			this.yellowShipN = this.getRotatedInstance(yellowShip, Math.toRadians(-90));
-			this.yellowShipNW = this.getRotatedInstance(yellowShip, Math.toRadians(-135));
-			this.yellowShipW = this.getRotatedInstance(yellowShip, Math.toRadians(180));
-			this.yellowShipSW = this.getRotatedInstance(yellowShip, Math.toRadians(135));
-			this.yellowShipS = this.getRotatedInstance(yellowShip, Math.toRadians(90));
-			this.yellowShipSE = this.getRotatedInstance(yellowShip, Math.toRadians(45));
+			this.yellowShipNE = ImageIO.read(getClass().getResource("/resources/yellowShipNE.png"));
+			this.yellowShipN = ImageIO.read(getClass().getResource("/resources/yellowShipN.png"));
+			this.yellowShipNW = ImageIO.read(getClass().getResource("/resources/yellowShipNW.png"));
+			this.yellowShipW = ImageIO.read(getClass().getResource("/resources/yellowShipW.png"));
+			this.yellowShipSW = ImageIO.read(getClass().getResource("/resources/yellowShipSW.png"));
+			this.yellowShipS = ImageIO.read(getClass().getResource("/resources/yellowShipS.png"));
+			this.yellowShipSE = ImageIO.read(getClass().getResource("/resources/yellowShipSE.png"));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -147,6 +149,9 @@ public class GamePanel extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
 		Graphics2D g2d = (Graphics2D) g;
+		int n = 10;
+		int width = getActualX(1) + 10;
+		int heigth = getActualY(1) + 10;
 		for (Tuple tuple : this.ships) {
 			ShipType type = tuple.getElementAt(ShipType.class, 1);
 			double row = tuple.getElementAt(Double.class, 2);
@@ -169,6 +174,8 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
+				width = getActualX(1) + n;
+				heigth = getActualY(1) + n;
 				break;
 			case N:
 				switch (type) {
@@ -201,6 +208,8 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
+				width = getActualX(1) + n;
+				heigth = getActualY(1) + n;
 				break;
 			case W:
 				switch (type) {
@@ -233,6 +242,8 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
+				width = getActualX(1) + n;
+				heigth = getActualY(1) + n;
 				break;
 			case S:
 				switch (type) {
@@ -265,6 +276,8 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
+				width = getActualX(1) + n;
+				heigth = getActualY(1) + n;
 				break;
 			default:
 				switch (type) {
@@ -278,11 +291,11 @@ public class GamePanel extends JPanel {
 					img = yellowShipE;
 					break;
 				default:
-					System.out.println("Ship img not found7");
+					System.out.println("Ship img not found");
 					break;
 				}
 			}
-			g2d.drawImage(img, getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
+			g2d.drawImage(img, getActualX(col), getActualY(row), width, heigth, null);
 			
 		}
 		if (!circleId.equals("")) {

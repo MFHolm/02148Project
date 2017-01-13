@@ -12,6 +12,7 @@ public class Templates {
 	
 	
 	public static Template getLockTemp() {
+		System.out.println("Getting lock");
 		return new Template(new ActualTemplateField("lock"));
 	}
 	
@@ -24,6 +25,7 @@ public class Templates {
 	}
 	
 	public static Template getFreeCoordTemp(int row, int col) {
+		System.out.println("Getting freedom at: " + row + " " + col);
 		return new Template(new ActualTemplateField("free"),
 							new ActualTemplateField(row),
 							new ActualTemplateField(col));

@@ -12,6 +12,7 @@ import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.knowledge.ts.TupleSpace;
+import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
@@ -79,6 +80,7 @@ public class Map {
 			e.printStackTrace();
 		}	
 		newShipNode.start();
+		//Delay the thread until the request has been sent
 		try {
 			Tuple t = newShipNode.get(Templates.getReqSentTemp());
 			newShipNode.put(t);
@@ -95,6 +97,15 @@ public class Map {
 			throw new IllegalArgumentException(shipId + " hasn't sent any request");
 		} else {
 			harbour.assignDock(shipId,dockId);
+			try {
+				//Delay until ship has been assigned
+				Tuple t = shipNodes.get(shipId).get(Templates.getDockAssignTemp());
+				shipNodes.get(shipId).put(t);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 	

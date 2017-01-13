@@ -112,7 +112,9 @@ public class RequestPanel extends JPanel {
 			this.markedId = id;
 		}
 	}
-	
+	public String getMarkedShip() {
+		return this.markedId;
+	}
 	public void update() {
 		final int borderWidth = 1;
 		final int rows = 26;
