@@ -1,15 +1,22 @@
 package model;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
+import org.cmg.resp.knowledge.ActualTemplateField;
+import org.cmg.resp.knowledge.FormalTemplateField;
+import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
 public abstract class BasicShip extends Agent {
-	protected int row,col,time;
+	protected Coordinate coord;
+	protected boolean inTransition = false;
+	protected int time;
 	protected Heading heading;
 	protected String id;
 	protected VirtualPort vp;
@@ -19,6 +26,10 @@ public abstract class BasicShip extends Agent {
 	protected ShipSize size;
 	protected ShipType shipType;
 	protected MoveMonitor monitor;
+	protected List<Coordinate> path;
+
+
+	protected int pathIndex = 0;
 	
 
 	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col){
@@ -27,12 +38,86 @@ public abstract class BasicShip extends Agent {
 		this.vp = vp;
 		this.mapConnection = new PointToPoint(mapId,vp.getAddress());
 		this.harbourConnection = new PointToPoint(harbourId,vp.getAddress());
-		this.row = row;	
-		this.col = col;
+		this.coord = new Coordinate(row,col);
+		path = new LinkedList<Coordinate>();
 		setDocked(false);
 	}
 	
-	public abstract void move();
+	public boolean move(Coordinate nextCoord){
+		Heading curHeading = heading;
+		if(heading == headingNewCoord(nextCoord)){
+			return moveForward(nextCoord);
+		} 
+		
+		else if(heading == Heading.N && headingNewCoord(nextCoord) == Heading.E){
+			turnRight();
+		} else if(heading == Heading.NE && headingNewCoord(nextCoord) == Heading.E){
+			turnRight();
+		} else if(heading == Heading.NE && headingNewCoord(nextCoord) == Heading.N){
+			turnLeft();
+		} else if(heading == Heading.N && headingNewCoord(nextCoord) == Heading.W){
+			turnLeft();
+		} else if(heading == Heading.NW && headingNewCoord(nextCoord) == Heading.W){
+			turnLeft();
+		} else if(heading == Heading.NW && headingNewCoord(nextCoord) == Heading.N){
+			turnRight();
+		}
+		
+		else if(heading == Heading.E && headingNewCoord(nextCoord) == Heading.S){
+			turnRight();
+		} else if(heading == Heading.E && headingNewCoord(nextCoord) == Heading.N){
+			turnLeft();
+		} 
+		
+		else if(heading == Heading.S && headingNewCoord(nextCoord) == Heading.W){
+			turnRight();
+		} else if(heading == Heading.SE && headingNewCoord(nextCoord) == Heading.E){
+			turnLeft();
+		} else if(heading == Heading.SE && headingNewCoord(nextCoord) == Heading.S){
+			turnRight();
+		} else if(heading == Heading.S && headingNewCoord(nextCoord) == Heading.E){
+			turnLeft();
+		} else if(heading == Heading.SW && headingNewCoord(nextCoord) == Heading.W){
+			turnRight();
+		} else if(heading == Heading.SW && headingNewCoord(nextCoord) == Heading.S){
+			turnLeft();
+		}
+		
+		else if(heading == Heading.W && headingNewCoord(nextCoord) == Heading.N){
+			turnRight();
+		} else if(heading == Heading.W && headingNewCoord(nextCoord) == Heading.S){
+			turnLeft();
+		}
+		if(curHeading != heading){
+			try {
+				Tuple lock = get(Templates.getLockTemp(),mapConnection);
+				get(Templates.getCoordTemp(id),mapConnection);
+				put(new Tuple(id,shipType,coord.row,coord.col,heading),mapConnection);
+				put(lock,mapConnection);
+			} catch (InterruptedException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return false;
+	}
+	
+	public Heading headingNewCoord(Coordinate nextCoord){
+		if(coord.row == nextCoord.row+1 && coord.col == nextCoord.col){
+			System.out.println("n");
+			return Heading.N;
+		} else if (coord.row == nextCoord.row-1 && coord.col == nextCoord.col){
+			System.out.println("s");
+			return Heading.S;
+		} else if (coord.row == nextCoord.row && coord.col == nextCoord.col-1){
+			System.out.println("e");
+			return Heading.E;
+		} else {
+			System.out.println("w");
+			return Heading.W;
+		}
+	}
 	
 	/*
 	 *  Returns the amount of money this ship is willing to give
@@ -63,9 +148,9 @@ public abstract class BasicShip extends Agent {
 			try {
 				Tuple u = get(Templates.getLockTemp(),mapConnection);
 				get(Templates.getCoordTemp(id),mapConnection);
-				row = t.getElementAt(Integer.class, 2);
-				col = t.getElementAt(Integer.class, 3);
-				put(new Tuple(id,row,col),mapConnection);
+				coord.row = t.getElementAt(Integer.class, 2);
+				coord.col = t.getElementAt(Integer.class, 3);
+				put(new Tuple(id,shipType,coord.row,coord.col,heading),mapConnection);
 				put(u,mapConnection);
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
@@ -77,17 +162,110 @@ public abstract class BasicShip extends Agent {
 		
 	}
 	
+	protected void turnRight(){
+		switch(heading){
+		case N:
+			heading = Heading.NE;
+			break;
+		case NE:
+			heading = Heading.E;
+			break;
+		case E:
+			heading = Heading.SE;
+			break;
+		case SE:
+			heading = Heading.S;
+			break;
+		case S:
+			heading = Heading.SW;
+			break;
+		case SW:
+			heading = Heading.W;
+			break;
+		case W:
+			heading = Heading.NW;
+			break;
+		case NW:
+			heading = Heading.N;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	protected void turnLeft(){
+		switch(heading){
+		case N:
+			heading = Heading.NW;
+			break;
+		case NW:
+			heading = Heading.W;
+			break;
+		case W:
+			heading = Heading.SW;
+			break;
+		case SW:
+			heading = Heading.S;
+			break;
+		case S:
+			heading = Heading.SE;
+			break;
+		case SE:
+			heading = Heading.E;
+			break;
+		case E:
+			heading = Heading.NE;
+			break;
+		case NE:
+			heading = Heading.N;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	protected boolean moveForward(Coordinate nextCoord){
+		Tuple lock;
+		boolean retValue = false;
+		try {
+			lock = get(Templates.getLockTemp(),mapConnection);
+			if(inTransition){
+				inTransition = !inTransition;
+				get(Templates.getCoordTemp(id),mapConnection);
+				get(Templates.getCoordTemp(id),mapConnection);
+				put(new Tuple(id,shipType,nextCoord.row,nextCoord.col,heading),mapConnection);
+				coord = nextCoord;
+				retValue = true;
+			} else {
+				inTransition = !inTransition;
+				put(new Tuple(id,shipType,nextCoord.row,nextCoord.col,heading),mapConnection);
+				retValue = false;
+			}
+			put(lock,mapConnection);
+		} catch (InterruptedException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return retValue;
+	}
+	
+
 	@Override
 	protected void doRun() throws Exception {
-
+		Coordinate nextCoord = path.get(0);
 
 		makeRequest();
 		
 		while(true){
 			if(!isDocked()){
 				checkDockPermission();
-				move();
+				if(move(nextCoord)){
+					pathIndex = (pathIndex+1) % path.size();
+					nextCoord = path.get(pathIndex);
+				}
+				System.out.println("Heading: " + heading + " " + coord);
 				monitor.moved();
+				
 			}
 			
 		}
@@ -102,11 +280,11 @@ public abstract class BasicShip extends Agent {
 	}
 	
 	protected int getRow() {
-		return row;
+		return coord.row;
 	}
 	
 	protected int getCol() {
-		return col;
+		return coord.col;
 	}
 	
 	protected boolean isDocked() {
@@ -127,5 +305,13 @@ public abstract class BasicShip extends Agent {
 
 	public ShipType getType() {
 		return shipType;
+	}
+	
+	public List<Coordinate> getPath() {
+		return path;
+	}
+
+	public void setPath(List<Coordinate> path) {
+		this.path = path;
 	}
 }

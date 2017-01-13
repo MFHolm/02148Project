@@ -1,7 +1,10 @@
 package Controller;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 
 public class RequestListener implements ActionListener {
 
@@ -9,22 +12,28 @@ public class RequestListener implements ActionListener {
 
 	public RequestListener(MainController mainC) {
 		this.mainC = mainC;
-		init();
 	}
 
 	public void init() {
 
-		mainC.mMenu.getPlayBtn().addActionListener(this);
+		
+		for (JButton b : mainC.gView.getRequestPanel().getButtons()) {
+			b.addActionListener(this);
+		} 
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String actionCommand = e.getActionCommand();
-
-		switch (actionCommand) {
+		String id = e.getActionCommand();
+		mainC.gView.getRequestPanel().setMarkedID(id);
+		mainC.gView.getRequestPanel().clear();
+		mainC.gView.getRequestPanel().update();
+		mainC.gView.getRequestPanel().repaint();
+		init();
 		
-		}
-
+		
+		System.out.println("clicked: " + id);
+		mainC.gView.getGamePanel().setCircleId(id);
 	}
 }

@@ -10,172 +10,350 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import org.cmg.resp.knowledge.Tuple;
-
 import model.Heading;
 import model.Map;
 import model.ShipType;
 
-
 public class GamePanel extends JPanel {
 
+	private ArrayList<Tuple> ships;
 	private BufferedImage background;
 	private Map map;
 	private int[][] grid;
-	private BufferedImage redShip;
-	private BufferedImage greenShip;
-	private BufferedImage yellowShip;
+	private BufferedImage redShipE;
+	private BufferedImage redShipNE;
+	private BufferedImage redShipN;
+	private BufferedImage redShipNW;
+	private BufferedImage redShipW;
+	private BufferedImage redShipSW;
+	private BufferedImage redShipS;
+	private BufferedImage redShipSE;
+
+	private BufferedImage greenShipE;
+	private BufferedImage greenShipNE;
+	private BufferedImage greenShipN;
+	private BufferedImage greenShipNW;
+	private BufferedImage greenShipW;
+	private BufferedImage greenShipSW;
+	private BufferedImage greenShipS;
+	private BufferedImage greenShipSE;
+
+	private BufferedImage yellowShipE;
+	private BufferedImage yellowShipNE;
+	private BufferedImage yellowShipN;
+	private BufferedImage yellowShipNW;
+	private BufferedImage yellowShipW;
+	private BufferedImage yellowShipSW;
+	private BufferedImage yellowShipS;
+	private BufferedImage yellowShipSE;
+
 	private JLabel money;
 	private JLabel time;
+	private int mapHeigth;
+	private int mapWidth;
+	private String circleId;
 	
+	private JButton dock1;
+	private JButton dock2;
+	private JButton dock3;
 	
-	
-	public GamePanel() {
+	public GamePanel(int mapHeigth, int mapWidth) {
 		super();
+		this.setLayout(null);
+		this.mapHeigth = mapHeigth;
+		this.mapWidth = mapWidth;
+		this.ships = new ArrayList<Tuple>();
 		money = new JLabel("Money:     ");
 		time = new JLabel("Time:      ");
+		circleId = "";
 		
 		this.add(money);
 		this.add(time);
 		
-//		this.grid = map.getGrid();
+		this.dock1 = new JButton();
+		this.add(dock1);
+		dock1.setBounds((int)21.5*32, 15*32-4, 70, 42);
+		dock1.setBorderPainted(false);
+		dock1.setActionCommand("dock1");
+		
+		this.dock2 = new JButton();
+		this.add(dock2);
+		dock2.setBounds((int)21.5*32, 13*32-4, 70, 42);
+		dock2.setBorderPainted(false);
+		dock2.setActionCommand("dock2");
+		
+		this.dock3 = new JButton();
+		this.add(dock3);
+		dock3.setBounds((int)21.5*32, 11*32-4, 70, 42);
+		dock3.setBorderPainted(false);
+		dock3.setActionCommand("dock3");
+
+		// this.grid = map.getGrid();
 		try {
 			this.background = ImageIO.read(getClass().getResource("/resources/map.png"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		this.setBackground(new Color(102,200,209));
+		// this.setBackground(new Color(102,200,209));
 		try {
-			this.greenShip = ImageIO.read(getClass().getResource("/resources/greenShip.png"));
-			this.redShip = ImageIO.read(getClass().getResource("/resources/redShip.png"));
-			this.yellowShip = ImageIO.read(getClass().getResource("/resources/yellowShip.png"));
-		}
-		catch (IOException e) {
+			BufferedImage redShip = ImageIO.read(getClass().getResource("/resources/redShip.png"));
+			this.redShipE = redShip;
+			this.redShipNE = this.getRotatedInstance(redShip, Math.toRadians(-45));
+			this.redShipN = this.getRotatedInstance(redShip, Math.toRadians(-90));
+			this.redShipNW = this.getRotatedInstance(redShip, Math.toRadians(-135));
+			this.redShipW = this.getRotatedInstance(redShip, Math.toRadians(180));
+			this.redShipSW = this.getRotatedInstance(redShip, Math.toRadians(135));
+			this.redShipS = this.getRotatedInstance(redShip, Math.toRadians(90));
+			this.redShipSE = this.getRotatedInstance(redShip, Math.toRadians(45));
+
+			BufferedImage greenShip = ImageIO.read(getClass().getResource("/resources/greenShip.png"));
+			this.greenShipE = greenShip;
+			this.greenShipNE = this.getRotatedInstance(greenShip, Math.toRadians(-45));
+			this.greenShipN = this.getRotatedInstance(greenShip, Math.toRadians(-90));
+			this.greenShipNW = this.getRotatedInstance(greenShip, Math.toRadians(-135));
+			this.greenShipW = this.getRotatedInstance(greenShip, Math.toRadians(180));
+			this.greenShipSW = this.getRotatedInstance(greenShip, Math.toRadians(135));
+			this.greenShipS = this.getRotatedInstance(greenShip, Math.toRadians(90));
+			this.greenShipSE = this.getRotatedInstance(greenShip, Math.toRadians(45));
+
+			BufferedImage yellowShip = ImageIO.read(getClass().getResource("/resources/yellowShip.png"));
+			this.yellowShipE = yellowShip;
+			this.yellowShipNE = this.getRotatedInstance(yellowShip, Math.toRadians(-45));
+			this.yellowShipN = this.getRotatedInstance(yellowShip, Math.toRadians(-90));
+			this.yellowShipNW = this.getRotatedInstance(yellowShip, Math.toRadians(-135));
+			this.yellowShipW = this.getRotatedInstance(yellowShip, Math.toRadians(180));
+			this.yellowShipSW = this.getRotatedInstance(yellowShip, Math.toRadians(135));
+			this.yellowShipS = this.getRotatedInstance(yellowShip, Math.toRadians(90));
+			this.yellowShipSE = this.getRotatedInstance(yellowShip, Math.toRadians(45));
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.setPreferredSize(new Dimension(800,800));
+		this.setPreferredSize(new Dimension(800, 800));
 	}
-	public void setMap(Map map) {
-		this.map = map;
+
+	public void setShipPositions(ArrayList<Tuple> ships) {
+		this.ships = ships;
 	}
-	//Paints the background on the panel
+	// Paints the background on the panel
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
-        Graphics2D g2d = (Graphics2D) g;
-		ArrayList<Tuple> ships = map.getShipPositions();
-		for (Tuple tuple : ships) {
+		Graphics2D g2d = (Graphics2D) g;
+		for (Tuple tuple : this.ships) {
 			ShipType type = tuple.getElementAt(ShipType.class, 1);
 			double row = tuple.getElementAt(Double.class, 2);
 			double col = tuple.getElementAt(Double.class, 3);
 			Heading dir = tuple.getElementAt(Heading.class, 4);
 			BufferedImage img = null;
-			double theta;
 			switch (dir) {
-				case NE: 
-					theta = Math.toRadians(-45);
-					break;
-				case N: 
-					theta = Math.toRadians(-90);;
-					break;
-				case NW:
-					theta =  Math.toRadians(-135);
-					break;
-				case W:
-					theta =  Math.toRadians(180);
-					break;
-				case SW:
-					theta =  Math.toRadians(135);
-					break;
-				case S:
-					theta = Math.toRadians(90);
-					break;
-				case SE:
-					theta = Math.toRadians(45);
-					break;
-				default: 
-					theta = 0;
-			}
-			switch (type) {
+			case NE:
+				switch (type) {
 				case RED:
-					img = redShip;
+					img = redShipNE;
 					break;
 				case GREEN:
-					img = greenShip;
+					img = greenShipNE;
 					break;
 				case YELLOW:
-					img = yellowShip;
+					img = yellowShipNE;
 					break;
 				default:
 					System.out.println("Ship img not found");
 					break;
+				}
+				break;
+			case N:
+				switch (type) {
+				case RED:
+					img = redShipN;
+					break;
+				case GREEN:
+					img = greenShipN;
+					break;
+				case YELLOW:
+					img = yellowShipN;
+					break;
+				default:
+					System.out.println("Ship img not found");
+					break;
+				}
+				break;
+			case NW:
+				switch (type) {
+				case RED:
+					img = redShipNW;
+					break;
+				case GREEN:
+					img = greenShipNW;
+					break;
+				case YELLOW:
+					img = yellowShipNW;
+					break;
+				default:
+					System.out.println("Ship img not found");
+					break;
+				}
+				break;
+			case W:
+				switch (type) {
+				case RED:
+					img = redShipW;
+					break;
+				case GREEN:
+					img = greenShipW;
+					break;
+				case YELLOW:
+					img = yellowShipW;
+					break;
+				default:
+					System.out.println("Ship img not found");
+					break;
+				}
+				break;
+			case SW:
+				switch (type) {
+				case RED:
+					img = redShipSW;
+					break;
+				case GREEN:
+					img = greenShipSW;
+					break;
+				case YELLOW:
+					img = yellowShipSW;
+					break;
+				default:
+					System.out.println("Ship img not found");
+					break;
+				}
+				break;
+			case S:
+				switch (type) {
+				case RED:
+					img = redShipS;
+					break;
+				case GREEN:
+					img = greenShipS;
+					break;
+				case YELLOW:
+					img = yellowShipS;
+					break;
+				default:
+					System.out.println("Ship img not found");
+					break;
+				}
+				break;
+			case SE:
+				switch (type) {
+				case RED:
+					img = redShipSE;
+					break;
+				case GREEN:
+					img = greenShipSE;
+					break;
+				case YELLOW:
+					img = yellowShipSE;
+					break;
+				default:
+					System.out.println("Ship img not found");
+					break;
+				}
+				break;
+			default:
+				switch (type) {
+				case RED:
+					img = redShipE;
+					break;
+				case GREEN:
+					img = greenShipE;
+					break;
+				case YELLOW:
+					img = yellowShipE;
+					break;
+				default:
+					System.out.println("Ship img not found7");
+					break;
+				}
 			}
-			double rotationRequired = theta;
-			int w0 = img.getWidth();
-			int h0 = img.getHeight();
-			int centerX = w0 / 2;
-			int centerY = h0 / 2;
-			if (w0 > h0) {
-				centerX = h0 / 2;
-				centerY = h0 / 2;
-			} else if (h0 > w0) {
-				centerX = w0 / 2;
-				centerY = w0 / 2;
-			}
-			AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, centerX, centerY);
-			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-		//g2d.drawImage(op.filter(img, null),x,y, null);
-			g2d.drawImage(op.filter(img, null), getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
-			
-			
-			
-			AffineTransform affineTransform = new AffineTransform();
-			affineTransform.setToQuadrantRotation(1, centerX, centerY);
-			
-			AffineTransformOp opRotated = new AffineTransformOp(affineTransform,
-					AffineTransformOp.TYPE_BILINEAR);
-			
-			BufferedImage transformedImage = new BufferedImage(w0, h0,
-					img.getType());
-			
-			transformedImage = opRotated.filter(img, transformedImage);
-			//g2d.drawImage(transformedImage, getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
+			g2d.drawImage(img, getActualX(col), getActualY(row), getActualX(1) + 1, getActualY(1) + 1, null);
 			
 		}
-		
-		
+		if (!circleId.equals("")) {
+			drawCircle(g);
+		}
 	}
-	//Calculates the ratio between window size and grid size and multiplies it by a given number
+
+	// Calculates the ratio between window size and grid size and multiplies it
+	// by a given number
 	private int getActualY(double k) {
-		return (int) (k * this.getHeight() / map.getHeight());
+		return (int) (k * this.getHeight() / this.mapHeigth);
 	}
 
 	private int getActualX(double col) {
-		return (int) (col * this.getWidth() / map.getWidth());
+		return (int) (col * this.getWidth() / this.mapWidth);
 	}
+
 	public void updateTime(double time) {
-		time = Math.round(time * 100)/100;
+		time = Math.round(time * 100) / 100;
 		int min = (int) (time / 60);
 		int sec = (int) (time % 60);
 		String remaining;
 		if (sec == 0) {
-			remaining = (5-min)+ ":00";
-		}
-		else if (sec > 50) {
-			remaining = (4-min)+ ":0" + (60-sec);
-		}
-		else {
-			remaining = (4-min)+ ":" + (60-sec);
+			remaining = (5 - min) + ":00";
+		} else if (sec > 50) {
+			remaining = (4 - min) + ":0" + (60 - sec);
+		} else {
+			remaining = (4 - min) + ":" + (60 - sec);
 		}
 		this.time.setText("Time: " + remaining);
 	}
-	
-}
 
+	private BufferedImage getRotatedInstance(BufferedImage img, double rotation) {
+		int w0 = img.getWidth();
+		int h0 = img.getHeight();
+		int centerX = w0 / 2;
+		int centerY = h0 / 2;
+		if (w0 > h0) {
+			centerX = h0 / 2;
+			centerY = h0 / 2;
+		} else if (h0 > w0) {
+			centerX = w0 / 2;
+			centerY = w0 / 2;
+		}
+		AffineTransform tx = AffineTransform.getRotateInstance(rotation, centerX, centerY);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+		return op.filter(img, null);
+	}
+	public void drawCircle( Graphics g) {
+		for (Tuple t : ships) {
+			if (t.getElementAt(String.class, 0).equals(circleId)) {
+				double x =  t.getElementAt(Double.class, 3);
+				double y =  t.getElementAt(Double.class, 2);
+				g.setColor(Color.RED);
+				g.drawOval(getActualX(x)-5, getActualY(y)-3, 42, 42);
+			}
+		}
+	}
+	public void setCircleId(String id) {
+		if (this.circleId.equals(id)) {
+			this.circleId = "";
+		}else {
+		this.circleId = id;
+		}
+	}
+	public ArrayList<JButton> getDockButtons() {
+		ArrayList<JButton> d = new ArrayList<>();
+		d.add(dock1);
+		d.add(dock2);
+		d.add(dock3);
+		return d;
+	}
+
+}

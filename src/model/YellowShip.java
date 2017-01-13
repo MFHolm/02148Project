@@ -14,28 +14,6 @@ public class YellowShip extends BasicShip {
 		this.time = 60;
 		this.heading = Heading.E;
 	}
-	
-	@Override
-	public void move() {
-		/*switch(heading){
-		case N:
-			xPos
-			
-		}*/
-		Tuple lock;
-		try {
-			lock = get(Templates.getLockTemp(),mapConnection);
-			/*get(new Template(	new ActualTemplateField(id), 
-								new FormalTemplateField(Integer.class),
-								new FormalTemplateField(Integer.class)),mapConnection);*/
-			System.out.println(id + " moved");
-			put(lock,mapConnection);
-		} catch (InterruptedException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 
 	@Override
 	protected int getMoney(int time) {

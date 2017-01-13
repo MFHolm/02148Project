@@ -42,7 +42,6 @@ public class viewTester {
 		map.getSea().get(t);
 		map.getSea().put(new Tuple("id", ShipType.GREEN, 0,0,Heading.E));
 		gv.update();
-		
 		Thread.sleep(s);
 		map.getSea().get(t);
 		map.getSea().put(new Tuple("id", ShipType.GREEN, 0,0,Heading.E));
