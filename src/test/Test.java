@@ -25,8 +25,8 @@ public class Test {
 			path.add(new Coordinate(7,5));
 			path.add(new Coordinate(6,5));
 			path.add(new Coordinate(5,5));
-			yellowSubmarine.setPath(path);
 			m.addShip(yellowSubmarine);
+			yellowSubmarine.setPath(path);
 			
 			while(true){
 				Thread.sleep(1000);

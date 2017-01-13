@@ -145,12 +145,14 @@ public abstract class BasicShip extends Agent {
 		if (t != null) {
 
 			try {
-				Tuple u = get(Templates.getLockTemp(), mapConnection);
+				Tuple lock = get(Templates.getLockTemp(), mapConnection);
 				get(Templates.getCoordTemp(id), mapConnection);
+				put(new Tuple("free",coord.row,coord.col),mapConnection);
 				coord.row = t.getElementAt(Integer.class, 2);
 				coord.col = t.getElementAt(Integer.class, 3);
+				get(Templates.getFreeCoordTemp(coord.row, coord.col),mapConnection);
 				put(new Tuple(id, shipType, coord.row, coord.col, heading), mapConnection);
-				put(u, mapConnection);
+				put(lock, mapConnection);
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
@@ -225,6 +227,7 @@ public abstract class BasicShip extends Agent {
 
 	protected boolean moveForward(Coordinate nextCoord) {
 		Tuple lock;
+
 		boolean retValue = false;
 		try {
 			lock = get(Templates.getLockTemp(), mapConnection);
@@ -232,11 +235,13 @@ public abstract class BasicShip extends Agent {
 				inTransition = !inTransition;
 				get(Templates.getCoordTemp(id), mapConnection);
 				get(Templates.getCoordTemp(id), mapConnection);
+				put(new Tuple("free",coord.row, coord.col),mapConnection);
 				put(new Tuple(id, shipType, nextCoord.row, nextCoord.col, heading), mapConnection);
 				coord = nextCoord;
 				retValue = true;
 			} else {
 				inTransition = !inTransition;
+				get(Templates.getFreeCoordTemp(nextCoord.row, nextCoord.row),mapConnection);
 				put(new Tuple(id, shipType, nextCoord.row, nextCoord.col, heading), mapConnection);
 				retValue = false;
 			}

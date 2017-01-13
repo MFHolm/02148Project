@@ -12,6 +12,7 @@ public class Templates {
 	
 	
 	public static Template getLockTemp() {
+		System.out.println("getting lock");
 		return new Template(new ActualTemplateField("lock"));
 	}
 	
@@ -21,6 +22,12 @@ public class Templates {
 							new FormalTemplateField(Integer.class),
 							new FormalTemplateField(Integer.class),
 							new FormalTemplateField(Heading.class));
+	}
+	
+	public static Template getFreeCoordTemp(int row, int col) {
+		return new Template(new ActualTemplateField("free"),
+							new ActualTemplateField(row),
+							new ActualTemplateField(col));
 	}
 	
 	public static Template getCoordTemp() {

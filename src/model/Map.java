@@ -22,7 +22,7 @@ public class Map {
 	private int heigth;
 	private MoveMonitor monitor;
 	
-	public Map(VirtualPort vp, int mapHeigth, int mapWidth) {
+	public Map(VirtualPort vp, int mapHeight, int mapWidth) {
 		coordinates = new TupleSpace();
 		this.sea = new Node("sea",coordinates);
 		this.harbour = new Harbour(vp);
@@ -32,12 +32,23 @@ public class Map {
 		sea.addAgent(new SeaAgent("ShipController"));
 		sea.put(new Tuple("lock"));
 		this.width = mapWidth;
-		this.heigth = mapHeigth;
+		this.heigth = mapHeight;
 		this.monitor = new MoveMonitor();
 		
+		initCoordinates();
 		sea.start();
 	}
 	
+	private void initCoordinates() {
+		for(int i = 0; i < getHeight(); i++){
+			for(int j = 0; j < getWidth(); j++){
+				coordinates.put(new Tuple("free",i,j));
+			}
+		}
+		
+	}
+
+
 	public void addShip(BasicShip ship){
 		ship.setMonitor(monitor);
 		//ship.setPath(path);
@@ -46,9 +57,12 @@ public class Map {
 		newShipNode.addAgent(ship);
 		shipNodes.put(ship.getId(),newShipNode);
 		try {
-			Tuple coordLock = coordinates.get(Templates.getLockTemp());
-			coordinates.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
-			coordinates.put(coordLock);
+			System.out.println("what");
+			Tuple coordLock = sea.get(Templates.getLockTemp());
+			System.out.println("the fuck");
+			sea.get(Templates.getFreeCoordTemp(ship.getRow(), ship.getCol()));
+			sea.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
+			sea.put(coordLock);
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -104,7 +118,8 @@ public class Map {
 			
 			try {
 				Tuple lock = get(Templates.getLockTemp(), Self.SELF);
-				get(Templates.getCoordTemp(shipId),Self.SELF);
+				Tuple t = get(Templates.getCoordTemp(shipId),Self.SELF);
+				put(new Tuple("free",t.getElementAt(Integer.class, 2),t.getElementAt(Integer.class, 3)),Self.SELF);
 				put(lock,Self.SELF);
 				
 			} catch (InterruptedException | IOException e) {
