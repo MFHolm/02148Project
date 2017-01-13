@@ -15,6 +15,7 @@ public class Model {
 	}
 
 	public ArrayList<Tuple> getShipPositions() {
+		
 		return this.map.getShipPositions();
 	}
 	

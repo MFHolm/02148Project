@@ -65,6 +65,7 @@ public class Map {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+		monitor.setWaitingFor(shipNodes.size());
 		newShipNode.start();
 		//Delay the thread until the request has been sent
 		try {
@@ -133,6 +134,7 @@ public class Map {
 			}
 			 
 			shipNodes.remove(shipId);
+			monitor.setWaitingFor(shipNodes.size());
 		}
 	}
 
@@ -154,6 +156,8 @@ public class Map {
 
 	//Returns all tuples in the tuple space of sea
 	public ArrayList<Tuple> getShipPositions() {
+		monitor.setWaitingFor(shipNodes.size());
+		monitor.viewUpdateRdy();
 		ArrayList<Tuple> shipPos = new ArrayList<>();
 		ArrayList<Tuple> originals = new ArrayList<>();
 		
