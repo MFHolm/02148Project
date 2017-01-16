@@ -80,7 +80,7 @@ public class GamePanel extends JPanel {
 		this.mapWidth = mapWidth;
 		this.ships = new ArrayList<Tuple>();
 		money = new JLabel("Money:     ");
-		money.setBounds(250, 0, 70,40);
+		money.setBounds(250, 0, 140,40);
 		time = new JLabel("Time:      ");
 		time.setBounds(350, 0, 70,40);
 		circleId = "";
