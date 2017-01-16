@@ -3,7 +3,6 @@ package model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
@@ -114,7 +113,9 @@ public class Map {
 				if(queryp(Templates.getDeclineReqTemp()) != null) { // Checks if we should decline request and remove ship
 					Tuple t = get(Templates.getDeclineReqTemp(),Self.SELF);
 					String shipId = t.getElementAt(String.class, 1);
+					System.out.println("remove " + shipId);
 					declineRequest(shipId);
+					System.out.println("ship removed");
 				}
 				
 			}
@@ -129,8 +130,12 @@ public class Map {
 		public void declineRequest(String shipId) {
 			
 			try {
-				Tuple t = get(Templates.getCoordTemp(shipId),Self.SELF);
-				put(new Tuple("free",t.getElementAt(Integer.class, 2),t.getElementAt(Integer.class, 3)),Self.SELF);
+				Tuple pos1 = get(Templates.getCoordTemp(shipId),Self.SELF);
+				//Two calls to get because ship has two positions in dock
+				Tuple pos2 = get(Templates.getCoordTemp(shipId),Self.SELF);
+				
+				put(new Tuple("free",pos1.getElementAt(Integer.class, 2), pos1.getElementAt(Integer.class, 3)),Self.SELF);
+				put(new Tuple("free",pos2.getElementAt(Integer.class, 2), pos2.getElementAt(Integer.class, 3)),Self.SELF);
 				
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block

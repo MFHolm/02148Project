@@ -41,8 +41,7 @@ public abstract class BasicShip extends Agent {
 		setDocked(false);
 	}
 
-	public boolean move(Coordinate nextCoord) {		
-		
+	public boolean move(Coordinate nextCoord) {
 		Heading curHeading = heading;
 		if (heading == headingNewCoord(nextCoord)) {
 			return moveForward(nextCoord);
@@ -146,11 +145,18 @@ public abstract class BasicShip extends Agent {
 			try {
 				
 				get(Templates.getCoordTemp(id), mapConnection);
+				if (inTransition) {
+					get(Templates.getCoordTemp(id), mapConnection);
+				}
 				put(new Tuple("free",coord.row,coord.col),mapConnection);
 				coord.row = t.getElementAt(Integer.class, 2);
 				coord.col = t.getElementAt(Integer.class, 3);
+				put(new Tuple(id, shipType, coord.row, coord.col, Heading.E), mapConnection);
+				put(new Tuple(id, shipType, coord.row, coord.col+1, Heading.E), mapConnection);
 				get(Templates.getFreeCoordTemp(coord.row, coord.col),mapConnection);
-				put(new Tuple(id, shipType, coord.row, coord.col, heading), mapConnection);
+				get(Templates.getFreeCoordTemp(coord.row, coord.col+1),mapConnection);
+//				put(new Tuple(id, shipType, coord.row, coord.col, heading), mapConnection);
+				emptyPath();
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
@@ -159,6 +165,12 @@ public abstract class BasicShip extends Agent {
 
 		}
 
+	}
+	protected void leaveDock() {
+		
+	}
+	private void emptyPath() {
+		this.path = new LinkedList<>();
 	}
 
 	protected void turnRight() {
@@ -228,7 +240,6 @@ public abstract class BasicShip extends Agent {
 		boolean retValue = false;
 		try {
 			if (inTransition) {
-				
 				inTransition = !inTransition;
 				get(Templates.getCoordTemp(id), mapConnection);
 				get(Templates.getCoordTemp(id), mapConnection);
@@ -262,7 +273,6 @@ public abstract class BasicShip extends Agent {
 			nextCoord = path.get(0);
 		}
 		while (true) {
-			
 			if (!isDocked()) {
 				checkDockPermission();
 				if (nextCoord != null) {
@@ -275,7 +285,6 @@ public abstract class BasicShip extends Agent {
 				//System.out.println(id);
 				monitor.moved();
 			}
-
 		}
 	}
 
