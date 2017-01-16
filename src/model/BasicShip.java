@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
+import org.cmg.resp.knowledge.ActualTemplateField;
+import org.cmg.resp.knowledge.FormalTemplateField;
+import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.knowledge.ts.TupleSpace;
 import org.cmg.resp.topology.PointToPoint;
@@ -31,7 +34,7 @@ public abstract class BasicShip extends Agent {
 	protected int pathIndex = 0;
 	protected int startPathIndex = 0;
 
-	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col) {
+	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col, Heading h) {
 		super(shipId);
 		this.id = shipId;
 		this.vp = vp;
@@ -40,6 +43,7 @@ public abstract class BasicShip extends Agent {
 		this.coord = new Coordinate(row, col);
 		path = new LinkedList<Coordinate>();
 		setDocked(false);
+		this.heading = h;
 	}
 
 	public boolean move(Coordinate nextCoord) {
@@ -269,25 +273,27 @@ public abstract class BasicShip extends Agent {
 
 		makeRequest();
 		Coordinate nextCoord = null;
-		if (path.size() > 0) {
-		nextCoord = path.get(0);
+		if (startPath.size() > 0) {
+			nextCoord = startPath.get(0);
 		}
 		while (true) {
 			if (!isDocked()) {
 				checkDockPermission();
+			}
+			if (!isDocked()) {
 				if (nextCoord != null) {
 					if (move(nextCoord)) {
-//						if (startPathIndex < 2) {
-//							nextCoord = path.get(startPathIndex);
-//							startPathIndex++;
-//						}
-//						else {
+						if (startPathIndex < 1) {
+							nextCoord = path.get(startPathIndex);
+							startPathIndex++;
+						}
+						else {
 						pathIndex = (pathIndex + 1) % path.size();
-						nextCoord = path.get(pathIndex);
+							nextCoord = path.get(pathIndex);
+						}
 					}
-					//System.out.println("Heading: " + heading + " " + coord);
+//					System.out.println("Heading: " + heading + " " + coord);
 				}
-				//System.out.println(id);
 				barrier.moved();
 			}
 		}
@@ -335,6 +341,9 @@ public abstract class BasicShip extends Agent {
 
 	public void setPath(List<Coordinate> path) {
 		this.path = path;
+	}
+	public void setStartPath(List<Coordinate> path) {
+		this.startPath = path;
 	}
 	
 	public void setCoordinates(TupleSpace coordinates) {

@@ -10,6 +10,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -107,7 +108,6 @@ public class GamePanel extends JPanel {
 
 		// this.grid = map.getGrid();
 		try {
-			System.out.println(getClass().getResource("/resources/map.png"));
 			this.background = ImageIO.read(getClass().getResource("/resources/map.png"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -115,12 +115,12 @@ public class GamePanel extends JPanel {
 		}
 		// this.setBackground(new Color(102,200,209));
 		try {
-			this.crane1 = ImageIO.read(getClass().getResource("/resources/crane1.png"));
-			this.crane2 = ImageIO.read(getClass().getResource("/resources/crane2.png"));
-			this.crane3 = ImageIO.read(getClass().getResource("/resources/crane3.png"));
-			this.crane4 = ImageIO.read(getClass().getResource("/resources/crane4.png"));
-			this.crane5 = ImageIO.read(getClass().getResource("/resources/crane5.png"));
-			this.crane6 = ImageIO.read(getClass().getResource("/resources/crane6.png"));
+//			this.crane1 = ImageIO.read(getClass().getResource("/resources/crane1.png"));
+//			this.crane2 = ImageIO.read(getClass().getResource("/resources/crane2.png"));
+//			this.crane3 = ImageIO.read(getClass().getResource("/resources/crane3.png"));
+//			this.crane4 = ImageIO.read(getClass().getResource("/resources/crane4.png"));
+//			this.crane5 = ImageIO.read(getClass().getResource("/resources/crane5.png"));
+//			this.crane6 = ImageIO.read(getClass().getResource("/resources/crane6.png"));
 			
 			BufferedImage redShip = ImageIO.read(getClass().getResource("/resources/redShip.png"));
 			this.redShipE = redShip;
@@ -169,7 +169,7 @@ public class GamePanel extends JPanel {
 		g.drawImage(crane1, getActualX(24), getActualY(9), getActualX(1) + 300 ,  getActualY(1) + 300, null);
 		Graphics2D g2d = (Graphics2D) g;
 		int extra = 0;
-		int n = 10;
+		int n = 0;
 		for (Tuple tuple : this.ships) {
 			ShipType type = tuple.getElementAt(ShipType.class, 1);
 			double row = tuple.getElementAt(Double.class, 2);

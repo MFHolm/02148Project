@@ -8,8 +8,10 @@ import javax.swing.Timer;
 import model.BasicShip;
 import model.Coordinate;
 import model.GreenShip;
+import model.Heading;
 import model.Model;
 import model.RedShip;
+import model.YellowShip;
 import view.GameView;
 import view.MainMenu;
 
@@ -77,77 +79,20 @@ public class MainController {
 //		System.out.println("time: "+ time);
 
 		if (model.getTime() <= 0.5 && model.getTime() >= 0) {
-			RedShip s = new RedShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 23, 12);
-			
-			LinkedList<Coordinate> path = new LinkedList<Coordinate>();
-			path.add(new Coordinate(22,12));
-			path.add(new Coordinate(21,12));
-			path.add(new Coordinate(20,12));
-			path.add(new Coordinate(19,12));
-			path.add(new Coordinate(18,12));
-			path.add(new Coordinate(17,12));
-			path.add(new Coordinate(16,12));
-			path.add(new Coordinate(15,12));
-			path.add(new Coordinate(14,12));
-			path.add(new Coordinate(13,12));
-			path.add(new Coordinate(12,12));
-			path.add(new Coordinate(12,11));
-			path.add(new Coordinate(12,10));
-			path.add(new Coordinate(12,9));
-			path.add(new Coordinate(12,8));
-			path.add(new Coordinate(12,7));
-			path.add(new Coordinate(13,7));
-			path.add(new Coordinate(14,7));
-			path.add(new Coordinate(15,7));
-			path.add(new Coordinate(16,7));
-			path.add(new Coordinate(16,6));
-			path.add(new Coordinate(16,5));
-			path.add(new Coordinate(15,5));
-			path.add(new Coordinate(14,5));
-			path.add(new Coordinate(13,5));
-			path.add(new Coordinate(13,4));
-			path.add(new Coordinate(13,3));
-			path.add(new Coordinate(14,3));
-			path.add(new Coordinate(15,3));
-			path.add(new Coordinate(16,3));
-			path.add(new Coordinate(17,3));
-			path.add(new Coordinate(18,3));
-			path.add(new Coordinate(19,3));
-			path.add(new Coordinate(20,3));
-			path.add(new Coordinate(21,3));
-			path.add(new Coordinate(22,3));
-			path.add(new Coordinate(22,4));
-			path.add(new Coordinate(22,5));
-			path.add(new Coordinate(22,6));
-			path.add(new Coordinate(22,7));
-			path.add(new Coordinate(22,8));
-			path.add(new Coordinate(22,9));
-			path.add(new Coordinate(22,10));
-			path.add(new Coordinate(22,11));
-			
-			s.setPath(path);
-			
+			RedShip s = new RedShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 24, 12, Heading.N);
+			model.assignPath(s, 1);
 			addShip(s);
 			
-			addShip(new RedShip("id2", model.getSeaName(), model.getHarbourName(), Model.getVp(), 2, 3));
+			GreenShip s1 = new GreenShip("id2", model.getSeaName(), model.getHarbourName(), Model.getVp(), 12, 0, Heading.E);
+			model.assignPath(s1, 2);
+			addShip(s1);
 
-			RedShip gs = new RedShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 6, 3);
+			YellowShip s2 = new YellowShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 0, 17, Heading.S);
+			model.assignPath(s2, 3);
+			addShip(s2);
+
 			
-			LinkedList<Coordinate> pathgs = new LinkedList<Coordinate>();
-			pathgs.add(new Coordinate(6,4));
-			pathgs.add(new Coordinate(6,5));
-			pathgs.add(new Coordinate(6,6));
-			pathgs.add(new Coordinate(6,7));
-			pathgs.add(new Coordinate(6,8));
-			pathgs.add(new Coordinate(6,9));
-	
 
-			gs.setPath(pathgs);
-			addShip(gs);
-
-		} else if (model.getTime() <= 3 && model.getTime() >= 2.9) {
-			addShip(new GreenShip("id4", model.getSeaName(), model.getHarbourName(), Model.getVp(), 16, 9));
-			
 		}
 		gView.update(this.model.getShipPositions(), this.model.getRequests());
 		gView.updateTime(model.getTime());
