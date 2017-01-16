@@ -5,10 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
-import org.cmg.resp.knowledge.ActualTemplateField;
-import org.cmg.resp.knowledge.FormalTemplateField;
-import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
+import org.cmg.resp.knowledge.ts.TupleSpace;
 import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
@@ -25,10 +23,13 @@ public abstract class BasicShip extends Agent {
 	protected boolean docked;
 	protected ShipSize size;
 	protected ShipType shipType;
-	protected MoveMonitor monitor;
+	protected BarrierMonitor barrier;
 	protected List<Coordinate> path;
+	protected TupleSpace coordinates;
+	protected List<Coordinate> startPath;
 
 	protected int pathIndex = 0;
+	protected int startPathIndex = 0;
 
 	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col) {
 		super(shipId);
@@ -145,11 +146,18 @@ public abstract class BasicShip extends Agent {
 			try {
 				
 				get(Templates.getCoordTemp(id), mapConnection);
+				if (inTransition) {
+					get(Templates.getCoordTemp(id), mapConnection);
+				}
 				put(new Tuple("free",coord.row,coord.col),mapConnection);
 				coord.row = t.getElementAt(Integer.class, 2);
 				coord.col = t.getElementAt(Integer.class, 3);
+				put(new Tuple(id, shipType, coord.row, coord.col, Heading.E), mapConnection);
+				put(new Tuple(id, shipType, coord.row, coord.col+1, Heading.E), mapConnection);
 				get(Templates.getFreeCoordTemp(coord.row, coord.col),mapConnection);
-				put(new Tuple(id, shipType, coord.row, coord.col, heading), mapConnection);
+				get(Templates.getFreeCoordTemp(coord.row, coord.col+1),mapConnection);
+//				put(new Tuple(id, shipType, coord.row, coord.col, heading), mapConnection);
+				emptyPath();
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
@@ -158,6 +166,12 @@ public abstract class BasicShip extends Agent {
 
 		}
 
+	}
+	protected void leaveDock() {
+		
+	}
+	private void emptyPath() {
+		this.path = new LinkedList<>();
 	}
 
 	protected void turnRight() {
@@ -227,7 +241,6 @@ public abstract class BasicShip extends Agent {
 		boolean retValue = false;
 		try {
 			if (inTransition) {
-				
 				inTransition = !inTransition;
 				get(Templates.getCoordTemp(id), mapConnection);
 				get(Templates.getCoordTemp(id), mapConnection);
@@ -236,9 +249,12 @@ public abstract class BasicShip extends Agent {
 				coord = nextCoord;
 				retValue = true;
 			} else {
-				inTransition = !inTransition;
-				get(Templates.getFreeCoordTemp(nextCoord.row, nextCoord.col),mapConnection);
+				Tuple free = coordinates.getp(Templates.getFreeCoordTemp(nextCoord.row, nextCoord.col));
+				if(free == null){
+					return false;
+				}
 				put(new Tuple(id, shipType, nextCoord.row, nextCoord.col, heading), mapConnection);
+				inTransition = !inTransition;
 				retValue = false;
 			}
 		} catch (InterruptedException | IOException e) {
@@ -253,33 +269,36 @@ public abstract class BasicShip extends Agent {
 
 		makeRequest();
 		Coordinate nextCoord = null;
-		
 		if (path.size() > 0) {
-			nextCoord = path.get(0);
+		nextCoord = path.get(0);
 		}
 		while (true) {
 			if (!isDocked()) {
 				checkDockPermission();
 				if (nextCoord != null) {
 					if (move(nextCoord)) {
+//						if (startPathIndex < 2) {
+//							nextCoord = path.get(startPathIndex);
+//							startPathIndex++;
+//						}
+//						else {
 						pathIndex = (pathIndex + 1) % path.size();
 						nextCoord = path.get(pathIndex);
 					}
 					//System.out.println("Heading: " + heading + " " + coord);
 				}
-				System.out.println(id);
-				monitor.moved();;
+				//System.out.println(id);
+				barrier.moved();
 			}
-
 		}
 	}
 
-	public MoveMonitor getMonitor() {
-		return monitor;
+	public BarrierMonitor getMonitor() {
+		return barrier;
 	}
 
-	public void setMonitor(MoveMonitor monitor) {
-		this.monitor = monitor;
+	public void setMonitor(BarrierMonitor monitor) {
+		this.barrier = monitor;
 	}
 
 	protected int getRow() {
@@ -316,5 +335,9 @@ public abstract class BasicShip extends Agent {
 
 	public void setPath(List<Coordinate> path) {
 		this.path = path;
+	}
+	
+	public void setCoordinates(TupleSpace coordinates) {
+		this.coordinates = coordinates;
 	}
 }

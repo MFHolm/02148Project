@@ -8,8 +8,8 @@ public class RedShip extends BasicShip{
 		super(shipId, mapId, harbourId, vp, row, col);
 		this.size = ShipSize.SMALL;	
 		this.shipType = ShipType.RED;
-		this.time = 30;
-		this.heading = Heading.S;
+		this.time = 5;
+		this.heading = Heading.N;
 	}
 
 

@@ -3,7 +3,7 @@ package model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
@@ -24,7 +24,9 @@ public class Map {
 	private TupleSpace coordinates;
 	private int width;
 	private int heigth;
-	private MoveMonitor monitor;
+	private BarrierMonitor barrier;
+	private ArrayList<LinkedList<Coordinate>> paths;
+	private ArrayList<LinkedList<Coordinate>> startPaths;
 	
 	public Map(VirtualPort vp, int mapHeight, int mapWidth) {
 		coordinates = new TupleSpace();
@@ -36,8 +38,10 @@ public class Map {
 		sea.addAgent(new SeaAgent("ShipController"));
 		this.width = mapWidth;
 		this.heigth = mapHeight;
-		this.monitor = new MoveMonitor();
+		this.barrier = new BarrierMonitor();
+		this.paths = new ArrayList<LinkedList<Coordinate>>();
 		
+		createPaths();
 		initCoordinates();
 		sea.start();
 	}
@@ -49,24 +53,74 @@ public class Map {
 			}
 		}
 	}
+	private void createPaths() {
+		LinkedList<Coordinate> path = new LinkedList<Coordinate>();
+		path.add(new Coordinate(22,12));
+		path.add(new Coordinate(21,12));
+		path.add(new Coordinate(20,12));
+		path.add(new Coordinate(19,12));
+		path.add(new Coordinate(18,12));
+		path.add(new Coordinate(17,12));
+		path.add(new Coordinate(16,12));
+		path.add(new Coordinate(15,12));
+		path.add(new Coordinate(13,12));
+		path.add(new Coordinate(12,12));
+		path.add(new Coordinate(12,11));
+		path.add(new Coordinate(12,10));
+		path.add(new Coordinate(12,9));
+		path.add(new Coordinate(12,8));
+		path.add(new Coordinate(12,7));
+		path.add(new Coordinate(13,7));
+		path.add(new Coordinate(14,7));
+		path.add(new Coordinate(15,7));
+		path.add(new Coordinate(16,7));
+		path.add(new Coordinate(16,6));
+		path.add(new Coordinate(16,5));
+		path.add(new Coordinate(15,5));
+		path.add(new Coordinate(14,5));
+		path.add(new Coordinate(13,5));
+		path.add(new Coordinate(13,4));
+		path.add(new Coordinate(13,3));
+		path.add(new Coordinate(14,3));
+		path.add(new Coordinate(15,3));
+		path.add(new Coordinate(16,3));
+		path.add(new Coordinate(17,3));
+		path.add(new Coordinate(18,3));
+		path.add(new Coordinate(19,3));
+		path.add(new Coordinate(20,3));
+		path.add(new Coordinate(21,3));
+		path.add(new Coordinate(22,3));
+		path.add(new Coordinate(22,4));
+		path.add(new Coordinate(22,5));
+		path.add(new Coordinate(22,6));
+		path.add(new Coordinate(22,7));
+		path.add(new Coordinate(22,8));
+		path.add(new Coordinate(22,9));
+		path.add(new Coordinate(22,10));
+		path.add(new Coordinate(22,11));
+		
+		paths.add(path);
+	}
 
 	public void addShip(BasicShip ship){
-		ship.setMonitor(monitor);
+		ship.setMonitor(barrier);
+		ship.setCoordinates(coordinates);
 		//ship.setPath(path);
 		Node newShipNode = new Node(ship.getId(), new TupleSpace());
 		newShipNode.addPort(vp);
 		newShipNode.addAgent(ship);
 		shipNodes.put(ship.getId(),newShipNode);
+		
 		try {
 			sea.get(Templates.getFreeCoordTemp(ship.getRow(), ship.getCol()));
 			sea.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
-			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		monitor.setWaitingFor(shipNodes.size());
+		barrier.setWaitingFor(shipNodes.size());
 		newShipNode.start();
+		
 		//Delay the thread until the request has been sent
 		try {
 			Tuple t = newShipNode.get(Templates.getReqSentTemp());
@@ -125,8 +179,12 @@ public class Map {
 		public void declineRequest(String shipId) {
 			
 			try {
-				Tuple t = get(Templates.getCoordTemp(shipId),Self.SELF);
-				put(new Tuple("free",t.getElementAt(Integer.class, 2),t.getElementAt(Integer.class, 3)),Self.SELF);
+				Tuple pos1 = get(Templates.getCoordTemp(shipId),Self.SELF);
+				//Two calls to get because ship has two positions in dock
+				Tuple pos2 = get(Templates.getCoordTemp(shipId),Self.SELF);
+				
+				put(new Tuple("free",pos1.getElementAt(Integer.class, 2), pos1.getElementAt(Integer.class, 3)),Self.SELF);
+				put(new Tuple("free",pos2.getElementAt(Integer.class, 2), pos2.getElementAt(Integer.class, 3)),Self.SELF);
 				
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
@@ -134,32 +192,19 @@ public class Map {
 			}
 			 
 			shipNodes.remove(shipId);
-			monitor.setWaitingFor(shipNodes.size());
+			//monitor.setWaitingFor(shipNodes.size());
 		}
 	}
 
-	public ArrayList<Tuple> getFreePositions(){
-		Template freeTemp = new Template( 	new ActualTemplateField("free"),
-											new FormalTemplateField(Integer.class),
-											new FormalTemplateField(Integer.class));
-		
-		ArrayList<Tuple> tupleList = new ArrayList<Tuple>();
-		Tuple t;
-		do{	
-			t= sea.getp(freeTemp);
-			if(t != null)
-				tupleList.add(t);
-		} while(t != null);
-		
-		return tupleList;
-	}
 
 	//Returns all tuples in the tuple space of sea
 	public ArrayList<Tuple> getShipPositions() {
-		monitor.setWaitingFor(shipNodes.size());
-		monitor.viewUpdateRdy();
+		barrier.setWaitingFor(shipNodes.size());
+		barrier.waitingForShips();
 		ArrayList<Tuple> shipPos = new ArrayList<>();
 		ArrayList<Tuple> originals = new ArrayList<>();
+		
+		
 		
 		Template t = Templates.getCoordTemp();
 		Tuple tuple;
@@ -224,7 +269,7 @@ public class Map {
 		return shipNodes;
 	}
 
-	public MoveMonitor getMonitor() {
-		return monitor;
+	public BarrierMonitor getMonitor() {
+		return barrier;
 	}
 }

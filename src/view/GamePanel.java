@@ -20,7 +20,10 @@ import model.Map;
 import model.ShipType;
 
 public class GamePanel extends JPanel {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5206343816254801883L;
 	private ArrayList<Tuple> ships;
 	private BufferedImage background;
 	private Map map;
@@ -51,7 +54,14 @@ public class GamePanel extends JPanel {
 	private BufferedImage yellowShipSW;
 	private BufferedImage yellowShipS;
 	private BufferedImage yellowShipSE;
-
+	
+	private BufferedImage crane1;
+	private BufferedImage crane2;
+	private BufferedImage crane3;
+	private BufferedImage crane4;
+	private BufferedImage crane5;
+	private BufferedImage crane6;
+	
 	private JLabel money;
 	private JLabel time;
 	private int mapHeigth;
@@ -97,6 +107,7 @@ public class GamePanel extends JPanel {
 
 		// this.grid = map.getGrid();
 		try {
+			System.out.println(getClass().getResource("/resources/map.png"));
 			this.background = ImageIO.read(getClass().getResource("/resources/map.png"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -104,6 +115,13 @@ public class GamePanel extends JPanel {
 		}
 		// this.setBackground(new Color(102,200,209));
 		try {
+			this.crane1 = ImageIO.read(getClass().getResource("/resources/crane1.png"));
+			this.crane2 = ImageIO.read(getClass().getResource("/resources/crane2.png"));
+			this.crane3 = ImageIO.read(getClass().getResource("/resources/crane3.png"));
+			this.crane4 = ImageIO.read(getClass().getResource("/resources/crane4.png"));
+			this.crane5 = ImageIO.read(getClass().getResource("/resources/crane5.png"));
+			this.crane6 = ImageIO.read(getClass().getResource("/resources/crane6.png"));
+			
 			BufferedImage redShip = ImageIO.read(getClass().getResource("/resources/redShip.png"));
 			this.redShipE = redShip;
 			this.redShipNE = ImageIO.read(getClass().getResource("/resources/redShipNE.png"));
@@ -148,10 +166,10 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
+		g.drawImage(crane1, getActualX(24), getActualY(9), getActualX(1) + 300 ,  getActualY(1) + 300, null);
 		Graphics2D g2d = (Graphics2D) g;
+		int extra = 0;
 		int n = 10;
-		int width = getActualX(1) + 10;
-		int heigth = getActualY(1) + 10;
 		for (Tuple tuple : this.ships) {
 			ShipType type = tuple.getElementAt(ShipType.class, 1);
 			double row = tuple.getElementAt(Double.class, 2);
@@ -174,8 +192,7 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
-				width = getActualX(1) + n;
-				heigth = getActualY(1) + n;
+				extra = n;
 				break;
 			case N:
 				switch (type) {
@@ -208,8 +225,7 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
-				width = getActualX(1) + n;
-				heigth = getActualY(1) + n;
+				extra = n;
 				break;
 			case W:
 				switch (type) {
@@ -242,8 +258,7 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
-				width = getActualX(1) + n;
-				heigth = getActualY(1) + n;
+				extra = n;
 				break;
 			case S:
 				switch (type) {
@@ -276,8 +291,7 @@ public class GamePanel extends JPanel {
 					System.out.println("Ship img not found");
 					break;
 				}
-				width = getActualX(1) + n;
-				heigth = getActualY(1) + n;
+				extra = n;
 				break;
 			default:
 				switch (type) {
@@ -295,7 +309,7 @@ public class GamePanel extends JPanel {
 					break;
 				}
 			}
-			g2d.drawImage(img, getActualX(col), getActualY(row), width, heigth, null);
+			g2d.drawImage(img, getActualX(col)-extra, getActualY(row)-extra, getActualX(1)+extra+10, getActualY(1)+extra+10, null);
 			
 		}
 		if (!circleId.equals("")) {
@@ -306,11 +320,11 @@ public class GamePanel extends JPanel {
 	// Calculates the ratio between window size and grid size and multiplies it
 	// by a given number
 	private int getActualY(double k) {
-		return (int) (k * this.getHeight() / this.mapHeigth);
+		return (int) (k * this.getHeight() / this.mapHeigth)-4;
 	}
 
 	private int getActualX(double col) {
-		return (int) (col * this.getWidth() / this.mapWidth);
+		return (int) (col * this.getWidth() / this.mapWidth)-4;
 	}
 
 	public void updateTime(double time) {
@@ -327,23 +341,27 @@ public class GamePanel extends JPanel {
 		}
 		this.time.setText("Time: " + remaining);
 	}
-
-	private BufferedImage getRotatedInstance(BufferedImage img, double rotation) {
-		int w0 = img.getWidth();
-		int h0 = img.getHeight();
-		int centerX = w0 / 2;
-		int centerY = h0 / 2;
-		if (w0 > h0) {
-			centerX = h0 / 2;
-			centerY = h0 / 2;
-		} else if (h0 > w0) {
-			centerX = w0 / 2;
-			centerY = w0 / 2;
-		}
-		AffineTransform tx = AffineTransform.getRotateInstance(rotation, centerX, centerY);
-		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-		return op.filter(img, null);
+	
+	public void updateMoney(int money) {
+		this.money.setText("Money: " + money);
 	}
+
+//	private BufferedImage getRotatedInstance(BufferedImage img, double rotation) {
+//		int w0 = img.getWidth();
+//		int h0 = img.getHeight();
+//		int centerX = w0 / 2;
+//		int centerY = h0 / 2;
+//		if (w0 > h0) {
+//			centerX = h0 / 2;
+//			centerY = h0 / 2;
+//		} else if (h0 > w0) {
+//			centerX = w0 / 2;
+//			centerY = w0 / 2;
+//		}
+//		AffineTransform tx = AffineTransform.getRotateInstance(rotation, centerX, centerY);
+//		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+//		return op.filter(img, null);
+//	}
 	public void drawCircle( Graphics g) {
 		for (Tuple t : ships) {
 			if (t.getElementAt(String.class, 0).equals(circleId)) {

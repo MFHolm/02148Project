@@ -1,21 +1,21 @@
 package model;
 
-public class MoveMonitor {
+public class BarrierMonitor {
 	
 	private boolean viewUpdated = false;
 	private int n = 0;
 	private int numOfShips = 0;
 	
-	public MoveMonitor() {
+	public BarrierMonitor() {
 		
 	}
 	
 	public synchronized void moved() {
 		
 		n++;
-		/*if(n == numOfShips) {
+		if(n == numOfShips) {
 			notifyAll();
-		}*/
+		}
 		while(!viewUpdated) {
 			try { wait(); } 
 			catch (InterruptedException e) {
@@ -31,7 +31,7 @@ public class MoveMonitor {
 		notifyAll();
 	}
 
-	/*public synchronized void viewUpdateRdy() {
+	public synchronized void waitingForShips() {
 		while(n < numOfShips) {
 			try {
 				wait();
@@ -44,6 +44,6 @@ public class MoveMonitor {
 
 	public synchronized void setWaitingFor(int size) {
 		numOfShips = size;
-	}*/
+	}
 
 }
