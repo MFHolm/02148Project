@@ -32,7 +32,6 @@ public class Dock {
 		return timeLeft;
 	}
 	public boolean updateDock(double time) {
-		
 		if (timeLeft > 0) {
 			decrementTimeLeft(time);
 			if (timeLeft <= 0) {
