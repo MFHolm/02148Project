@@ -10,17 +10,19 @@ public class Templates {
 		
 	}
 	
-	
-	public static Template getLockTemp() {
-		return new Template(new ActualTemplateField("lock"));
-	}
-	
+
 	public static Template getCoordTemp(String shipId) {
 		return new Template(new ActualTemplateField(shipId),
 							new FormalTemplateField(ShipType.class),
 							new FormalTemplateField(Integer.class),
 							new FormalTemplateField(Integer.class),
 							new FormalTemplateField(Heading.class));
+	}
+	
+	public static Template getFreeCoordTemp(int row, int col) {
+		return new Template(new ActualTemplateField("free"),
+							new ActualTemplateField(row),
+							new ActualTemplateField(col));
 	}
 	
 	public static Template getCoordTemp() {

@@ -101,7 +101,19 @@ public class MainController {
 			
 			addShip(new RedShip("id2", model.getSeaName(), model.getHarbourName(), Model.getVp(), 2, 3));
 
-			addShip(new GreenShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 6, 8));
+			RedShip gs = new RedShip("id3", model.getSeaName(), model.getHarbourName(), Model.getVp(), 6, 3);
+			
+			LinkedList<Coordinate> pathgs = new LinkedList<Coordinate>();
+			pathgs.add(new Coordinate(6,4));
+			pathgs.add(new Coordinate(6,5));
+			pathgs.add(new Coordinate(6,6));
+			pathgs.add(new Coordinate(6,7));
+			pathgs.add(new Coordinate(6,8));
+			pathgs.add(new Coordinate(6,9));
+	
+
+			gs.setPath(pathgs);
+			addShip(gs);
 
 		} else if (model.getTime() <= 3 && model.getTime() >= 2.9) {
 			addShip(new GreenShip("id4", model.getSeaName(), model.getHarbourName(), Model.getVp(), 16, 9));

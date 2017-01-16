@@ -9,7 +9,6 @@ import org.cmg.resp.topology.VirtualPort;
 
 public class Model {
 	private Map map;
-
 	private double time;
 	private int money;
 	private static VirtualPort vp = new VirtualPort(8080);
@@ -30,9 +29,6 @@ public class Model {
 	public void incrementMoney(int money) {
 		this.money += money;
 	}
-	public Map getMap() {
-		return map;
-	}
 	public ArrayList<Tuple> getShipPositions() {
 		return this.map.getShipPositions();
 	}
@@ -42,10 +38,6 @@ public class Model {
 	}
 	public static VirtualPort getVp() {
 		return vp;
-	}
-	
-	public Harbour getHarbour() {
-		return map.getHarbour();
 	}
 	
 	public void acceptRequest(String shipId, String dockId) throws IllegalArgumentException {
@@ -76,7 +68,7 @@ public class Model {
 	
 	//Update time in dock and check if dock is done 
 	public void updateDocks(double t) {
-		for(Entry<String, Dock> entry : this.getHarbour().getDockHashMap().entrySet()) {
+		for(Entry<String, Dock> entry : map.getHarbour().getDockHashMap().entrySet()) {
 		    Dock dock = entry.getValue();
 		    String dockId = entry.getKey();
 		    if (dock.updateDock(t)) {
