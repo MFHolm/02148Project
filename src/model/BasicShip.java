@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.cmg.resp.behaviour.Agent;
+import org.cmg.resp.knowledge.ActualTemplateField;
+import org.cmg.resp.knowledge.FormalTemplateField;
+import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.knowledge.ts.TupleSpace;
 import org.cmg.resp.topology.PointToPoint;
@@ -277,6 +280,11 @@ public abstract class BasicShip extends Agent {
 				checkDockPermission();
 				if (nextCoord != null) {
 					if (move(nextCoord)) {
+//						if (startPathIndex < 2) {
+//							nextCoord = path.get(startPathIndex);
+//							startPathIndex++;
+//						}
+//						else {
 						pathIndex = (pathIndex + 1) % path.size();
 						nextCoord = path.get(pathIndex);
 					}
