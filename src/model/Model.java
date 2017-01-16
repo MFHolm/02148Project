@@ -82,5 +82,8 @@ public class Model {
 		    }
 		}
 	}
+	public int getNumberOfShips() {
+		return map.getShips().size();
+	}
 	
 }

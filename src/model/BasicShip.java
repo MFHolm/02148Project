@@ -149,11 +149,13 @@ public abstract class BasicShip extends Agent {
 
 			try {
 				
-				get(Templates.getCoordTemp(id), mapConnection);
+				Tuple pos1 = get(Templates.getCoordTemp(id), mapConnection);
+				put(new Tuple("free",pos1.getElementAt(Integer.class, 2),pos1.getElementAt(Integer.class, 3)),mapConnection);
 				if (inTransition) {
-					get(Templates.getCoordTemp(id), mapConnection);
+					Tuple pos2 = get(Templates.getCoordTemp(id), mapConnection);
+					put(new Tuple("free",pos2.getElementAt(Integer.class, 2),pos2.getElementAt(Integer.class, 3)),mapConnection);
+					
 				}
-				put(new Tuple("free",coord.row,coord.col),mapConnection);
 				coord.row = t.getElementAt(Integer.class, 2);
 				coord.col = t.getElementAt(Integer.class, 3);
 				put(new Tuple(id, shipType, coord.row, coord.col, Heading.E), mapConnection);
@@ -294,8 +296,8 @@ public abstract class BasicShip extends Agent {
 					}
 //					System.out.println("Heading: " + heading + " " + coord);
 				}
-				monitor.moved();
 			}
+			monitor.moved();
 		}
 	}
 

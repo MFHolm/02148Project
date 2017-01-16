@@ -8,7 +8,7 @@ public class GreenShip extends BasicShip{
 		super(shipId, mapId, harbourId, vp, row, col, h);
 		this.size = ShipSize.SMALL;	
 		this.shipType = ShipType.GREEN;
-		this.time = 50;
+		this.time = 10;
 	}
 
 

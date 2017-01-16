@@ -11,7 +11,7 @@ public class YellowShip extends BasicShip {
 		super(id,mapId,harbourId,vp,row,col, h);
 		this.size = ShipSize.SMALL;	
 		this.shipType = ShipType.YELLOW;
-		this.time = 60;
+		this.time = 20;
 	}
 
 	@Override
