@@ -39,6 +39,7 @@ public class Map {
 		this.width = mapWidth;
 		this.heigth = mapHeight;
 		this.monitor = new MoveMonitor();
+		this.paths = new ArrayList<LinkedList<Coordinate>>();
 		
 		createPaths();
 		initCoordinates();
@@ -98,7 +99,7 @@ public class Map {
 		path.add(new Coordinate(22,10));
 		path.add(new Coordinate(22,11));
 		
-//		paths.add(path);
+		paths.add(path);
 	}
 
 	public void addShip(BasicShip ship){

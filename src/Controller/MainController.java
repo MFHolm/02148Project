@@ -88,6 +88,7 @@ public class MainController {
 			path.add(new Coordinate(17,12));
 			path.add(new Coordinate(16,12));
 			path.add(new Coordinate(15,12));
+			path.add(new Coordinate(14,12));
 			path.add(new Coordinate(13,12));
 			path.add(new Coordinate(12,12));
 			path.add(new Coordinate(12,11));
