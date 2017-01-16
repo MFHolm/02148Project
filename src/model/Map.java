@@ -34,6 +34,7 @@ public class Map {
 		this.vp = vp;
 		sea.addPort(vp);
 		sea.addAgent(new SeaAgent("ShipController"));
+		sea.put(new Tuple("lock"));
 		this.width = mapWidth;
 		this.heigth = mapHeight;
 		this.monitor = new MoveMonitor();
@@ -52,21 +53,24 @@ public class Map {
 
 	public void addShip(BasicShip ship){
 		ship.setMonitor(monitor);
+		ship.setCoordinates(coordinates);
 		//ship.setPath(path);
 		Node newShipNode = new Node(ship.getId(), new TupleSpace());
 		newShipNode.addPort(vp);
 		newShipNode.addAgent(ship);
 		shipNodes.put(ship.getId(),newShipNode);
+		
 		try {
 			sea.get(Templates.getFreeCoordTemp(ship.getRow(), ship.getCol()));
 			sea.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
-			
-		} catch (InterruptedException e) {
+		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		//monitor.setWaitingFor(shipNodes.size());
+			e1.printStackTrace();
+		}
+
+		monitor.setWaitingFor(shipNodes.size());
 		newShipNode.start();
+		
 		//Delay the thread until the request has been sent
 		try {
 			Tuple t = newShipNode.get(Templates.getReqSentTemp());
@@ -138,28 +142,15 @@ public class Map {
 		}
 	}
 
-	public ArrayList<Tuple> getFreePositions(){
-		Template freeTemp = new Template( 	new ActualTemplateField("free"),
-											new FormalTemplateField(Integer.class),
-											new FormalTemplateField(Integer.class));
-		
-		ArrayList<Tuple> tupleList = new ArrayList<Tuple>();
-		Tuple t;
-		do{	
-			t= sea.getp(freeTemp);
-			if(t != null)
-				tupleList.add(t);
-		} while(t != null);
-		
-		return tupleList;
-	}
 
 	//Returns all tuples in the tuple space of sea
 	public ArrayList<Tuple> getShipPositions() {
-		//monitor.setWaitingFor(shipNodes.size());
-		//monitor.viewUpdateRdy();
+		monitor.setWaitingFor(shipNodes.size());
+		monitor.waitingForShips();
 		ArrayList<Tuple> shipPos = new ArrayList<>();
 		ArrayList<Tuple> originals = new ArrayList<>();
+		
+		
 		
 		Template t = Templates.getCoordTemp();
 		Tuple tuple;
@@ -193,6 +184,8 @@ public class Map {
 		for (Tuple s : originals) {
 			sea.put(s);
 		}
+		
+		//sea.put(new Tuple("lock"));
 		
 		return shipPos;
 	}

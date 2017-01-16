@@ -89,4 +89,9 @@ public class Templates {
 	public static Template getViewUpdatedTemp() {
 		return new Template(new ActualTemplateField("viewUpdated"));
 	}
+
+
+	public static Template getLockTemp() {
+		return new Template(new ActualTemplateField("lock"));
+	}
 }
