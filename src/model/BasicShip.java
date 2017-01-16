@@ -27,8 +27,10 @@ public abstract class BasicShip extends Agent {
 	protected ShipType shipType;
 	protected MoveMonitor monitor;
 	protected List<Coordinate> path;
+	protected List<Coordinate> startPath;
 
 	protected int pathIndex = 0;
+	protected int startPathIndex = 0;
 
 	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col) {
 		super(shipId);
@@ -265,9 +267,8 @@ public abstract class BasicShip extends Agent {
 
 		makeRequest();
 		Coordinate nextCoord = null;
-		
 		if (path.size() > 0) {
-			nextCoord = path.get(0);
+		nextCoord = path.get(0);
 		}
 		while (true) {
 			if (!isDocked()) {
@@ -276,8 +277,14 @@ public abstract class BasicShip extends Agent {
 			if (!isDocked()) {
 				if (nextCoord != null) {
 					if (move(nextCoord)) {
+//						if (startPathIndex < 2) {
+//							nextCoord = path.get(startPathIndex);
+//							startPathIndex++;
+//						}
+//						else {
 						pathIndex = (pathIndex + 1) % path.size();
-						nextCoord = path.get(pathIndex);
+							nextCoord = path.get(pathIndex);
+//						}
 					}
 //					System.out.println("Heading: " + heading + " " + coord);
 				}
