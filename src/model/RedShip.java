@@ -9,7 +9,7 @@ public class RedShip extends BasicShip{
 		this.size = ShipSize.SMALL;	
 		this.shipType = ShipType.RED;
 		this.time = 5;
-		this.heading = Heading.S;
+		this.heading = Heading.N;
 	}
 
 

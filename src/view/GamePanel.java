@@ -104,7 +104,7 @@ public class GamePanel extends JPanel {
 
 		// this.grid = map.getGrid();
 		try {
-			this.background = ImageIO.read(getClass().getResource("/resources/mapNoCrane.png"));
+			this.background = ImageIO.read(getClass().getResource("/resources/map.png"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

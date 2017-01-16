@@ -1,7 +1,6 @@
 package Controller;
 
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import javax.swing.Timer;
@@ -11,7 +10,6 @@ import model.Coordinate;
 import model.GreenShip;
 import model.Model;
 import model.RedShip;
-import model.YellowShip;
 import view.GameView;
 import view.MainMenu;
 
@@ -79,22 +77,54 @@ public class MainController {
 //		System.out.println("time: "+ time);
 
 		if (model.getTime() <= 0.5 && model.getTime() >= 0) {
-			RedShip s = new RedShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 5, 5);
-			
+			RedShip s = new RedShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 23, 12);
 			
 			LinkedList<Coordinate> path = new LinkedList<Coordinate>();
-			path.add(new Coordinate(5,6));
-			path.add(new Coordinate(5,7));
-			path.add(new Coordinate(5,8));
-			path.add(new Coordinate(6,8));
-			path.add(new Coordinate(7,8));
-			path.add(new Coordinate(8,8));
-			path.add(new Coordinate(8,7));
-			path.add(new Coordinate(8,6));
-			path.add(new Coordinate(8,5));
-			path.add(new Coordinate(7,5));
-			path.add(new Coordinate(6,5));
-			path.add(new Coordinate(5,5));
+			path.add(new Coordinate(22,12));
+			path.add(new Coordinate(21,12));
+			path.add(new Coordinate(20,12));
+			path.add(new Coordinate(19,12));
+			path.add(new Coordinate(18,12));
+			path.add(new Coordinate(17,12));
+			path.add(new Coordinate(16,12));
+			path.add(new Coordinate(15,12));
+			path.add(new Coordinate(14,12));
+			path.add(new Coordinate(13,12));
+			path.add(new Coordinate(12,12));
+			path.add(new Coordinate(12,11));
+			path.add(new Coordinate(12,10));
+			path.add(new Coordinate(12,9));
+			path.add(new Coordinate(12,8));
+			path.add(new Coordinate(12,7));
+			path.add(new Coordinate(13,7));
+			path.add(new Coordinate(14,7));
+			path.add(new Coordinate(15,7));
+			path.add(new Coordinate(16,7));
+			path.add(new Coordinate(16,6));
+			path.add(new Coordinate(16,5));
+			path.add(new Coordinate(15,5));
+			path.add(new Coordinate(14,5));
+			path.add(new Coordinate(13,5));
+			path.add(new Coordinate(13,4));
+			path.add(new Coordinate(13,3));
+			path.add(new Coordinate(14,3));
+			path.add(new Coordinate(15,3));
+			path.add(new Coordinate(16,3));
+			path.add(new Coordinate(17,3));
+			path.add(new Coordinate(18,3));
+			path.add(new Coordinate(19,3));
+			path.add(new Coordinate(20,3));
+			path.add(new Coordinate(21,3));
+			path.add(new Coordinate(22,3));
+			path.add(new Coordinate(22,4));
+			path.add(new Coordinate(22,5));
+			path.add(new Coordinate(22,6));
+			path.add(new Coordinate(22,7));
+			path.add(new Coordinate(22,8));
+			path.add(new Coordinate(22,9));
+			path.add(new Coordinate(22,10));
+			path.add(new Coordinate(22,11));
+			
 			s.setPath(path);
 			
 			addShip(s);
