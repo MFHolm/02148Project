@@ -27,7 +27,6 @@ import javax.swing.SpringLayout;
 
 import org.cmg.resp.knowledge.Tuple;
 
-import layout.SpringUtilities;
 import model.Harbour;
 import model.ShipType;
 

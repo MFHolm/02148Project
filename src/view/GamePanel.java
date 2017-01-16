@@ -51,7 +51,14 @@ public class GamePanel extends JPanel {
 	private BufferedImage yellowShipSW;
 	private BufferedImage yellowShipS;
 	private BufferedImage yellowShipSE;
-
+	
+	private BufferedImage crane1;
+	private BufferedImage crane2;
+	private BufferedImage crane3;
+	private BufferedImage crane4;
+	private BufferedImage crane5;
+	private BufferedImage crane6;
+	
 	private JLabel money;
 	private JLabel time;
 	private int mapHeigth;
@@ -97,13 +104,20 @@ public class GamePanel extends JPanel {
 
 		// this.grid = map.getGrid();
 		try {
-			this.background = ImageIO.read(getClass().getResource("/resources/map.png"));
+			this.background = ImageIO.read(getClass().getResource("/resources/mapNoCrane.png"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		// this.setBackground(new Color(102,200,209));
 		try {
+			this.crane1 = ImageIO.read(getClass().getResource("/resources/crane1.png"));
+			this.crane2 = ImageIO.read(getClass().getResource("/resources/crane2.png"));
+			this.crane3 = ImageIO.read(getClass().getResource("/resources/crane3.png"));
+			this.crane4 = ImageIO.read(getClass().getResource("/resources/crane4.png"));
+			this.crane5 = ImageIO.read(getClass().getResource("/resources/crane5.png"));
+			this.crane6 = ImageIO.read(getClass().getResource("/resources/crane6.png"));
+			
 			BufferedImage redShip = ImageIO.read(getClass().getResource("/resources/redShip.png"));
 			this.redShipE = redShip;
 			this.redShipNE = ImageIO.read(getClass().getResource("/resources/redShipNE.png"));
@@ -148,6 +162,7 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), null);
+		g.drawImage(crane1, getActualX(24), getActualY(9), getActualX(1) + 300 ,  getActualY(1) + 300, null);
 		Graphics2D g2d = (Graphics2D) g;
 		int extra = 0;
 		int n = 10;
