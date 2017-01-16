@@ -7,12 +7,9 @@ import java.util.LinkedList;
 
 import org.cmg.resp.behaviour.Agent;
 import org.cmg.resp.comp.Node;
-import org.cmg.resp.knowledge.ActualTemplateField;
-import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
 import org.cmg.resp.knowledge.ts.TupleSpace;
-import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
 
@@ -24,7 +21,7 @@ public class Map {
 	private TupleSpace coordinates;
 	private int width;
 	private int heigth;
-	private MoveMonitor monitor;
+	private BarrierMonitor barrier;
 	private ArrayList<LinkedList<Coordinate>> paths;
 	private ArrayList<LinkedList<Coordinate>> startPaths;
 	
@@ -36,10 +33,9 @@ public class Map {
 		this.vp = vp;
 		sea.addPort(vp);
 		sea.addAgent(new SeaAgent("ShipController"));
-		sea.put(new Tuple("lock"));
 		this.width = mapWidth;
 		this.heigth = mapHeight;
-		this.monitor = new MoveMonitor();
+		this.barrier = new BarrierMonitor();
 		this.paths = new ArrayList<LinkedList<Coordinate>>();
 		
 		createPaths();
@@ -227,7 +223,7 @@ public class Map {
 	}
 
 	public void addShip(BasicShip ship){
-		ship.setMonitor(monitor);
+		ship.setMonitor(barrier);
 		ship.setCoordinates(coordinates);
 		//ship.setPath(path);
 		Node newShipNode = new Node(ship.getId(), new TupleSpace());
@@ -238,12 +234,11 @@ public class Map {
 		try {
 			sea.get(Templates.getFreeCoordTemp(ship.getRow(), ship.getCol()));
 			sea.put(new Tuple(ship.getId(),ship.getType(),ship.getRow(),ship.getCol(),ship.getHeading()));
-		} catch (InterruptedException e1) {
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		monitor.setWaitingFor(shipNodes.size());
+			e.printStackTrace();
+		}	
+		barrier.setWaitingFor(shipNodes.size());
 		newShipNode.start();
 		
 		//Delay the thread until the request has been sent
@@ -289,9 +284,7 @@ public class Map {
 				if(queryp(Templates.getDeclineReqTemp()) != null) { // Checks if we should decline request and remove ship
 					Tuple t = get(Templates.getDeclineReqTemp(),Self.SELF);
 					String shipId = t.getElementAt(String.class, 1);
-					System.out.println("remove " + shipId);
 					declineRequest(shipId);
-					System.out.println("ship removed");
 				}
 				
 			}
@@ -326,8 +319,8 @@ public class Map {
 
 	//Returns all tuples in the tuple space of sea
 	public ArrayList<Tuple> getShipPositions() {
-		monitor.setWaitingFor(shipNodes.size());
-		monitor.waitingForShips();
+		barrier.setWaitingFor(shipNodes.size());
+		barrier.waitingForShips();
 		ArrayList<Tuple> shipPos = new ArrayList<>();
 		ArrayList<Tuple> originals = new ArrayList<>();
 		
@@ -366,8 +359,6 @@ public class Map {
 			sea.put(s);
 		}
 		
-		//sea.put(new Tuple("lock"));
-		
 		return shipPos;
 	}
 
@@ -398,7 +389,7 @@ public class Map {
 		return shipNodes;
 	}
 
-	public MoveMonitor getMonitor() {
-		return monitor;
+	public BarrierMonitor getMonitor() {
+		return barrier;
 	}
 }

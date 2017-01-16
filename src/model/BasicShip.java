@@ -26,7 +26,7 @@ public abstract class BasicShip extends Agent {
 	protected boolean docked;
 	protected ShipSize size;
 	protected ShipType shipType;
-	protected MoveMonitor monitor;
+	protected BarrierMonitor barrier;
 	protected List<Coordinate> path;
 	protected TupleSpace coordinates;
 	protected List<Coordinate> startPath;
@@ -296,17 +296,18 @@ public abstract class BasicShip extends Agent {
 					}
 //					System.out.println("Heading: " + heading + " " + coord);
 				}
+
 			}
-			monitor.moved();
+			barrier.moved();
 		}
 	}
 
-	public MoveMonitor getMonitor() {
-		return monitor;
+	public BarrierMonitor getMonitor() {
+		return barrier;
 	}
 
-	public void setMonitor(MoveMonitor monitor) {
-		this.monitor = monitor;
+	public void setMonitor(BarrierMonitor monitor) {
+		this.barrier = monitor;
 	}
 
 	protected int getRow() {

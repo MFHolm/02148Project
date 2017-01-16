@@ -1,12 +1,12 @@
 package model;
 
-public class MoveMonitor {
+public class BarrierMonitor {
 	
 	private boolean viewUpdated = false;
 	private int n = 0;
 	private int numOfShips = 0;
 	
-	public MoveMonitor() {
+	public BarrierMonitor() {
 		
 	}
 	

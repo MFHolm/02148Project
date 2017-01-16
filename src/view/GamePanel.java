@@ -21,7 +21,10 @@ import model.Map;
 import model.ShipType;
 
 public class GamePanel extends JPanel {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5206343816254801883L;
 	private ArrayList<Tuple> ships;
 	private BufferedImage background;
 	private Map map;
