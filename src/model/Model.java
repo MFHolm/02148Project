@@ -22,6 +22,7 @@ public class Model {
 	public LinkedList<Tuple> getRequests() {
 		return this.map.getHarbour().getRequests();
 	}
+	
 	public static VirtualPort getVp() {
 		return vp;
 	}
