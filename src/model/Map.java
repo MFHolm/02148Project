@@ -63,6 +63,7 @@ public class Map {
 		path.add(new Coordinate(17,12));
 		path.add(new Coordinate(16,12));
 		path.add(new Coordinate(15,12));
+		path.add(new Coordinate(14,12));
 		path.add(new Coordinate(13,12));
 		path.add(new Coordinate(12,12));
 		path.add(new Coordinate(12,11));
@@ -98,8 +99,130 @@ public class Map {
 		path.add(new Coordinate(22,9));
 		path.add(new Coordinate(22,10));
 		path.add(new Coordinate(22,11));
-		
 		paths.add(path);
+		
+		path = new LinkedList<Coordinate>();
+		path.add(new Coordinate(23,12));
+		paths.add(path);
+		
+		
+		path = new LinkedList<Coordinate>();
+		path.add(new Coordinate(12,2));
+		path.add(new Coordinate(12,3));
+		path.add(new Coordinate(12,4));
+		path.add(new Coordinate(12,5));
+		path.add(new Coordinate(12,6));
+		path.add(new Coordinate(13,6));
+		path.add(new Coordinate(14,6));
+		path.add(new Coordinate(15,6));
+		path.add(new Coordinate(15,7));
+		path.add(new Coordinate(15,8));
+		path.add(new Coordinate(15,9));
+		path.add(new Coordinate(15,10));
+		path.add(new Coordinate(15,11));
+		path.add(new Coordinate(14,11));
+		path.add(new Coordinate(13,11));
+		path.add(new Coordinate(12,11));
+		path.add(new Coordinate(11,11));
+		path.add(new Coordinate(10,11));
+		path.add(new Coordinate(9,11));
+		path.add(new Coordinate(8,11));
+		path.add(new Coordinate(7,11));
+		path.add(new Coordinate(6,11));
+		path.add(new Coordinate(5,11));
+		path.add(new Coordinate(4,11));
+		path.add(new Coordinate(3,11));
+		path.add(new Coordinate(3,10));
+		path.add(new Coordinate(3,9));
+		path.add(new Coordinate(3,8));
+		path.add(new Coordinate(3,7));
+		path.add(new Coordinate(3,6));
+		path.add(new Coordinate(3,5));
+		path.add(new Coordinate(3,4));
+		path.add(new Coordinate(3,3));
+		path.add(new Coordinate(3,2));
+		path.add(new Coordinate(4,2));
+		path.add(new Coordinate(5,2));
+		path.add(new Coordinate(6,2));
+		path.add(new Coordinate(7,2));
+		path.add(new Coordinate(8,2));
+		path.add(new Coordinate(9,2));
+		path.add(new Coordinate(10,2));
+		path.add(new Coordinate(11,2));
+		paths.add(path);
+		
+		path = new LinkedList<Coordinate>();
+		path.add(new Coordinate(12,1));
+		paths.add(path);
+		
+		path = new LinkedList<Coordinate>();
+		path.add(new Coordinate(2,17));
+		path.add(new Coordinate(3,17));
+		path.add(new Coordinate(4,17));
+		path.add(new Coordinate(5,17));
+		path.add(new Coordinate(6,17));
+		path.add(new Coordinate(7,17));
+		path.add(new Coordinate(7,16));
+		path.add(new Coordinate(7,15));
+		path.add(new Coordinate(7,14));
+		path.add(new Coordinate(7,13));
+		path.add(new Coordinate(7,12));
+		path.add(new Coordinate(7,11));
+		path.add(new Coordinate(7,10));
+		path.add(new Coordinate(7,9));
+		path.add(new Coordinate(7,8));
+		path.add(new Coordinate(7,7));
+		path.add(new Coordinate(7,6));
+		path.add(new Coordinate(7,5));
+		path.add(new Coordinate(7,4));
+		path.add(new Coordinate(7,3));
+		path.add(new Coordinate(7,2));
+		path.add(new Coordinate(7,1));
+		path.add(new Coordinate(6,1));
+		path.add(new Coordinate(5,1));
+		path.add(new Coordinate(4,1));
+		path.add(new Coordinate(3,1));
+		path.add(new Coordinate(2,1));
+		path.add(new Coordinate(2,2));
+		path.add(new Coordinate(2,3));
+		path.add(new Coordinate(2,4));
+		path.add(new Coordinate(2,5));
+		path.add(new Coordinate(2,6));
+		path.add(new Coordinate(2,7));
+		path.add(new Coordinate(2,8));
+		path.add(new Coordinate(2,9));
+		path.add(new Coordinate(2,10));
+		path.add(new Coordinate(2,11));
+		path.add(new Coordinate(2,12));
+		path.add(new Coordinate(2,13));
+		path.add(new Coordinate(2,14));
+		path.add(new Coordinate(2,15));
+		path.add(new Coordinate(2,16));
+		paths.add(path);
+		
+		path = new LinkedList<Coordinate>();
+		path.add(new Coordinate(1,17));
+		paths.add(path);
+		
+		
+	}
+	public void assignPath(BasicShip ship, int i) {
+		switch (i) {
+			case 1: 
+			ship.setPath(paths.get(0));
+			ship.setStartPath(paths.get(1));
+			break;
+			case 2: 
+				ship.setPath(paths.get(2));
+				ship.setStartPath(paths.get(3));
+				break;
+			case 3: 
+				ship.setPath(paths.get(4));
+				ship.setStartPath(paths.get(5));
+				break;
+			default : 
+				System.out.println("Path not found");
+		}
 	}
 
 	public void addShip(BasicShip ship){

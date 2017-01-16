@@ -32,13 +32,14 @@ public abstract class BasicShip extends Agent {
 	protected int pathIndex = 0;
 	protected int startPathIndex = 0;
 
-	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col) {
+	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col, Heading h) {
 		super(shipId);
 		this.id = shipId;
 		this.vp = vp;
 		this.mapConnection = new PointToPoint(mapId, vp.getAddress());
 		this.harbourConnection = new PointToPoint(harbourId, vp.getAddress());
 		this.coord = new Coordinate(row, col);
+		this.heading = h;
 		path = new LinkedList<Coordinate>();
 		setDocked(false);
 	}
@@ -267,8 +268,8 @@ public abstract class BasicShip extends Agent {
 
 		makeRequest();
 		Coordinate nextCoord = null;
-		if (path.size() > 0) {
-		nextCoord = path.get(0);
+		if (startPath.size() > 0) {
+			nextCoord = startPath.get(0);
 		}
 		while (true) {
 			if (!isDocked()) {
@@ -277,14 +278,14 @@ public abstract class BasicShip extends Agent {
 			if (!isDocked()) {
 				if (nextCoord != null) {
 					if (move(nextCoord)) {
-//						if (startPathIndex < 2) {
-//							nextCoord = path.get(startPathIndex);
-//							startPathIndex++;
-//						}
-//						else {
+						if (startPathIndex < 1) {
+							nextCoord = path.get(startPathIndex);
+							startPathIndex++;
+						}
+						else {
 						pathIndex = (pathIndex + 1) % path.size();
 							nextCoord = path.get(pathIndex);
-//						}
+						}
 					}
 //					System.out.println("Heading: " + heading + " " + coord);
 				}
@@ -335,5 +336,8 @@ public abstract class BasicShip extends Agent {
 
 	public void setPath(List<Coordinate> path) {
 		this.path = path;
+	}
+	public void setStartPath(List<Coordinate> path) {
+		this.startPath = path;
 	}
 }

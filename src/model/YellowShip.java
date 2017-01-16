@@ -7,12 +7,11 @@ import org.cmg.resp.topology.VirtualPort;
 
 public class YellowShip extends BasicShip {
 
-	public YellowShip(String id, String mapId, String harbourId, VirtualPort vp, int row, int col){
-		super(id,mapId,harbourId,vp,row,col);
+	public YellowShip(String id, String mapId, String harbourId, VirtualPort vp, int row, int col, Heading h){
+		super(id,mapId,harbourId,vp,row,col, h);
 		this.size = ShipSize.SMALL;	
 		this.shipType = ShipType.YELLOW;
 		this.time = 60;
-		this.heading = Heading.E;
 	}
 
 	@Override

@@ -56,6 +56,9 @@ public class Model {
 	public void addShip(BasicShip ship) {
 		map.addShip(ship);
 	}
+	public void assignPath(BasicShip ship, int i) {
+		map.assignPath(ship, i);
+	}
 	
 	
 	public String getSeaName() {

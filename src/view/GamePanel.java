@@ -165,7 +165,7 @@ public class GamePanel extends JPanel {
 		g.drawImage(crane1, getActualX(24), getActualY(9), getActualX(1) + 300 ,  getActualY(1) + 300, null);
 		Graphics2D g2d = (Graphics2D) g;
 		int extra = 0;
-		int n = 10;
+		int n = 0;
 		for (Tuple tuple : this.ships) {
 			ShipType type = tuple.getElementAt(ShipType.class, 1);
 			double row = tuple.getElementAt(Double.class, 2);
