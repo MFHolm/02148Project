@@ -69,7 +69,6 @@ public class MainController {
 	}
 	private void updateRequests() {
 		gView.getRequestPanel().setRequests(this.model.getRequests());
-		System.out.println(this.model.getRequests());
 		gView.getRequestPanel().clear();
 		gView.getRequestPanel().update();
 		gView.getRequestPanel().repaint();
@@ -113,7 +112,6 @@ public class MainController {
 		Random r = new Random();
 		int ship = r.nextInt(3);
 		int path = r.nextInt(3);
-		System.out.println("ship: "+ ship + " path: " + path);
 		switch (ship) {
 		case 0:
 			RedShip s = null;
@@ -181,7 +179,6 @@ public class MainController {
 				this.gView.getGamePanel().setCircleId(ship);
 				this.gView.getRequestPanel().setMarkedID(ship);
 				updateRequests();
-				System.out.println(dock + " has been assigned to " + ship);
 			}
 			catch (IllegalArgumentException e) {
 				System.out.println(e.getMessage());

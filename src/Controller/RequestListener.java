@@ -33,7 +33,6 @@ public class RequestListener implements ActionListener {
 		init();
 		
 		
-		System.out.println("clicked: " + id);
 		mainC.gView.getGamePanel().setCircleId(id);
 	}
 }
