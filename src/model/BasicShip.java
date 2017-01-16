@@ -47,6 +47,8 @@ public abstract class BasicShip extends Agent {
 	}
 
 	public boolean move(Coordinate nextCoord) {
+		System.out.println("pos: " + coord);
+		System.out.println("trying to move to "+ nextCoord + " heading: "+ heading);
 		Heading curHeading = heading;
 		if (heading == headingNewCoord(nextCoord)) {
 			return moveForward(nextCoord);
@@ -100,7 +102,7 @@ public abstract class BasicShip extends Agent {
 				e.printStackTrace();
 			}
 		}
-
+		System.out.println("done moving");
 		return false;
 	}
 
@@ -150,26 +152,26 @@ public abstract class BasicShip extends Agent {
 			try {
 				
 				Tuple pos1 = get(Templates.getCoordTemp(id), mapConnection);
+				System.out.println("adding free to row" + pos1.getElementAt(Integer.class, 2) + " col: " + pos1.getElementAt(Integer.class, 3));
 				put(new Tuple("free",pos1.getElementAt(Integer.class, 2),pos1.getElementAt(Integer.class, 3)),mapConnection);
 				if (inTransition) {
 					Tuple pos2 = get(Templates.getCoordTemp(id), mapConnection);
 					put(new Tuple("free",pos2.getElementAt(Integer.class, 2),pos2.getElementAt(Integer.class, 3)),mapConnection);
+					System.out.println("adding free to row" + pos2.getElementAt(Integer.class, 2) + " col: " + pos2.getElementAt(Integer.class, 3));
 					
 				}
-				coord.row = t.getElementAt(Integer.class, 2);
-				coord.col = t.getElementAt(Integer.class, 3);
+				coord = new Coordinate(t.getElementAt(Integer.class, 2),t.getElementAt(Integer.class, 3));
 				put(new Tuple(id, shipType, coord.row, coord.col, Heading.E), mapConnection);
 				put(new Tuple(id, shipType, coord.row, coord.col+1, Heading.E), mapConnection);
 				get(Templates.getFreeCoordTemp(coord.row, coord.col),mapConnection);
 				get(Templates.getFreeCoordTemp(coord.row, coord.col+1),mapConnection);
 //				put(new Tuple(id, shipType, coord.row, coord.col, heading), mapConnection);
-				emptyPath();
+//				emptyPath();gg
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 
 	}
@@ -244,30 +246,35 @@ public abstract class BasicShip extends Agent {
 
 	protected boolean moveForward(Coordinate nextCoord) {
 		
-		boolean retValue = false;
+		boolean hasMoved = false;
 		try {
 			if (inTransition) {
 				inTransition = !inTransition;
+				System.out.println("trying to get");
 				get(Templates.getCoordTemp(id), mapConnection);
 				get(Templates.getCoordTemp(id), mapConnection);
+				System.out.println("got");
 				put(new Tuple("free",coord.row, coord.col),mapConnection);
 				put(new Tuple(id, shipType, nextCoord.row, nextCoord.col, heading), mapConnection);
 				coord = nextCoord;
-				retValue = true;
+				hasMoved = true;
 			} else {
 				Tuple free = coordinates.getp(Templates.getFreeCoordTemp(nextCoord.row, nextCoord.col));
+				System.out.println(free);
 				if(free == null){
+					System.out.println("row: " + nextCoord.row + " col: "+ nextCoord.col );
 					return false;
 				}
+				System.out.println("row: " + nextCoord.row + " col: "+ nextCoord.col +" was free");
 				put(new Tuple(id, shipType, nextCoord.row, nextCoord.col, heading), mapConnection);
 				inTransition = !inTransition;
-				retValue = false;
+				hasMoved = false;
 			}
 		} catch (InterruptedException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return retValue;
+		return hasMoved;
 	}
 
 	@Override
@@ -276,9 +283,10 @@ public abstract class BasicShip extends Agent {
 		makeRequest();
 		Coordinate nextCoord = null;
 		if (startPath.size() > 0) {
-			nextCoord = startPath.get(0);
+			nextCoord = startPath.get(0).clone();
 		}
 		while (true) {
+			System.out.println("path: " + path);
 			if (!isDocked()) {
 				checkDockPermission();
 			}

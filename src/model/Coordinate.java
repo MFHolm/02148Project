@@ -8,8 +8,22 @@ public class Coordinate {
 		this.col = col;
 	}
 	
+	public Coordinate(Coordinate coordinate) {
+		this.row = coordinate.row;
+		this.col = coordinate.col;
+	}
+
 	@Override
 	public String toString(){
 		return "Row: " + row + " Col: " + col;
 		}
+
+	public void set(Coordinate coordinate) {
+		row = coordinate.row;
+		col = coordinate.col;
+		
+	}
+	public Coordinate clone() {
+		return new Coordinate(this.row,this.col);
+	}
 }

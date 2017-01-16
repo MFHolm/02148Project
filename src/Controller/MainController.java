@@ -96,7 +96,10 @@ public class MainController {
 //			
 //
 //		}
-		if (model.getTime() % 5 >= 0 && model.getTime() % 5 <= 0.4 && model.getNumberOfShips() < 10) {
+		if (model.getTime() >= 0 && model.getTime() <= 0.5 && model.getNumberOfShips() < 1) {
+			addRandomShip();
+		}
+		if (model.getTime() % 3 >= 0 && model.getTime() % 3 <= 0.4 && model.getNumberOfShips() < 7) {
 			addRandomShip();
 		}
 		

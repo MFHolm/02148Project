@@ -17,7 +17,9 @@ public class BarrierMonitor {
 			notifyAll();
 		}
 		while(!viewUpdated) {
-			try { wait(); } 
+			System.out.println("waiting");
+			try { wait();
+			System.out.println("done waiting");} 
 			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -32,13 +34,16 @@ public class BarrierMonitor {
 	}
 
 	public synchronized void waitingForShips() {
+		System.out.println("n: "+ n + " numOfShips: "+ numOfShips);
 		while(n < numOfShips) {
 			try {
+				System.out.println("waiting for ships");
 				wait();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			System.out.println("woken");
 		}
 	}
 
