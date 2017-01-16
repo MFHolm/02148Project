@@ -27,7 +27,7 @@ public class MainController {
 	Timer timer;
 	final int mapHeigth = 25;
 	final int mapWidth = 25;
-	int delay = 50;
+	int delay = 500;
 	
 	
 	public MainController() {

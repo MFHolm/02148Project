@@ -10,6 +10,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -111,12 +112,12 @@ public class GamePanel extends JPanel {
 		}
 		// this.setBackground(new Color(102,200,209));
 		try {
-			this.crane1 = ImageIO.read(getClass().getResource("/resources/crane1.png"));
-			this.crane2 = ImageIO.read(getClass().getResource("/resources/crane2.png"));
-			this.crane3 = ImageIO.read(getClass().getResource("/resources/crane3.png"));
-			this.crane4 = ImageIO.read(getClass().getResource("/resources/crane4.png"));
-			this.crane5 = ImageIO.read(getClass().getResource("/resources/crane5.png"));
-			this.crane6 = ImageIO.read(getClass().getResource("/resources/crane6.png"));
+//			this.crane1 = ImageIO.read(getClass().getResource("/resources/crane1.png"));
+//			this.crane2 = ImageIO.read(getClass().getResource("/resources/crane2.png"));
+//			this.crane3 = ImageIO.read(getClass().getResource("/resources/crane3.png"));
+//			this.crane4 = ImageIO.read(getClass().getResource("/resources/crane4.png"));
+//			this.crane5 = ImageIO.read(getClass().getResource("/resources/crane5.png"));
+//			this.crane6 = ImageIO.read(getClass().getResource("/resources/crane6.png"));
 			
 			BufferedImage redShip = ImageIO.read(getClass().getResource("/resources/redShip.png"));
 			this.redShipE = redShip;

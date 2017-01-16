@@ -9,6 +9,7 @@ import org.cmg.resp.knowledge.ActualTemplateField;
 import org.cmg.resp.knowledge.FormalTemplateField;
 import org.cmg.resp.knowledge.Template;
 import org.cmg.resp.knowledge.Tuple;
+import org.cmg.resp.knowledge.ts.TupleSpace;
 import org.cmg.resp.topology.PointToPoint;
 import org.cmg.resp.topology.Self;
 import org.cmg.resp.topology.VirtualPort;
@@ -27,6 +28,7 @@ public abstract class BasicShip extends Agent {
 	protected ShipType shipType;
 	protected MoveMonitor monitor;
 	protected List<Coordinate> path;
+	protected TupleSpace coordinates;
 	protected List<Coordinate> startPath;
 
 	protected int pathIndex = 0;
@@ -39,9 +41,9 @@ public abstract class BasicShip extends Agent {
 		this.mapConnection = new PointToPoint(mapId, vp.getAddress());
 		this.harbourConnection = new PointToPoint(harbourId, vp.getAddress());
 		this.coord = new Coordinate(row, col);
-		this.heading = h;
 		path = new LinkedList<Coordinate>();
 		setDocked(false);
+		this.heading = h;
 	}
 
 	public boolean move(Coordinate nextCoord) {
@@ -251,9 +253,12 @@ public abstract class BasicShip extends Agent {
 				coord = nextCoord;
 				retValue = true;
 			} else {
-				inTransition = !inTransition;
-				get(Templates.getFreeCoordTemp(nextCoord.row, nextCoord.col),mapConnection);
+				Tuple free = coordinates.getp(Templates.getFreeCoordTemp(nextCoord.row, nextCoord.col));
+				if(free == null){
+					return false;
+				}
 				put(new Tuple(id, shipType, nextCoord.row, nextCoord.col, heading), mapConnection);
+				inTransition = !inTransition;
 				retValue = false;
 			}
 		} catch (InterruptedException | IOException e) {
@@ -339,5 +344,9 @@ public abstract class BasicShip extends Agent {
 	}
 	public void setStartPath(List<Coordinate> path) {
 		this.startPath = path;
+	}
+	
+	public void setCoordinates(TupleSpace coordinates) {
+		this.coordinates = coordinates;
 	}
 }
