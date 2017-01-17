@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.cmg.resp.behaviour.Agent;
-import org.cmg.resp.knowledge.ActualTemplateField;
-import org.cmg.resp.knowledge.FormalTemplateField;
-import org.cmg.resp.knowledge.Template;
-import org.cmg.resp.knowledge.Tuple;
-import org.cmg.resp.knowledge.ts.TupleSpace;
-import org.cmg.resp.topology.PointToPoint;
-import org.cmg.resp.topology.Self;
-import org.cmg.resp.topology.VirtualPort;
+import org.cmg.jresp.behaviour.Agent;
+import org.cmg.jresp.knowledge.Tuple;
+import org.cmg.jresp.knowledge.ts.TupleSpace;
+import org.cmg.jresp.topology.PointToPoint;
+import org.cmg.jresp.topology.Self;
+import org.cmg.jresp.topology.VirtualPort;
 
 public abstract class BasicShip extends Agent {
 	protected Coordinate coord;
@@ -176,10 +173,6 @@ public abstract class BasicShip extends Agent {
 
 	protected void leaveDock() {
 
-	}
-
-	private void emptyPath() {
-		this.path = new LinkedList<>();
 	}
 
 	protected void turnRight() {

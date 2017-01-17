@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
-import org.cmg.resp.knowledge.Tuple;
-import org.cmg.resp.topology.VirtualPort;
+import org.cmg.jresp.knowledge.Tuple;
+import org.cmg.jresp.topology.VirtualPort;
 
 public class Model {
 	private Map map;

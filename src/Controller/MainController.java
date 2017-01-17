@@ -1,13 +1,11 @@
 package Controller;
 
 
-import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.Timer;
 
 import model.BasicShip;
-import model.Coordinate;
 import model.GreenShip;
 import model.Heading;
 import model.Model;
@@ -28,7 +26,7 @@ public class MainController {
 	Timer timer;
 	final int mapHeigth = 25;
 	final int mapWidth = 25;
-	int delay = 500;
+	int delay = 100;
 	private int shipCounter = 0;
 	
 	
@@ -40,8 +38,6 @@ public class MainController {
 	}
 	
 	public void init() {
-		//testgrid
-		int[][] grid = new int[1][1];
 		
 		//Main menu view
 		mMenu = new MainMenu();
@@ -98,7 +94,7 @@ public class MainController {
 		if (model.getTime() >= 0 && model.getTime() <= 0.5 && model.getNumberOfShips() < 1) {
 			addRandomShip();
 		}
-		if (model.getTime() % 3 >= 0 && model.getTime() % 3 <= 0.4 && model.getNumberOfShips() < 7) {
+		if (model.getTime() % 3 >= 0 && model.getTime() % 3 <= 0.4 && model.getNumberOfShips() < 10) {
 			addRandomShip();
 		}
 		

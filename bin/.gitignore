@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-/view/
-=======
-/Controller/
 /model/
-/resources/
-/view/
+/Controller/
 /test/
->>>>>>> branch 'master' of https://github.com/MFHolm/02148Project.git
+/view/

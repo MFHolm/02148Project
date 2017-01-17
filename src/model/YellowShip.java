@@ -1,9 +1,6 @@
 package model;
 
-import java.io.IOException;
-
-import org.cmg.resp.knowledge.Tuple;
-import org.cmg.resp.topology.VirtualPort;
+import org.cmg.jresp.topology.VirtualPort;
 
 public class YellowShip extends BasicShip {
 

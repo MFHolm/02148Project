@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,9 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import org.cmg.resp.knowledge.Tuple;
+import org.cmg.jresp.knowledge.Tuple;
 import model.Heading;
-import model.Map;
 import model.ShipType;
 
 public class GamePanel extends JPanel {
@@ -27,8 +23,6 @@ public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 5206343816254801883L;
 	private ArrayList<Tuple> ships;
 	private BufferedImage background;
-	private Map map;
-	private int[][] grid;
 	private BufferedImage redShipE;
 	private BufferedImage redShipNE;
 	private BufferedImage redShipN;
@@ -57,11 +51,11 @@ public class GamePanel extends JPanel {
 	private BufferedImage yellowShipSE;
 	
 	private BufferedImage crane1;
-	private BufferedImage crane2;
-	private BufferedImage crane3;
-	private BufferedImage crane4;
-	private BufferedImage crane5;
-	private BufferedImage crane6;
+//	private BufferedImage crane2;
+//	private BufferedImage crane3;
+//	private BufferedImage crane4;
+//	private BufferedImage crane5;
+//	private BufferedImage crane6;
 	
 	private JLabel money;
 	private JLabel time;

@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.cmg.resp.behaviour.Agent;
-import org.cmg.resp.comp.Node;
-import org.cmg.resp.knowledge.Template;
-import org.cmg.resp.knowledge.Tuple;
-import org.cmg.resp.knowledge.ts.TupleSpace;
-import org.cmg.resp.topology.Self;
-import org.cmg.resp.topology.VirtualPort;
+import org.cmg.jresp.behaviour.Agent;
+import org.cmg.jresp.comp.Node;
+import org.cmg.jresp.knowledge.Template;
+import org.cmg.jresp.knowledge.Tuple;
+import org.cmg.jresp.knowledge.ts.TupleSpace;
+import org.cmg.jresp.topology.Self;
+import org.cmg.jresp.topology.VirtualPort;
 
 public class Map {
 	private Node sea;
@@ -23,7 +23,6 @@ public class Map {
 	private int heigth;
 	private BarrierMonitor barrier;
 	private ArrayList<LinkedList<Coordinate>> paths;
-	private ArrayList<LinkedList<Coordinate>> startPaths;
 	
 	public Map(VirtualPort vp, int mapHeight, int mapWidth) {
 		coordinates = new TupleSpace();
@@ -310,8 +309,10 @@ public class Map {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			 
+			
+			shipNodes.get(shipId).stop();
 			shipNodes.remove(shipId);
+			
 			//monitor.setWaitingFor(shipNodes.size());
 		}
 	}

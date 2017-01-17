@@ -1,6 +1,6 @@
 package model;
 
-import org.cmg.resp.topology.VirtualPort;
+import org.cmg.jresp.topology.VirtualPort;
 
 public class GreenShip extends BasicShip{
 

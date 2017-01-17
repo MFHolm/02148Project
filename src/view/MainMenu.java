@@ -8,6 +8,10 @@ import javax.swing.*;
 
 public class MainMenu extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1511827731298941479L;
 	private JPanel menuPanel;
 	private JButton play;
 

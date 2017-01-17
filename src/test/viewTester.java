@@ -6,10 +6,10 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import org.cmg.resp.knowledge.FormalTemplateField;
-import org.cmg.resp.knowledge.Template;
-import org.cmg.resp.knowledge.Tuple;
-import org.cmg.resp.topology.VirtualPort;
+import org.cmg.jresp.knowledge.FormalTemplateField;
+import org.cmg.jresp.knowledge.Template;
+import org.cmg.jresp.knowledge.Tuple;
+import org.cmg.jresp.topology.VirtualPort;
 
 import model.Harbour;
 import model.Heading;

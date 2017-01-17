@@ -7,14 +7,15 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import org.cmg.resp.knowledge.Tuple;
-
-import model.Harbour;
-import model.Map;
+import org.cmg.jresp.knowledge.Tuple;
 
 
 public class GameView extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2680483509782002163L;
 	GamePanel gamePanel;
 	RequestPanel requestPanel;
 	

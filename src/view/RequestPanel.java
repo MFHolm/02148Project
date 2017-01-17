@@ -1,11 +1,9 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.TextField;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,23 +13,22 @@ import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 
-import org.cmg.resp.knowledge.Tuple;
+import org.cmg.jresp.knowledge.Tuple;
 
 import model.Harbour;
 import model.ShipType;
 
 public class RequestPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5444611754376978388L;
 	Harbour harbour;
 	ImageIcon yellowShip;
 	ImageIcon redShip;
@@ -115,7 +112,6 @@ public class RequestPanel extends JPanel {
 		return this.markedId;
 	}
 	public void update() {
-		final int borderWidth = 1;
 		final int rows = 26;
 		final int cols = 3;
 		this.setLayout(new GridLayout(rows, cols));

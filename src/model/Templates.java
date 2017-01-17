@@ -1,8 +1,8 @@
 package model;
 
-import org.cmg.resp.knowledge.ActualTemplateField;
-import org.cmg.resp.knowledge.FormalTemplateField;
-import org.cmg.resp.knowledge.Template;
+import org.cmg.jresp.knowledge.ActualTemplateField;
+import org.cmg.jresp.knowledge.FormalTemplateField;
+import org.cmg.jresp.knowledge.Template;
 
 public class Templates {
 	

@@ -2,16 +2,14 @@ package model;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map.Entry;
 
-import org.cmg.resp.behaviour.Action.Query;
-import org.cmg.resp.behaviour.Agent;
-import org.cmg.resp.comp.Node;
-import org.cmg.resp.knowledge.Tuple;
-import org.cmg.resp.knowledge.ts.TupleSpace;
-import org.cmg.resp.topology.PointToPoint;
-import org.cmg.resp.topology.Self;
-import org.cmg.resp.topology.VirtualPort;
+import org.cmg.jresp.behaviour.Agent;
+import org.cmg.jresp.comp.Node;
+import org.cmg.jresp.knowledge.Tuple;
+import org.cmg.jresp.knowledge.ts.TupleSpace;
+import org.cmg.jresp.topology.PointToPoint;
+import org.cmg.jresp.topology.Self;
+import org.cmg.jresp.topology.VirtualPort;
 
 public class Harbour {
 	private Node harbour;
