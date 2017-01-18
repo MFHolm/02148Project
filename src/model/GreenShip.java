@@ -13,7 +13,7 @@ public class GreenShip extends BasicShip{
 
 
 	@Override
-	protected int getMoney(int time) {
+	public int getMoney(int time) {
 		return 50;
 	}
 

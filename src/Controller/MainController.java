@@ -5,6 +5,8 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import org.cmg.jresp.exceptions.IllegalActionException;
+
 import model.BasicShip;
 import model.GreenShip;
 import model.Heading;
@@ -33,10 +35,33 @@ public class MainController {
 	public MainController() {
 		init();
 	}
+	public MainController(String string) throws IllegalActionException {
+		if (!string.equals("test")) {
+			throw new IllegalActionException("This method should only be used for testing");
+		}
+
+		//Main menu view
+		mMenu = new MainMenu();
+		mMenu.setVisible(false);
+		//Game view
+		gView = new GameView(mapHeigth, mapWidth);
+		gView.setVisible(false);
+		//Action handler for main menu
+		actMainMenu = new ActionHandlerMainMenu(this);
+		requestListener = new RequestListener(this);
+		dockListener = new DockListener(this);
+		dockListener.init();
+		
+		this.timer = new Timer(delay, new TimerListener(this));
+		
+		
+	}
 	public void incrementTimer() {
 		this.model.incrementTime(0.5);
 	}
-	
+	public Model getModel() {
+		return model;
+	}
 	public void init() {
 		
 		//Main menu view

@@ -39,6 +39,7 @@ public abstract class BasicShip extends Agent {
 		this.harbourConnection = new PointToPoint(harbourId, vp.getAddress());
 		this.coord = new Coordinate(row, col);
 		path = new LinkedList<Coordinate>();
+		startPath = new LinkedList<Coordinate>();
 		setDocked(false);
 		this.heading = h;
 	}
@@ -120,7 +121,7 @@ public abstract class BasicShip extends Agent {
 	 * Returns the amount of money this ship is willing to give based on the
 	 * amount of time it will stay
 	 */
-	protected abstract int getMoney(int time);
+	public abstract int getMoney(int time);
 
 	/*
 	 * Sends request to the harbour tuple space for permission to enter
@@ -346,5 +347,8 @@ public abstract class BasicShip extends Agent {
 
 	public void setCoordinates(TupleSpace coordinates) {
 		this.coordinates = coordinates;
+	}
+	public int getTime() {
+		return time;
 	}
 }

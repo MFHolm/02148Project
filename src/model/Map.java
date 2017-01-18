@@ -283,7 +283,7 @@ public class Map {
 				if(queryp(Templates.getDeclineReqTemp()) != null) { // Checks if we should decline request and remove ship
 					Tuple t = get(Templates.getDeclineReqTemp(),Self.SELF);
 					String shipId = t.getElementAt(String.class, 1);
-					declineRequest(shipId);
+					removeShip(shipId);
 				}
 				
 			}
@@ -295,7 +295,7 @@ public class Map {
 		 * Removes ship coordinates from coordinates tuple space
 		 * and removes ship node
 		 */
-		public void declineRequest(String shipId) {
+		public void removeShip(String shipId) {
 			
 			try {
 				Tuple pos1 = get(Templates.getCoordTemp(shipId),Self.SELF);
