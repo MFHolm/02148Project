@@ -10,6 +10,13 @@ public class Templates {
 		
 	}
 	
+	public static Template getDeclineTemp() {
+		return new Template(new ActualTemplateField("decline"));
+	}
+	
+	public static Template getRemovedTemp() {
+		return new Template(new ActualTemplateField("removed"));
+	}
 
 	public static Template getCoordTemp(String shipId) {
 		return new Template(new ActualTemplateField(shipId),
@@ -73,7 +80,7 @@ public class Templates {
 							new FormalTemplateField(Integer.class));
 	}
 	
-	public static Template getDeclineReqTemp() {
+	public static Template getRemoveTemp() {
 		return new Template(new ActualTemplateField("declineReq"),
 							new FormalTemplateField(String.class));
 	}
@@ -99,5 +106,10 @@ public class Templates {
 
 	public static Template getLockTemp() {
 		return new Template(new ActualTemplateField("lock"));
+	}
+
+	public static Template getDeclinedShipTemp() {
+		return new Template(new ActualTemplateField("decline"),
+							new FormalTemplateField(String.class));
 	}
 }

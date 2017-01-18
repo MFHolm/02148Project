@@ -113,7 +113,6 @@ public class RequestPanel extends JPanel {
 		else {
 			this.markedId = id;
 		}
-		System.out.println(markedId);
 	}
 	public String getMarkedShip() {
 		return this.markedId;

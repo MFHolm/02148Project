@@ -269,6 +269,19 @@ public class Map {
 		}
 	}
 	
+	public void removeShipFromSea(String shipId) {
+		getShips().get(shipId).put(new Tuple("decline"));
+		try {
+			getShips().get(shipId).get(Templates.getRemovedTemp());
+			
+			shipNodes.get(shipId).stop();
+			shipNodes.remove(shipId);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private class SeaAgent extends Agent {
 		public SeaAgent(String name) {
 			super(name);
@@ -279,10 +292,15 @@ public class Map {
 		protected void doRun() throws Exception {
 			
 			while(true){
-				Tuple t = getp(Templates.getDeclineReqTemp());
+				Tuple t = getp(Templates.getRemoveTemp());
 				if(t != null) { // Checks if we should decline request and remove ship
 					String shipId = t.getElementAt(String.class, 1);
 					removeShip(shipId);
+				}
+				Tuple x = getp(Templates.getDeclinedShipTemp());
+				if(x != null) { // Checks if we should decline request and remove ship
+					String shipId = x.getElementAt(String.class, 1);
+					removeShipFromSea(shipId);
 				}
 				
 			}
@@ -300,13 +318,11 @@ public class Map {
 				
 				Tuple pos1 = get(Templates.getCoordTemp(shipId),Self.SELF);
 				//Two calls to get because ship has two positions in dock
-				Tuple pos2 = getp(Templates.getCoordTemp(shipId));
+				Tuple pos2 = get(Templates.getCoordTemp(shipId),Self.SELF);
 				
 				
 				put(new Tuple("free",pos1.getElementAt(Integer.class, 2), pos1.getElementAt(Integer.class, 3)),Self.SELF);
-				if(pos2 != null) {
-					put(new Tuple("free",pos2.getElementAt(Integer.class, 2), pos2.getElementAt(Integer.class, 3)),Self.SELF);
-				}
+				put(new Tuple("free",pos2.getElementAt(Integer.class, 2), pos2.getElementAt(Integer.class, 3)),Self.SELF);
 				
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block

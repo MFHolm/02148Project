@@ -99,11 +99,13 @@ public class Harbour {
 					put(new Tuple("assignedTo",dockId,dock.getRow(),dock.getCol()),shipConnection);
 				}
 				
-				t = getp(Templates.getDeclineReqTemp());
+				t = getp(Templates.getRemoveTemp());
 				if (t != null) {
 					String shipId = t.getElementAt(String.class, 1);
 					get(Templates.getReqTemp(shipId),Self.SELF);
+					put(new Tuple("removed"), Self.SELF);
 				}
+				
 			}	
 		}
 	}

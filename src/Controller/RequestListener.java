@@ -29,7 +29,6 @@ public class RequestListener implements ActionListener {
 		String action = command.substring(0,1);
 		switch (action) {
 		case "a":
-			System.out.println("." + id + ".");
 			mainC.gView.getRequestPanel().setMarkedID(id);
 			mainC.gView.getRequestPanel().clear();
 			mainC.gView.getRequestPanel().update();
@@ -41,10 +40,13 @@ public class RequestListener implements ActionListener {
 			break;
 		case "d":
 			mainC.model.declineRequest(id);
+			mainC.updateRequests();
 			mainC.gView.getRequestPanel().clear();
 			mainC.gView.getRequestPanel().update();
 			mainC.gView.getRequestPanel().repaint();
 			init();
+			break;
+
 		}
 	}
 }

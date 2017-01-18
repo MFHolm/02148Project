@@ -22,6 +22,18 @@ public class Model {
 		updateDocks(n);
 	}
 
+	
+	public void declineRequest(String shipId) {
+		map.getSea().put(new Tuple("decline", shipId));
+		map.getHarbour().getNode().put(new Tuple("declineReq", shipId));
+		try {
+			map.getHarbour().getNode().get(Templates.getRemovedTemp());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public double getTime() {
 		return time;
 	}
@@ -50,10 +62,10 @@ public class Model {
 		map.handleRequest(shipId, dockId);
 	}
 
-	public void declineRequest(String shipId) {
-		map.getSea().put(new Tuple("declineReq", shipId));
-		map.getHarbour().getNode().put(new Tuple("declineReq", shipId));
-	}
+//	public void declineRequest(String shipId) {
+//		map.getSea().put(new Tuple("declineReq", shipId));
+//		map.getHarbour().getNode().put(new Tuple("declineReq", shipId));
+//	}
 
 	public void viewUpdated() {
 		map.getMonitor().updateView();
