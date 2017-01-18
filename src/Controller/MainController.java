@@ -34,7 +34,7 @@ public class MainController {
 		init();
 	}
 	public void incrementTimer() {
-		this.model.incrementTime(0.5);
+		this.model.incrementTime(0.1);
 	}
 	
 	public void init() {
@@ -91,10 +91,10 @@ public class MainController {
 //			
 //
 //		}
-		if (model.getTime() >= 0 && model.getTime() <= 0.5 && model.getNumberOfShips() < 1) {
+		if (model.getTime() >= 0 && model.getTime() <= 0.05 && model.getNumberOfShips() < 1) {
 			addRandomShip();
 		}
-		if (model.getTime() % 3 >= 0 && model.getTime() % 3 <= 0.4 && model.getNumberOfShips() < 10) {
+		if (model.getTime() % 3 >= 0 && model.getTime() % 3 <= 0.1 && model.getNumberOfShips() < 10) {
 			addRandomShip();
 		}
 		

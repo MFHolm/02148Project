@@ -279,9 +279,8 @@ public class Map {
 		protected void doRun() throws Exception {
 			
 			while(true){
-				
-				if(queryp(Templates.getDeclineReqTemp()) != null) { // Checks if we should decline request and remove ship
-					Tuple t = get(Templates.getDeclineReqTemp(),Self.SELF);
+				Tuple t = getp(Templates.getDeclineReqTemp());
+				if(t != null) { // Checks if we should decline request and remove ship
 					String shipId = t.getElementAt(String.class, 1);
 					declineRequest(shipId);
 				}
