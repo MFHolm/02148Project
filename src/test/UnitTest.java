@@ -121,12 +121,21 @@ public class UnitTest {
 	}
 	
 	//Test decline request
-	@Test
-	public void testRemoveShipFromDock() {
+	public void testDeclineRequest() {
 		redShip = new RedShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 0, 17, Heading.S);
 		model.addShip(redShip);
-	
 		
+		LinkedList<Tuple> requests = model.getRequests();
+		ArrayList<Tuple> positions = model.getShipPositions();
+		
+		assertEquals(1, requests.size());
+		assertEquals(1, positions.size());
+		
+		model.declineRequest("id1");
+		
+		//The ship should have been removed
+		assertEquals(0, requests.size());
+		assertEquals(0, positions.size());
 	}
 
 }
