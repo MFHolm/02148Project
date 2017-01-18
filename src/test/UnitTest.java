@@ -71,6 +71,8 @@ public class UnitTest {
 	//Test that the ship cannot make multiple requests
 	@Test
 	public void testMakeRequest() {
+		redShip = new RedShip("id1", model.getSeaName(), model.getHarbourName(), Model.getVp(), 0, 17, Heading.S);
+		model.addShip(redShip);
 		LinkedList<Tuple> requests = model.getRequests();
 		//There should be one request
 		assertEquals(1, requests.size());

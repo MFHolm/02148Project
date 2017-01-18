@@ -24,14 +24,27 @@ public class RequestListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String id = e.getActionCommand();
-		mainC.gView.getRequestPanel().setMarkedID(id);
-		mainC.gView.getRequestPanel().clear();
-		mainC.gView.getRequestPanel().update();
-		mainC.gView.getRequestPanel().repaint();
-		init();
-		
-		
-		mainC.gView.getGamePanel().setCircleId(id);
+		String command = e.getActionCommand();
+		String id = command.substring(1);
+		String action = command.substring(0,1);
+		switch (action) {
+		case "a":
+			System.out.println("." + id + ".");
+			mainC.gView.getRequestPanel().setMarkedID(id);
+			mainC.gView.getRequestPanel().clear();
+			mainC.gView.getRequestPanel().update();
+			mainC.gView.getRequestPanel().repaint();
+			init();
+			
+			
+			mainC.gView.getGamePanel().setCircleId(id);
+			break;
+		case "d":
+			mainC.model.declineRequest(id);
+			mainC.gView.getRequestPanel().clear();
+			mainC.gView.getRequestPanel().update();
+			mainC.gView.getRequestPanel().repaint();
+			init();
+		}
 	}
 }

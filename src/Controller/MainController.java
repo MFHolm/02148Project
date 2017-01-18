@@ -57,7 +57,7 @@ public class MainController {
 		
 	}
 	public void incrementTimer() {
-		this.model.incrementTime(0.5);
+		this.model.incrementTime(0.1);
 	}
 	public Model getModel() {
 		return model;
@@ -88,7 +88,7 @@ public class MainController {
 		model.addShip(ship);
 		updateRequests();
 	}
-	private void updateRequests() {
+	public void updateRequests() {
 		gView.getRequestPanel().setRequests(this.model.getRequests());
 		gView.getRequestPanel().clear();
 		gView.getRequestPanel().update();
@@ -116,10 +116,10 @@ public class MainController {
 //			
 //
 //		}
-		if (model.getTime() >= 0 && model.getTime() <= 0.5 && model.getNumberOfShips() < 1) {
+		if (model.getTime() >= 0 && model.getTime() <= 0.05 && model.getNumberOfShips() < 1) {
 			addRandomShip();
 		}
-		if (model.getTime() % 3 >= 0 && model.getTime() % 3 <= 0.4 && model.getNumberOfShips() < 10) {
+		if (model.getTime() % 3 >= 0 && model.getTime() % 3 <= 0.1 && model.getNumberOfShips() < 10) {
 			addRandomShip();
 		}
 		

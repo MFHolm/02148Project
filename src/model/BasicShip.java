@@ -162,7 +162,7 @@ public abstract class BasicShip extends Agent {
 				get(Templates.getFreeCoordTemp(coord.row, coord.col + 1), mapConnection);
 				// put(new Tuple(id, shipType, coord.row, coord.col, heading),
 				// mapConnection);
-				// emptyPath();gg
+				// emptyPath();
 				setDocked(true);
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block

@@ -279,9 +279,8 @@ public class Map {
 		protected void doRun() throws Exception {
 			
 			while(true){
-				
-				if(queryp(Templates.getDeclineReqTemp()) != null) { // Checks if we should decline request and remove ship
-					Tuple t = get(Templates.getDeclineReqTemp(),Self.SELF);
+				Tuple t = getp(Templates.getDeclineReqTemp());
+				if(t != null) { // Checks if we should decline request and remove ship
 					String shipId = t.getElementAt(String.class, 1);
 					removeShip(shipId);
 				}
@@ -298,12 +297,16 @@ public class Map {
 		public void removeShip(String shipId) {
 			
 			try {
+				
 				Tuple pos1 = get(Templates.getCoordTemp(shipId),Self.SELF);
 				//Two calls to get because ship has two positions in dock
-				Tuple pos2 = get(Templates.getCoordTemp(shipId),Self.SELF);
+				Tuple pos2 = getp(Templates.getCoordTemp(shipId));
+				
 				
 				put(new Tuple("free",pos1.getElementAt(Integer.class, 2), pos1.getElementAt(Integer.class, 3)),Self.SELF);
-				put(new Tuple("free",pos2.getElementAt(Integer.class, 2), pos2.getElementAt(Integer.class, 3)),Self.SELF);
+				if(pos2 != null) {
+					put(new Tuple("free",pos2.getElementAt(Integer.class, 2), pos2.getElementAt(Integer.class, 3)),Self.SELF);
+				}
 				
 			} catch (InterruptedException | IOException e) {
 				// TODO Auto-generated catch block

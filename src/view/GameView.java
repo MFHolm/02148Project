@@ -37,7 +37,7 @@ public class GameView extends JFrame {
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.add(mainView);
-		this.setSize(1050, 800);
+		this.setSize(1170, 800);
 		this.setResizable(false);
 //		this.setContentPane(content);
 		pack();
