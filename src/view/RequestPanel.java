@@ -36,16 +36,22 @@ public class RequestPanel extends JPanel {
 	ImageIcon yellowShipMarked;
 	ImageIcon redShipMarked;
 	ImageIcon greenShipMarked;
+	ImageIcon decline;
 	LinkedList<Tuple> requests;
 	ArrayList<JButton> buttons;
 	String markedId;
 	
 	public RequestPanel() {
-		this.setPreferredSize(new Dimension(250,800));
+		this.setPreferredSize(new Dimension(370,800));
 		BufferedImage img;
 		try {
+			img = ImageIO.read(new File(getClass().getResource("/resources/decline.png").toURI()));
+			Image dimg = img.getScaledInstance(30, 30,
+					Image.SCALE_SMOOTH);
+			decline = new ImageIcon(dimg);
+			
 			img = ImageIO.read(new File(getClass().getResource("/resources/yellowShip.png").toURI()));
-			Image dimg = img.getScaledInstance(70, 40,
+			dimg = img.getScaledInstance(70, 40,
 					Image.SCALE_SMOOTH);
 			yellowShip = new ImageIcon(dimg);
 			
@@ -107,13 +113,14 @@ public class RequestPanel extends JPanel {
 		else {
 			this.markedId = id;
 		}
+		System.out.println(markedId);
 	}
 	public String getMarkedShip() {
 		return this.markedId;
 	}
 	public void update() {
 		final int rows = 26;
-		final int cols = 3;
+		final int cols = 4;
 		this.setLayout(new GridLayout(rows, cols));
 		this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		for (int row = 0; row < rows; row++) {
@@ -125,6 +132,8 @@ public class RequestPanel extends JPanel {
 					  button = new JButton("Time");
 				}else if (row == 0 && col == 2) {
 					  button = new JButton("$");
+				}else if (row ==0 && col == 3) {
+					  button = new JButton("Decline");
 				}else if (row <= requests.size()){
 					if (col == 0) {
 						boolean marked = false;
@@ -158,8 +167,14 @@ public class RequestPanel extends JPanel {
 							System.out.println("Ship type not found in request panel");
 							break;
 						}
-						button.setActionCommand((String) requests.get(row -1).getElementAt(1));
+						button.setActionCommand("a" + (String) requests.get(row -1).getElementAt(1));
 						buttons.add(button);
+					}
+					else if(col == 3){
+						button = new JButton(decline);
+						button.setActionCommand("d" + (String) requests.get(row -1).getElementAt(1));
+						buttons.add(button);
+						
 					}
 					else {
 					String text = requests.get(row -1).getElementAt(col+2).toString();

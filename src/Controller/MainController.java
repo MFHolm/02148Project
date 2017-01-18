@@ -63,7 +63,7 @@ public class MainController {
 		model.addShip(ship);
 		updateRequests();
 	}
-	private void updateRequests() {
+	public void updateRequests() {
 		gView.getRequestPanel().setRequests(this.model.getRequests());
 		gView.getRequestPanel().clear();
 		gView.getRequestPanel().update();
