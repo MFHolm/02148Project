@@ -103,7 +103,9 @@ public class Harbour {
 				if (t != null) {
 					String shipId = t.getElementAt(String.class, 1);
 					get(Templates.getReqTemp(shipId),Self.SELF);
+					put(new Tuple("removed"), Self.SELF);
 				}
+				
 			}	
 		}
 	}

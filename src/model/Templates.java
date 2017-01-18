@@ -10,6 +10,13 @@ public class Templates {
 		
 	}
 	
+	public static Template getDeclineTemp() {
+		return new Template(new ActualTemplateField("decline"));
+	}
+	
+	public static Template getRemovedTemp() {
+		return new Template(new ActualTemplateField("removed"));
+	}
 
 	public static Template getCoordTemp(String shipId) {
 		return new Template(new ActualTemplateField(shipId),
@@ -99,5 +106,10 @@ public class Templates {
 
 	public static Template getLockTemp() {
 		return new Template(new ActualTemplateField("lock"));
+	}
+
+	public static Template getRemovedShipTemp() {
+		return new Template(new ActualTemplateField("decline"),
+							new FormalTemplateField(String.class));
 	}
 }

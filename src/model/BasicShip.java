@@ -30,6 +30,7 @@ public abstract class BasicShip extends Agent {
 
 	protected int pathIndex = 0;
 	protected int startPathIndex = 0;
+	private boolean waitingForDeath = false;
 
 	public BasicShip(String shipId, String mapId, String harbourId, VirtualPort vp, int row, int col, Heading h) {
 		super(shipId);
@@ -171,10 +172,6 @@ public abstract class BasicShip extends Agent {
 
 	}
 
-	protected void leaveDock() {
-
-	}
-
 	protected void turnRight() {
 		switch (heading) {
 		case N:
@@ -274,10 +271,12 @@ public abstract class BasicShip extends Agent {
 			nextCoord = startPath.get(0).clone();
 		}
 		while (true) {
-			if (!isDocked()) {
+			checkRemove();
+			
+			if (!isDocked() && !waitingForDeath) {
 				checkDockPermission();
 			}
-			if (!isDocked()) {
+			if (!isDocked() && !waitingForDeath) {
 				if (nextCoord != null) {
 					if (move(nextCoord)) {
 						if (startPathIndex < 1) {
@@ -294,6 +293,37 @@ public abstract class BasicShip extends Agent {
 			}
 			barrier.moved();
 		}
+	}
+	
+	
+
+	private void checkRemove() {
+		if (!waitingForDeath) {
+		Tuple t = getp(Templates.getDeclineTemp());
+		if (t != null) {
+			waitingForDeath  = true;
+			try {
+			Tuple pos1 = get(Templates.getCoordTemp(id), mapConnection);
+			put(new Tuple("free", pos1.getElementAt(Integer.class, 2), pos1.getElementAt(Integer.class, 3)),
+					mapConnection);
+			if (inTransition) {
+				Tuple pos2 = get(Templates.getCoordTemp(id), mapConnection);
+				put(new Tuple("free", pos2.getElementAt(Integer.class, 2), pos2.getElementAt(Integer.class, 3)),
+						mapConnection);
+				}
+			
+			put(new Tuple("removed"), Self.SELF);
+			
+			}
+				
+			 catch (InterruptedException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			}
+		}
+
 	}
 
 	public BarrierMonitor getMonitor() {
