@@ -242,7 +242,7 @@ public class Map {
 		
 		//Delay the thread until the request has been sent
 		try {
-			Tuple t = newShipNode.get(Templates.getReqSentTemp());
+			Tuple t = newShipNode.get(Templates.getReqAckTemp());
 			newShipNode.put(t);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -253,7 +253,7 @@ public class Map {
 	
 	public void handleRequest(String shipId, String dockId) throws IllegalArgumentException {
 		Node shipNode = shipNodes.get(shipId);
-		if(shipNode.queryp(Templates.getReqSentTemp())==null){
+		if(shipNode.queryp(Templates.getReqAckTemp())==null){
 			throw new IllegalArgumentException(shipId + " hasn't sent any request");
 		} else {
 			harbour.assignDock(shipId,dockId);

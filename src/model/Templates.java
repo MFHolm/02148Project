@@ -41,7 +41,7 @@ public class Templates {
 	}
 	
 	public static Template getReqTemp(String shipId) {
-		return new Template(new ActualTemplateField("req"),
+		return new Template(new ActualTemplateField("reqAck"),
 							new ActualTemplateField(shipId),
 							new FormalTemplateField(ShipType.class),
 							new FormalTemplateField(Integer.class),
@@ -49,12 +49,22 @@ public class Templates {
 	}
 	
 	public static Template getReqTemp() {
+		return new Template(new ActualTemplateField("reqAck"),
+							new FormalTemplateField(String.class),
+							new FormalTemplateField(ShipType.class),
+							new FormalTemplateField(Integer.class),
+							new FormalTemplateField(Integer.class));
+	}
+	
+	public static Template getShipReqTemp() {
 		return new Template(new ActualTemplateField("req"),
 							new FormalTemplateField(String.class),
 							new FormalTemplateField(ShipType.class),
 							new FormalTemplateField(Integer.class),
 							new FormalTemplateField(Integer.class));
 	}
+	
+	
 	
 	public static Template getAssignDockTemp() {
 		return new Template(new ActualTemplateField("assignDock"),
@@ -85,8 +95,8 @@ public class Templates {
 							new FormalTemplateField(String.class));
 	}
 	
-	public static Template getReqSentTemp() {
-		return new Template(new ActualTemplateField("reqSent"));
+	public static Template getReqAckTemp() {
+		return new Template(new ActualTemplateField("reqAck"));
 	}
 	
 	public static Template getAtBarrierTemp(int numShips) {
@@ -112,4 +122,6 @@ public class Templates {
 		return new Template(new ActualTemplateField("decline"),
 							new FormalTemplateField(String.class));
 	}
+	
+	
 }

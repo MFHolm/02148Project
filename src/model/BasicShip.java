@@ -129,12 +129,10 @@ public abstract class BasicShip extends Agent {
 	 */
 	public void makeRequest() {
 
-		if (queryp(Templates.getReqSentTemp()) == null) {
+		if (queryp(Templates.getReqAckTemp()) == null) {
 			try {
 				put(new Tuple("req", id, shipType, time, getMoney(time)), harbourConnection);
-				put(new Tuple("reqSent"), Self.SELF); // Sends this tuple so it
-														// knows that the
-														// request was sent
+				query(Templates.getReqAckTemp(),Self.SELF);
 			} catch (InterruptedException | IOException e) {
 				e.printStackTrace();
 			}
@@ -146,7 +144,9 @@ public abstract class BasicShip extends Agent {
 		if (t != null) {
 
 			try {
-
+				//Removes reqAck tuple
+				get(Templates.getReqAckTemp(),Self.SELF);
+				
 				Tuple pos1 = get(Templates.getCoordTemp(id), mapConnection);
 				put(new Tuple("free", pos1.getElementAt(Integer.class, 2), pos1.getElementAt(Integer.class, 3)),
 						mapConnection);

@@ -81,10 +81,21 @@ public class Harbour {
 		}
 		
 		@Override
-		protected void doRun() throws Exception {	
+		protected void doRun() throws Exception {
+			Tuple t;
 			while(true){
+				
+				//Checks if ship has sent a dock request
+				t = getp(Templates.getShipReqTemp());
+				if(t != null) {
+					put(new Tuple("reqAck",t.getElementAt(String.class, 1),t.getElementAt(ShipType.class, 2),
+							t.getElementAt(Integer.class, 3),t.getElementAt(Integer.class, 4)),Self.SELF);
+					PointToPoint shipConnection = new PointToPoint(t.getElementAt(String.class, 1),vp.getAddress());
+					put(new Tuple("reqAck"),shipConnection);
+				}
+				
 				//Implementing accept request by checking for assignDock in the tuple space
-				Tuple t = getp(Templates.getAssignDockTemp());
+				t = getp(Templates.getAssignDockTemp());
 				if (t != null){				
 					String shipId = t.getElementAt(String.class, 1);
 					String dockId = t.getElementAt(String.class, 2);
