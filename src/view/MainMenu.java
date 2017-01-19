@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.JFrame;
 import java.awt.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
@@ -23,6 +25,9 @@ public class MainMenu extends JFrame {
 	
 	public void initUI() {
 		menuPanel = new JPanel();
+		menuPanel.setBackground(Color.CYAN);
+		
+		
 		play = new JButton();
 		
 		play.setText("Play");
@@ -34,7 +39,8 @@ public class MainMenu extends JFrame {
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.add(menuPanel);
-		this.setSize(400, 700);
+		this.setSize(300, 200);
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 	

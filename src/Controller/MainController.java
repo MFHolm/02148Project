@@ -127,6 +127,9 @@ public class MainController {
 		gView.updateTime(model.getTime());
 		gView.updateMoney(model.getMoney());
 		model.viewUpdated();
+		if (model.getTime() >= 5*60) {
+			this.timer.stop();
+		}
 		
 	}
 	private void addRandomShip() {

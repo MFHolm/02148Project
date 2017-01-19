@@ -41,6 +41,7 @@ public class GameView extends JFrame {
 		this.setResizable(false);
 //		this.setContentPane(content);
 		pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(false);
 	
 		
